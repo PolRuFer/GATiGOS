@@ -182,5 +182,4 @@ Render local de `dev/preview` (LiquidJS con datos de prueba, servidor sin compre
 4. **Render local frente a Shopify:** comprobar en `shopify theme dev` la Section Rendering API de los filtros, el formulario de idioma, las políticas y los metafields reales.
 
 ## Pendiente de tu OK
-- Borrar ficheros del Skeleton que ya no se usan: `sections/hello-world.liquid`, `sections/custom-section.liquid`, `assets/icon-account.svg`, `assets/icon-cart.svg` y `assets/shoppy-x-ray.svg`. No se referencian desde ningún sitio.
 - Orbes sin `filter: blur(80px)` (deuda 1).
