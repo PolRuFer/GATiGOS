@@ -1,18 +1,40 @@
-{% style %}
-  {% # Loads all font variantions with display: swap %}
-  {{ settings.type_primary_font | font_face: font_display: 'swap' }}
-  {{ settings.type_primary_font | font_modify: 'weight', 'bold' | font_face: font_display: 'swap' }}
-  {{ settings.type_primary_font | font_modify: 'weight', 'bold' | font_modify: 'style', 'italic' | font_face: font_display: 'swap' }}
-  {{ settings.type_primary_font | font_modify: 'style', 'italic' | font_face: font_display: 'swap' }}
+{% doc %}
+  Self-hosted brand fonts (Google Fonts, SIL OFL 1.1), preloaded and declared
+  with font-display: swap. Both files are latin subsets of the variable fonts:
+  - Fraunces: opsz 9–144 (optical sizes active), wght 300–400, SOFT 0, WONK 0
+  - Hanken Grotesk: wght 400–500
 
-  :root {
-    --font-primary--family: {{ settings.type_primary_font.family }}, {{ settings.type_primary_font.fallback_families }};
-    --font-primary--style: {{ settings.type_primary_font.style }};
-    --font-primary--weight: {{ settings.type_primary_font.weight }};
-    --page-width: {{ settings.max_page_width }};
-    --page-margin: {{ settings.min_page_margin }}px;
-    --color-background: {{ settings.background_color }};
-    --color-foreground: {{ settings.foreground_color }};
-    --style-border-radius-inputs: {{ settings.input_corner_radius }}px;
+  The preload and the @font-face use the same asset_url so the browser reuses
+  the preloaded response. Brand colour and spacing tokens live in critical.css.
+
+  @example
+  {% render 'css-variables' %}
+{% enddoc %}
+
+{%- liquid
+  assign font_display_url = 'fraunces-var-latin.woff2' | asset_url
+  assign font_ui_url = 'hanken-grotesk-var-latin.woff2' | asset_url
+-%}
+
+{{ font_display_url | preload_tag: as: 'font', type: 'font/woff2', crossorigin: 'anonymous' }}
+{{ font_ui_url | preload_tag: as: 'font', type: 'font/woff2', crossorigin: 'anonymous' }}
+
+{% style %}
+  @font-face {
+    font-family: 'Fraunces';
+    src: url('{{ font_display_url }}') format('woff2');
+    font-weight: 300 400;
+    font-style: normal;
+    font-display: swap;
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+
+  @font-face {
+    font-family: 'Hanken Grotesk';
+    src: url('{{ font_ui_url }}') format('woff2');
+    font-weight: 400 500;
+    font-style: normal;
+    font-display: swap;
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
   }
 {% endstyle %}

@@ -1,76 +1,118 @@
-<header>
-  <h2 class="header__title">
-    {{ shop.name | link_to: routes.root_url }}
-  </h2>
+{{ 'section-header.css' | asset_url | stylesheet_tag }}
 
-  <div class="header__menu">
-    {% for link in section.settings.menu.links %}
-      {{ link.title | link_to: link.url }}
-    {% endfor %}
-  </div>
+{%- liquid
+  assign menu = section.settings.menu
+  assign cart_label = 'header.cart_label' | t: count: cart.item_count
+-%}
 
-  <div class="header__icons">
-    {% if shop.customer_accounts_enabled %}
-      <shopify-account menu="{{ section.settings.customer_account_menu }}">
-        {{ 'icon-account.svg' | inline_asset_content }}
-      </shopify-account>
-    {% endif %}
+<site-header class="site-header" data-site-header>
+  <header class="site-header__bar">
+    <div class="site-header__glass glass glass--dense glass--pill" aria-hidden="true"></div>
 
-    <a href="{{ routes.cart_url }}">
-      {% if cart.item_count > 0 %}
-        <sup>{{ cart.item_count }}</sup>
-      {% endif %}
-
-      {{ 'icon-cart.svg' | inline_asset_content }}
+    <a class="site-header__logo" href="{{ routes.root_url }}">
+      {{- shop.name | escape -}}
     </a>
-  </div>
-</header>
 
-{% stylesheet %}
-  header {
-    height: 5rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  header a {
-    position: relative;
-    text-decoration: none;
-    color: var(--color-foreground);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  header a sup {
-    position: absolute;
-    left: 100%;
-    overflow: hidden;
-    max-width: var(--page-margin);
-  }
-  header svg {
-    width: 2rem;
-  }
-  header .header__menu,
-  header .header__icons {
-    display: flex;
-    gap: 1rem;
-  }
-{% endstylesheet %}
+    {%- if menu.links.size > 0 -%}
+      <nav class="site-header__nav" aria-label="{{ 'header.nav_label' | t }}">
+        <ul class="site-header__menu" role="list">
+          {%- for link in menu.links -%}
+            <li>
+              <a
+                class="site-header__link"
+                href="{{ link.url }}"
+                {% if link.current %}
+                  aria-current="page"
+                {% endif %}
+              >
+                {{- link.title | escape -}}
+              </a>
+            </li>
+          {%- endfor -%}
+        </ul>
+      </nav>
+    {%- endif -%}
+
+    <div class="site-header__tools">
+      {% render 'localization-form', form_id: 'HeaderLocalization', class: 'site-header__lang' %}
+
+      <a class="site-header__cart" href="{{ routes.cart_url }}" aria-label="{{ cart_label }}">
+        {{- 'header.cart' | t -}}
+        {%- if cart.item_count > 0 -%}
+          <span class="site-header__cart-count" aria-hidden="true">{{ cart.item_count }}</span>
+        {%- endif -%}
+      </a>
+
+      <button
+        class="site-header__menu-toggle"
+        type="button"
+        aria-haspopup="dialog"
+        aria-controls="MobileMenu"
+        aria-expanded="false"
+        data-menu-open
+      >
+        {{- 'header.menu_open' | t -}}
+      </button>
+    </div>
+  </header>
+
+  <dialog
+    id="MobileMenu"
+    class="mobile-menu glass glass--dense"
+    aria-label="{{ 'header.menu_label' | t }}"
+    data-mobile-menu
+    scroll-lock
+  >
+    <div class="mobile-menu__top">
+      <span class="site-header__logo" aria-hidden="true">{{ shop.name | escape }}</span>
+      <button class="mobile-menu__close" type="button" data-menu-close>
+        {{- 'header.menu_close' | t -}}
+      </button>
+    </div>
+
+    {%- if menu.links.size > 0 -%}
+      <nav class="mobile-menu__nav" aria-label="{{ 'header.nav_label' | t }}">
+        <ul class="mobile-menu__list" role="list">
+          {%- for link in menu.links -%}
+            <li>
+              <a
+                class="mobile-menu__link"
+                href="{{ link.url }}"
+                {% if link.current %}
+                  aria-current="page"
+                {% endif %}
+              >
+                {{- link.title | escape -}}
+              </a>
+            </li>
+          {%- endfor -%}
+        </ul>
+      </nav>
+    {%- endif -%}
+
+    <div class="mobile-menu__bottom">
+      {% render 'localization-form', form_id: 'MobileMenuLocalization', class: 'mobile-menu__lang' %}
+      <a class="mobile-menu__cart" href="{{ routes.cart_url }}" aria-label="{{ cart_label }}">
+        {{- 'header.cart' | t -}}
+        {%- if cart.item_count > 0 -%}
+          <span class="site-header__cart-count" aria-hidden="true">{{ cart.item_count }}</span>
+        {%- endif -%}
+      </a>
+    </div>
+  </dialog>
+</site-header>
 
 {% schema %}
 {
-  "name": "t:general.header",
+  "name": "t:sections.header.name",
+  "class": "section-header",
   "settings": [
     {
       "type": "link_list",
       "id": "menu",
-      "label": "t:labels.menu"
-    },
-    {
-      "type": "link_list",
-      "id": "customer_account_menu",
-      "label": "t:labels.customer_account_menu",
-      "default": "customer-account-main-menu"
+      "label": "t:sections.header.settings.menu.label",
+      "info": "t:sections.header.settings.menu.info",
+      "default": "main-menu"
     }
   ]
 }

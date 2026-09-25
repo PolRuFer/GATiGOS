@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="es" class="js">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>GatYGos · Muestra de superficies</title>
+    <!--
+      Página de muestra del sistema de superficies (fase 1). No forma parte del
+      tema: se abre directamente en el navegador y carga los mismos ficheros de
+      /assets que usa Shopify. No hace falta tienda ni `shopify theme dev`.
+    -->
+    <style>
+      @font-face {
+        font-family: 'Fraunces';
+        src: url('../assets/fraunces-var-latin.woff2') format('woff2');
+        font-weight: 300 400;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: 'Hanken Grotesk';
+        src: url('../assets/hanken-grotesk-var-latin.woff2') format('woff2');
+        font-weight: 400 500;
+        font-display: swap;
+      }
+    </style>
+    <link rel="stylesheet" href="../assets/critical.css">
+    <link rel="stylesheet" href="../assets/glass.css">
+    <style>
+      body { padding-bottom: var(--space-16); }
+      main { padding-top: 0; }
+      .sp-section { padding-block: var(--space-10); }
+      .sp-head { max-width: 60ch; margin-bottom: var(--space-5); }
+      .sp-head .eyebrow { color: var(--tobacco-ink); margin-bottom: var(--space-1); }
+      .sp-head p { margin-top: var(--space-2); }
+      .sp-note { margin-top: var(--space-2); color: var(--ink-muted); font-size: var(--fs-small); }
+      .sp-grid { display: grid; gap: var(--gutter); grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr)); }
+
+      /* Swatches */
+      .swatch { border-radius: var(--glass-radius); overflow: hidden; border: 1px solid rgba(46, 38, 32, 0.12); }
+      .swatch__chip { height: 7rem; }
+      .swatch__meta { padding: var(--space-2); background: var(--paper); font-size: var(--fs-small); }
+      .swatch__meta strong { display: block; font-weight: 500; }
+
+      /* Type */
+      .type-row { display: grid; gap: var(--space-1); padding-block: var(--space-3); border-top: 1px solid rgba(46, 38, 32, 0.12); }
+      .type-row .eyebrow { color: var(--tobacco-ink); }
+
+      /* Stages: rich backgrounds glass can refract */
+      .stage { position: relative; isolation: isolate; overflow: hidden; border-radius: var(--glass-radius); min-height: 30rem; }
+      .stage--room {
+        background:
+          radial-gradient(55% 45% at 72% 28%, rgba(255, 236, 200, 0.95), rgba(255, 236, 200, 0) 70%),
+          linear-gradient(180deg, #d9cbb6 0 58%, #bda27f 58% 60%, #6b4a33 60% 100%);
+      }
+      .stage--room::before { content: ''; position: absolute; left: 60%; top: 8%; width: 22%; height: 50%; background: linear-gradient(180deg, #f6ecd8, #e8d6b8); border: 10px solid #cdb89a; }
+      .stage--room::after { content: ''; position: absolute; left: 16%; top: 66%; width: 30%; height: 16%; border-radius: 50%; background: #e9e0cf; box-shadow: 0 30px 40px rgba(0, 0, 0, 0.35); }
+      .stage--black { background: #000; }
+      .stage--paper { background: var(--paper); }
+      .stage--pine { background: var(--pine); color: var(--paper); }
+
+      .hero-panel { position: absolute; z-index: 1; left: var(--space-3); bottom: var(--space-3); right: var(--space-3); max-width: 34rem; padding: var(--space-4); }
+      .hero-panel .link-underline { margin-top: var(--space-2); }
+      .trust { position: absolute; z-index: 1; left: 50%; bottom: -1px; translate: -50% 0; display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-1) var(--space-3); padding: var(--space-2) var(--space-4); }
+      .panel { position: relative; z-index: 1; margin: var(--space-6) auto; max-width: 36rem; padding: var(--space-5); }
+      .panel p + p { margin-top: var(--space-2); }
+
+      /* Card with static glass pill */
+      .card-media { position: relative; aspect-ratio: 4 / 5; border-radius: 4px; overflow: hidden; background: var(--sand); }
+      .card-media::before { content: ''; position: absolute; inset: 20% 15% 30%; border-radius: 50%; background: radial-gradient(circle closest-side, rgba(184, 146, 106, 0.55), rgba(184, 146, 106, 0)); }
+      .card-media__object { position: absolute; left: 24%; right: 24%; top: 26%; bottom: 26%; border-radius: 45% 45% 12% 12%; background: linear-gradient(160deg, #3a302a, #1c1714); box-shadow: 0 24px 24px -16px rgba(46, 38, 32, 0.5); }
+      .card-pill { position: absolute; left: 12px; right: 12px; bottom: 12px; display: flex; justify-content: space-between; gap: var(--space-2); padding: var(--space-1) var(--space-3); font-size: var(--fs-small); transition: backdrop-filter var(--duration) var(--ease-out), -webkit-backdrop-filter var(--duration) var(--ease-out); }
+      .card:hover .card-pill, .card:focus-within .card-pill { -webkit-backdrop-filter: blur(var(--glass-blur-raised)) saturate(var(--glass-saturate)); backdrop-filter: blur(var(--glass-blur-raised)) saturate(var(--glass-saturate)); }
+      .card a { text-decoration: none; display: block; }
+
+      /* Forced fallback preview (same as @supports not / reduced transparency) */
+      .force-fallback .glass { background-color: var(--_solid); -webkit-backdrop-filter: none; backdrop-filter: none; }
+
+      .stage > .glass { z-index: 1; }
+      .focus-row { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; padding: var(--space-4); }
+      .glass-zoom { position: relative; z-index: 1; margin: var(--space-4); height: 16rem; }
+      .glass-zoom::before { opacity: 0.35; }
+    </style>
+  </head>
+  <body>
+    <a class="skip-link" href="#contenido">Saltar al contenido</a>
+    <main id="contenido" class="page-width">
+      <section class="sp-section">
+        <div class="sp-head">
+          <span class="eyebrow">GatYGos · Fase 1</span>
+          <h1 class="display display--hero">Superficies</h1>
+          <p>Tokens, tipografía y el material de cristal cálido, con sus fallbacks. Todo sale de <code>assets/critical.css</code> y <code>assets/glass.css</code>.</p>
+        </div>
+      </section>
+
+      <section class="sp-section" aria-labelledby="t-color">
+        <div class="sp-head">
+          <span class="eyebrow">01</span>
+          <h2 id="t-color" class="display display--title">Paleta</h2>
+          <p>Contrastes WCAG calculados. <code>--tobacco</code> pasa AA sobre papel por poco (4,52) y no sobre arena (3,30): en texto pequeño se usa <code>--tobacco-ink</code>.</p>
+        </div>
+        <div class="sp-grid">
+          <div class="swatch"><div class="swatch__chip" style="background:var(--paper)"></div><div class="swatch__meta"><strong>--paper #EDE6DA</strong>Fondo. Espresso 11,97:1</div></div>
+          <div class="swatch"><div class="swatch__chip" style="background:var(--sand)"></div><div class="swatch__meta"><strong>--sand #D6C4AC</strong>Tarjetas. Espresso 8,73:1</div></div>
+          <div class="swatch"><div class="swatch__chip" style="background:var(--camel)"></div><div class="swatch__meta"><strong>--camel #B8926A</strong>Piel, detalle, orbes. Solo decorativo</div></div>
+          <div class="swatch"><div class="swatch__chip" style="background:var(--tobacco)"></div><div class="swatch__meta"><strong>--tobacco #8A5E3B</strong>Acento y CTA. Papel sobre tabaco 4,52:1</div></div>
+          <div class="swatch"><div class="swatch__chip" style="background:var(--tobacco-ink)"></div><div class="swatch__meta"><strong>--tobacco-ink #6D4A2F</strong>Tabaco para texto &lt; 24px. 4,62:1 sobre arena</div></div>
+          <div class="swatch"><div class="swatch__chip" style="background:var(--espresso)"></div><div class="swatch__meta"><strong>--espresso #2E2620</strong>Texto</div></div>
+          <div class="swatch"><div class="swatch__chip" style="background:var(--pine)"></div><div class="swatch__meta"><strong>--pine #1F2A22</strong>Salas oscuras. Papel 11,99:1</div></div>
+          <div class="swatch"><div class="swatch__chip" style="background:var(--ink-muted)"></div><div class="swatch__meta"><strong>--ink-muted #574C42</strong>Secundario, solo sobre plano. 4,91:1 sobre arena</div></div>
+        </div>
+      </section>
+
+      <section class="sp-section" aria-labelledby="t-type">
+        <div class="sp-head">
+          <span class="eyebrow">02</span>
+          <h2 id="t-type" class="display display--title">Tipografía</h2>
+          <p>Fraunces 300–400 con eje óptico automático (sin glifos "wonky"). Hanken Grotesk 400/500. Ritmo de 8px.</p>
+        </div>
+        <div class="type-row"><span class="eyebrow">Hero · Fraunces 300 · 36→72px</span><p class="display display--hero">A la altura de ellos.</p></div>
+        <div class="type-row"><span class="eyebrow">Título de sección · 32→52px</span><p class="display display--title">Para el gato</p></div>
+        <div class="type-row"><span class="eyebrow">Manifiesto · 28→56px</span><p class="display display--manifesto">Hacemos objetos que se quedan en la casa, no en el trastero.</p></div>
+        <div class="type-row"><span class="eyebrow">Cuerpo · Hanken 400 · 16/24</span><p style="max-width:62ch">Cama de lana merino tejida en un solo cabo, con base de corcho natural. Pensada para quedarse a la vista en el salón.</p></div>
+        <div class="type-row"><span class="eyebrow">UI · Hanken 500 · precio</span><p style="font-weight:500">Cama Lana Merino · 189,00 €</p></div>
+        <div class="type-row"><span class="eyebrow">Eyebrow · 11–12px · .18em</span><p class="eyebrow">Envío gratuito desde 60 € · Devolución 30 días · Pago seguro</p></div>
+      </section>
+
+      <section class="sp-section" aria-labelledby="t-glass">
+        <div class="sp-head">
+          <span class="eyebrow">03</span>
+          <h2 id="t-glass" class="display display--title">Cristal sobre escena</h2>
+          <p>Panel <code>.glass</code> (tinte 0,55) sobre una estancia, y píldora de confianza <code>.glass.glass--pill</code> solapando el borde.</p>
+        </div>
+        <div class="stage stage--room">
+          <div class="glass hero-panel">
+            <p class="display display--hero">A la altura de ellos.</p>
+            <a class="link-underline" href="#">Descubrir</a>
+          </div>
+          <p class="glass glass--pill trust"><span class="eyebrow">Envío gratuito desde 60 €</span><span class="eyebrow">Devolución 30 días</span><span class="eyebrow">Pago seguro</span></p>
+        </div>
+      </section>
+
+      <section class="sp-section" aria-labelledby="t-worst">
+        <div class="sp-head">
+          <span class="eyebrow">04</span>
+          <h2 id="t-worst" class="display display--title">Peor caso</h2>
+          <p>Sobre negro puro, el tinte 0,55 deja el texto espresso en 3,72:1 (falla AA en texto pequeño). El tinte denso 0,72 lo sube a 6,13:1. Se usa en header, píldoras de precio, filtros y menú móvil.</p>
+        </div>
+        <div class="sp-grid">
+          <div class="stage stage--black" style="min-height:14rem"><div class="glass panel" style="margin:var(--space-4)"><p class="eyebrow">Tinte 0,55</p><p>Texto espresso · 3,72:1</p></div></div>
+          <div class="stage stage--black" style="min-height:14rem"><div class="glass glass--dense panel" style="margin:var(--space-4)"><p class="eyebrow">Tinte denso 0,72</p><p>Texto espresso · 6,13:1</p></div></div>
+        </div>
+      </section>
+
+      <section class="sp-section" aria-labelledby="t-orbs">
+        <div class="sp-head">
+          <span class="eyebrow">05</span>
+          <h2 id="t-orbs" class="display display--title">Orbes sobre papel</h2>
+          <p>El cristal nunca va sobre papel plano: detrás hay 2–3 orbes de luz (camel/tabaco, 40–60vw, 20–30%, blur 80px).</p>
+        </div>
+        <div class="stage stage--paper has-orbs">
+          <div class="orbs" aria-hidden="true">
+            <span class="orb orb--camel" style="--orb-x:30%;--orb-y:40%;--orb-size:48vw;--orb-opacity:.3"></span>
+            <span class="orb orb--tobacco" style="--orb-x:78%;--orb-y:70%;--orb-size:40vw;--orb-opacity:.22"></span>
+          </div>
+          <div class="glass panel">
+            <p class="display display--s">Piezas nuevas, sin prisa.</p>
+            <p>Newsletter: panel <code>.glass</code> a 0,55 sobre orbes. Espresso ≥ 10,1:1 en el peor punto del orbe.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="sp-section" aria-labelledby="t-dark">
+        <div class="sp-head">
+          <span class="eyebrow">06</span>
+          <h2 id="t-dark" class="display display--title">Cristal oscuro</h2>
+          <p><code>.glass--dark</code> sobre pino con orbes de tabaco muy tenues: el panel del manifiesto.</p>
+        </div>
+        <div class="stage stage--pine has-orbs">
+          <div class="orbs" aria-hidden="true">
+            <span class="orb orb--tobacco" style="--orb-x:25%;--orb-y:35%;--orb-size:50vw;--orb-opacity:.22"></span>
+            <span class="orb orb--tobacco" style="--orb-x:80%;--orb-y:80%;--orb-size:42vw;--orb-opacity:.18"></span>
+          </div>
+          <div class="glass glass--dark panel">
+            <p class="display display--manifesto">Hacemos objetos que se quedan en la casa.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="sp-section" aria-labelledby="t-card">
+        <div class="sp-head">
+          <span class="eyebrow">07</span>
+          <h2 id="t-card" class="display display--title">Píldora de precio</h2>
+          <p>En rejillas la píldora es <code>.glass--static</code> (sin backdrop-filter) para no pasar de 4 superficies con blur visibles; al pasar el ratón o enfocar, recibe el blur elevado (28px). Objeto oscuro detrás: peor caso real, por eso tinte 0,72.</p>
+        </div>
+        <div class="sp-grid">
+          <div class="card"><a href="#"><div class="card-media"><div class="card-media__object"></div><p class="glass glass--dense glass--pill glass--static card-pill"><span>Comedero Travertino</span><span>74,00 €</span></p></div></a></div>
+          <div class="card"><a href="#"><div class="card-media"><div class="card-media__object" style="background:linear-gradient(160deg,#e9e0cf,#cbb89f)"></div><p class="glass glass--dense glass--pill glass--static card-pill"><span>Cama Lana Merino</span><span>189,00 €</span></p></div></a></div>
+        </div>
+      </section>
+
+      <section class="sp-section" aria-labelledby="t-fallback">
+        <div class="sp-head">
+          <span class="eyebrow">08</span>
+          <h2 id="t-fallback" class="display display--title">Fallback</h2>
+          <p>Sin <code>backdrop-filter</code> o con <code>prefers-reduced-transparency: reduce</code>: sólido papel o pino al 94%, mismo borde y radio. Aquí forzado para compararlo.</p>
+        </div>
+        <div class="sp-grid">
+          <div class="stage stage--room force-fallback" style="min-height:16rem"><div class="glass panel" style="margin:var(--space-4)"><p class="eyebrow">Claro · 94%</p><p>Mismo borde, radio y grano.</p></div></div>
+          <div class="stage stage--pine force-fallback" style="min-height:16rem"><div class="glass glass--dark panel" style="margin:var(--space-4)"><p class="eyebrow">Oscuro · 94%</p><p>Mismo borde, radio y grano.</p></div></div>
+        </div>
+      </section>
+
+      <section class="sp-section" aria-labelledby="t-focus">
+        <div class="sp-head">
+          <span class="eyebrow">09</span>
+          <h2 id="t-focus" class="display display--title">Foco</h2>
+          <p>Pulsa Tab: contorno de 2px en tabaco con 3px de separación y halo papel, visible también sobre pino y cristal.</p>
+        </div>
+        <div class="sp-grid">
+          <div class="stage stage--paper focus-row" style="min-height:auto"><a class="link-underline" href="#">Descubrir</a><button class="button" type="button">Suscribirme</button></div>
+          <div class="stage stage--room" style="min-height:auto"><div class="glass glass--pill focus-row" style="margin:var(--space-3)"><a class="link-underline" href="#">Sobre cristal</a></div></div>
+          <div class="stage stage--pine focus-row" style="min-height:auto"><a class="link-underline" href="#" style="color:var(--paper)">Sobre pino</a></div>
+        </div>
+      </section>
+
+      <section class="sp-section" aria-labelledby="t-grain">
+        <div class="sp-head">
+          <span class="eyebrow">10</span>
+          <h2 id="t-grain" class="display display--title">Grano</h2>
+          <p>El grano real está al 3,5%. Aquí se muestra al 35% para ver la textura <code>feTurbulence</code>.</p>
+        </div>
+        <div class="stage stage--room" style="min-height:auto"><div class="glass glass-zoom"></div></div>
+      </section>
+    </main>
+  </body>
+</html>

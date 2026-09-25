@@ -1,0 +1,107 @@
+{
+  "accessibility": {
+    "skip_to_content": "Skip to content",
+    "new_window": "opens in a new tab"
+  },
+  "general": {
+    "meta": {
+      "tagged": "tagged “{{ tags }}”",
+      "page": "Page {{ page }}"
+    }
+  },
+  "header": {
+    "nav_label": "Main",
+    "cart": "Bag",
+    "cart_label": {
+      "one": "Bag, {{ count }} item",
+      "other": "Bag, {{ count }} items"
+    },
+    "menu_open": "Menu",
+    "menu_close": "Close",
+    "menu_label": "Menu"
+  },
+  "localization": {
+    "language": "Language"
+  },
+  "footer": {
+    "tagline": "Design objects for dogs and cats, made for the home.",
+    "newsletter": {
+      "heading": "New pieces, unhurried.",
+      "text": "One letter a month with new arrivals and the story of their materials.",
+      "email_label": "Your email",
+      "submit": "Subscribe",
+      "success": "Thank you. We will write soon.",
+      "error": "Please check your email address and try again.",
+      "consent_html": "You can unsubscribe at any time. We handle your data as set out in our <a href=\"{{ privacy_url }}\">privacy policy</a>."
+    },
+    "social_heading": "Follow us",
+    "legal_label": "Legal information",
+    "legal": {
+      "legal_notice": "Legal notice",
+      "privacy": "Privacy",
+      "cookies": "Cookies",
+      "terms": "Terms of sale",
+      "shipping": "Shipping",
+      "refund": "Returns"
+    },
+    "legal_missing": "{{ policy }}: pending in Settings › Policies",
+    "copyright": "© {{ year }} {{ shop }}"
+  },
+  "social": {
+    "instagram": "Instagram",
+    "pinterest": "Pinterest",
+    "tiktok": "TikTok",
+    "facebook": "Facebook",
+    "youtube": "YouTube"
+  },
+  "404": {
+    "title": "404",
+    "not_found": "Page not found.",
+    "back_to_shopping": "Back to shopping"
+  },
+  "blog": {
+    "article_comments": "Comments",
+    "article_metadata_html": "{{ date }} by {{ author }}",
+    "comment_form_body": "Comment",
+    "comment_form_email": "Email",
+    "comment_form_name": "Name",
+    "comment_form_submit": "Post",
+    "comment_form_title": "Add a comment"
+  },
+  "cart": {
+    "checkout": "Checkout",
+    "title": "Bag",
+    "update": "Update",
+    "remove": "Remove"
+  },
+  "customers": {
+    "login": {
+      "email": "Email",
+      "password": "Password",
+      "submit": "Sign in",
+      "title": "Login"
+    }
+  },
+  "collections": {
+    "title": "Collections"
+  },
+  "gift_card": {
+    "add_to_apple_wallet": "Add to Apple Wallet",
+    "card": "Gift card",
+    "expired": "This gift card has expired",
+    "expires_on": "Expires on {{ expires_on }}",
+    "use_at_checkout": "Use this gift card at checkout"
+  },
+  "password": {
+    "title": "This shop is private",
+    "password": "Password",
+    "enter": "Enter"
+  },
+  "search": {
+    "title": "Search",
+    "placeholder": "Search articles, pages, or products",
+    "submit": "Search",
+    "no_results_html": "No results found for {{ terms }}",
+    "results_for_html": "{{ count }} results found for {{ terms }}"
+  }
+}

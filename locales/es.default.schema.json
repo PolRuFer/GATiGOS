@@ -1,0 +1,135 @@
+{
+  "general": {
+    "404": "No encontrado",
+    "article": "Artículo",
+    "block": "Bloque",
+    "blog": "Blog",
+    "cart": "Cesta",
+    "collection": "Colección",
+    "collections": "Colecciones",
+    "collection_card": "Tarjeta de colección",
+    "collections_grid": "Cuadrícula de colecciones",
+    "colors": "Colores",
+    "column": "Columna",
+    "content": "Contenido",
+    "custom_section": "Sección personalizada",
+    "fonts": "Tipografías",
+    "footer": "Pie de página",
+    "group": "Grupo",
+    "header": "Encabezado",
+    "layout": "Diseño",
+    "main": "Principal",
+    "page": "Página",
+    "password": "Contraseña",
+    "primary": "Principal",
+    "product": "Producto",
+    "row": "Fila",
+    "search": "Búsqueda",
+    "secondary": "Secundaria",
+    "section": "Sección",
+    "settings": "Ajustes",
+    "sidebar": "Barra lateral",
+    "text": "Texto",
+    "theme": "Tema",
+    "typography": "Tipografía"
+  },
+  "labels": {
+    "alignment": "Alineación",
+    "background": "Fondo",
+    "foreground": "Primer plano",
+    "grid_gap": "Espaciado de la cuadrícula",
+    "grid_item_width": "Ancho de los elementos",
+    "input_corner_radius": "Radio de las esquinas de los campos",
+    "layout_direction": "Dirección",
+    "menu": "Menú",
+    "customer_account_menu": "Menú de la cuenta de cliente",
+    "padding": "Relleno",
+    "page_margin": "Margen de página",
+    "page_width": "Ancho de página",
+    "show_payment_icons": "Mostrar iconos de pago",
+    "text_style": "Estilo de texto",
+    "text": "Texto"
+  },
+  "options": {
+    "alignment": {
+      "left": "Izquierda",
+      "center": "Centro",
+      "right": "Derecha"
+    },
+    "direction": {
+      "horizontal": "Horizontal",
+      "vertical": "Vertical"
+    },
+    "page_width": {
+      "narrow": "Estrecho",
+      "wide": "Ancho"
+    },
+    "size": {
+      "large": "Grande",
+      "small": "Pequeño"
+    },
+    "text_style": {
+      "title": "Título",
+      "subtitle": "Subtítulo",
+      "normal": "Texto normal"
+    }
+  },
+  "settings_schema": {
+    "social": {
+      "name": "Redes sociales",
+      "info": "Enlaces en texto en el pie de página. Deja un campo vacío para ocultar esa red.",
+      "instagram": "Instagram",
+      "pinterest": "Pinterest",
+      "tiktok": "TikTok",
+      "facebook": "Facebook",
+      "youtube": "YouTube"
+    }
+  },
+  "sections": {
+    "groups": {
+      "header": "Encabezado",
+      "footer": "Pie de página"
+    },
+    "header": {
+      "name": "Encabezado",
+      "settings": {
+        "menu": {
+          "label": "Menú",
+          "info": "Solo enlaces de primer nivel: Perro, Gato, Novedades, Nosotros."
+        }
+      }
+    },
+    "footer": {
+      "name": "Pie de página",
+      "settings": {
+        "tagline": {
+          "label": "Frase de marca",
+          "info": "Déjalo vacío para usar el texto por defecto traducido."
+        },
+        "header_links": "Enlaces",
+        "menu_primary": {
+          "label": "Primer menú"
+        },
+        "menu_secondary": {
+          "label": "Segundo menú"
+        },
+        "header_newsletter": "Newsletter",
+        "show_newsletter": {
+          "label": "Mostrar newsletter"
+        },
+        "newsletter_heading": {
+          "label": "Título"
+        },
+        "newsletter_text": {
+          "label": "Texto"
+        },
+        "header_legal": "Enlaces legales",
+        "legal_paragraph": "Aviso legal, privacidad, condiciones de venta, envíos y devoluciones enlazan a las políticas de Ajustes › Políticas. Obligatorios en España.",
+        "cookies_url": {
+          "label": "Página de política de cookies",
+          "info": "Shopify no tiene una política de cookies propia. Si está vacío, el enlace apunta a la política de privacidad."
+        }
+      }
+    }
+  }
+}

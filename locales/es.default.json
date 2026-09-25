@@ -1,0 +1,107 @@
+{
+  "accessibility": {
+    "skip_to_content": "Saltar al contenido",
+    "new_window": "se abre en una pestaña nueva"
+  },
+  "general": {
+    "meta": {
+      "tagged": "etiquetado «{{ tags }}»",
+      "page": "Página {{ page }}"
+    }
+  },
+  "header": {
+    "nav_label": "Principal",
+    "cart": "Cesta",
+    "cart_label": {
+      "one": "Cesta, {{ count }} artículo",
+      "other": "Cesta, {{ count }} artículos"
+    },
+    "menu_open": "Menú",
+    "menu_close": "Cerrar",
+    "menu_label": "Menú"
+  },
+  "localization": {
+    "language": "Idioma"
+  },
+  "footer": {
+    "tagline": "Objetos de diseño para perros y gatos, pensados para la casa.",
+    "newsletter": {
+      "heading": "Piezas nuevas, sin prisa.",
+      "text": "Una carta al mes con las novedades y la historia de sus materiales.",
+      "email_label": "Tu correo electrónico",
+      "submit": "Suscribirme",
+      "success": "Gracias. Te escribiremos pronto.",
+      "error": "Revisa tu correo electrónico e inténtalo de nuevo.",
+      "consent_html": "Puedes darte de baja cuando quieras. Tratamos tus datos según nuestra <a href=\"{{ privacy_url }}\">política de privacidad</a>."
+    },
+    "social_heading": "Síguenos",
+    "legal_label": "Información legal",
+    "legal": {
+      "legal_notice": "Aviso legal",
+      "privacy": "Privacidad",
+      "cookies": "Cookies",
+      "terms": "Condiciones de venta",
+      "shipping": "Envíos",
+      "refund": "Devoluciones"
+    },
+    "legal_missing": "{{ policy }}: pendiente en Ajustes › Políticas",
+    "copyright": "© {{ year }} {{ shop }}"
+  },
+  "social": {
+    "instagram": "Instagram",
+    "pinterest": "Pinterest",
+    "tiktok": "TikTok",
+    "facebook": "Facebook",
+    "youtube": "YouTube"
+  },
+  "404": {
+    "title": "404",
+    "not_found": "No encontramos esta página.",
+    "back_to_shopping": "Volver a la tienda"
+  },
+  "blog": {
+    "article_comments": "Comentarios",
+    "article_metadata_html": "{{ date }} por {{ author }}",
+    "comment_form_body": "Comentario",
+    "comment_form_email": "Correo electrónico",
+    "comment_form_name": "Nombre",
+    "comment_form_submit": "Publicar",
+    "comment_form_title": "Deja un comentario"
+  },
+  "cart": {
+    "checkout": "Finalizar compra",
+    "title": "Cesta",
+    "update": "Actualizar",
+    "remove": "Eliminar"
+  },
+  "customers": {
+    "login": {
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "submit": "Iniciar sesión",
+      "title": "Iniciar sesión"
+    }
+  },
+  "collections": {
+    "title": "Colecciones"
+  },
+  "gift_card": {
+    "add_to_apple_wallet": "Añadir a Apple Wallet",
+    "card": "Tarjeta regalo",
+    "expired": "Esta tarjeta regalo ha caducado",
+    "expires_on": "Caduca el {{ expires_on }}",
+    "use_at_checkout": "Usa esta tarjeta regalo al finalizar la compra"
+  },
+  "password": {
+    "title": "Esta tienda es privada",
+    "password": "Contraseña",
+    "enter": "Entrar"
+  },
+  "search": {
+    "title": "Buscar",
+    "placeholder": "Busca artículos, páginas o productos",
+    "submit": "Buscar",
+    "no_results_html": "No hay resultados para {{ terms }}",
+    "results_for_html": "{{ count }} resultados para {{ terms }}"
+  }
+}

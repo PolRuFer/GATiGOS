@@ -9,13 +9,13 @@
  */
 {
   "type": "footer",
-  "name": "t:general.footer",
+  "name": "t:sections.groups.footer",
   "sections": {
     "footer": {
       "type": "footer",
       "settings": {
-        "menu": "",
-        "show_payment_icons": true
+        "menu_primary": "footer",
+        "show_newsletter": true
       }
     }
   },

@@ -1,0 +1,176 @@
+/**
+ * GatYGos — glass.css
+ * Warm frosted glass: the brand's surface material. Acid-etched glass over a
+ * room, tinted with paper or pine. Never blue, never neon, never gradients.
+ *
+ * Use it only over something with visual richness (the 3D scene, photos,
+ * coloured bands or the light orbs below), and only on: header, hero copy
+ * panel, trust bar, price pill on cards, filter bar/drawer, pagination,
+ * mobile menu, manifesto panel and newsletter.
+ *
+ * Budget: at most 4 surfaces with backdrop-filter visible at once. Repeated
+ * elements (price pills in a grid) use `.glass--static` and only get a real
+ * backdrop blur while hovered or focused.
+ */
+
+:root {
+  --glass-light: rgba(237, 230, 218, 0.55);
+  --glass-dark: rgba(31, 42, 34, 0.55);
+  /* Denser tints for surfaces whose worst-case background fails AA at 0.55
+     (espresso on glass-light over black: 3.72:1 → 6.13:1 at 0.72). */
+  --glass-light-dense: rgba(237, 230, 218, 0.72);
+  --glass-dark-dense: rgba(31, 42, 34, 0.72);
+  /* Solid fallbacks (no backdrop-filter / reduced transparency). */
+  --glass-light-solid: rgba(237, 230, 218, 0.94);
+  --glass-dark-solid: rgba(31, 42, 34, 0.94);
+
+  --glass-blur: 22px;
+  --glass-blur-raised: 28px;
+  --glass-saturate: 140%;
+  --glass-border: 1px solid rgba(255, 255, 255, 0.38);
+  --glass-border-dark: 1px solid rgba(237, 230, 218, 0.14);
+  --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.45);
+  --glass-highlight-dark: inset 0 1px 0 rgba(237, 230, 218, 0.12);
+  --glass-shadow: 0 24px 48px -24px rgba(46, 38, 32, 0.28);
+  --glass-radius: 14px;
+  --glass-radius-pill: 999px;
+
+  /* Fine grain: fractal noise, desaturated, laid over every panel at 3.5% to
+     avoid banding and give the tactile feel of etched glass. */
+  --glass-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  --glass-grain-opacity: 0.035;
+}
+
+/* ---------------------------------------------------------------------------
+ * Material
+ * ------------------------------------------------------------------------- */
+.glass {
+  --_tint: var(--glass-light);
+  --_solid: var(--glass-light-solid);
+  --_border: var(--glass-border);
+  --_highlight: var(--glass-highlight);
+  --_blur: var(--glass-blur);
+
+  isolation: isolate;
+  color: var(--espresso);
+  background-color: var(--_tint);
+  border: var(--_border);
+  border-radius: var(--glass-radius);
+  box-shadow: var(--_highlight), var(--glass-shadow);
+  -webkit-backdrop-filter: blur(var(--_blur)) saturate(var(--glass-saturate));
+  backdrop-filter: blur(var(--_blur)) saturate(var(--glass-saturate));
+}
+
+/* Zero specificity so components can still position the panel themselves. */
+:where(.glass) {
+  position: relative;
+}
+
+/* Grain layer: above the tint, below the content. */
+.glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background-image: var(--glass-grain);
+  background-size: 180px 180px;
+  opacity: var(--glass-grain-opacity);
+  pointer-events: none;
+}
+
+.glass--dark {
+  --_tint: var(--glass-dark);
+  --_solid: var(--glass-dark-solid);
+  --_border: var(--glass-border-dark);
+  --_highlight: var(--glass-highlight-dark);
+
+  color: var(--paper);
+}
+
+.glass--dense {
+  --_tint: var(--glass-light-dense);
+}
+
+.glass--dark.glass--dense {
+  --_tint: var(--glass-dark-dense);
+}
+
+.glass--pill {
+  border-radius: var(--glass-radius-pill);
+}
+
+/* Repeated surfaces: same tint, edge, highlight and grain, but no live
+   backdrop sampling until the element is hovered or focused. */
+.glass--static {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+/* ---------------------------------------------------------------------------
+ * Light orbs
+ * Diffuse warm light behind flat backgrounds so glass has something to
+ * refract. Place `.orbs` as the first child of a `position: relative`
+ * container; the container clips them.
+ * ------------------------------------------------------------------------- */
+.has-orbs {
+  position: relative;
+  isolation: isolate;
+}
+
+.orbs {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: clip;
+  pointer-events: none;
+  contain: strict;
+}
+
+.orb {
+  --orb-size: 50vw;
+  --orb-opacity: 0.25;
+  --orb-color: var(--camel);
+
+  /* 40–60vw on desktop; never under 22rem so the light still reads on phones. */
+  --_size: max(var(--orb-size), 22rem);
+
+  position: absolute;
+  top: var(--orb-y, 50%);
+  left: var(--orb-x, 50%);
+  width: var(--_size);
+  aspect-ratio: 1;
+  margin: calc(var(--_size) / -2) 0 0 calc(var(--_size) / -2);
+  border-radius: 50%;
+  background: radial-gradient(circle closest-side, var(--orb-color), rgba(184, 146, 106, 0));
+  opacity: var(--orb-opacity);
+  filter: blur(80px);
+}
+
+.orb--camel {
+  --orb-color: var(--camel);
+}
+
+.orb--tobacco {
+  --orb-color: var(--tobacco);
+
+  background: radial-gradient(circle closest-side, var(--orb-color), rgba(138, 94, 59, 0));
+}
+
+/* ---------------------------------------------------------------------------
+ * Fallbacks: solid paper or pine at 94%, keeping edge and radius.
+ * Safari < 18 only knows the prefixed property, so test for either.
+ * ------------------------------------------------------------------------- */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass {
+    background-color: var(--_solid);
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .glass {
+    background-color: var(--_solid);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}

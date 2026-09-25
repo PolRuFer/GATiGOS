@@ -1,16 +1,129 @@
-/** Critical CSS for the theme. This file is included on every page. */
+/**
+ * GatYGos — critical.css
+ * Reset, design tokens, typography, 12-column grid and accessibility
+ * primitives. Loaded on every page. The glass material lives in glass.css.
+ */
 
-/* Reset styles inspired by https://www.joshwcomeau.com/css/custom-css-reset/ */
-* {
+/* ---------------------------------------------------------------------------
+ * Tokens
+ * ------------------------------------------------------------------------- */
+:root {
+  /* Palette (brand, fixed) */
+  --paper: #ede6da;
+  --sand: #d6c4ac;
+  --camel: #b8926a;
+  --tobacco: #8a5e3b;
+  --espresso: #2e2620;
+  --pine: #1f2a22;
+
+  /* Derived text colours — see DECISIONES.md for the contrast table.
+     --tobacco reaches 4.52:1 on paper but only 3.30:1 on sand, so text under
+     24px uses this darker tobacco (same hue): 4.62:1 on sand, 6.34:1 on paper. */
+  --tobacco-ink: #6d4a2f;
+  /* Secondary text on flat paper/sand only (6.73:1 on paper, 4.91:1 on sand).
+     Never on glass with an unpredictable background: use espresso there. */
+  --ink-muted: #574c42;
+
+  /* Type */
+  --font-display: 'Fraunces', 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif;
+  --font-ui: 'Hanken Grotesk', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  --fs-hero: clamp(2.25rem, 1.3rem + 3.4vw, 4.5rem); /* 36 → 72px */
+  --fs-title: clamp(2rem, 1.45rem + 2vw, 3.25rem); /* 32 → 52px */
+  --fs-manifesto: clamp(1.75rem, 1.1rem + 2.4vw, 3.5rem); /* 28 → 56px */
+  --fs-display-s: clamp(1.5rem, 1.25rem + 0.8vw, 2rem); /* 24 → 32px */
+  --fs-logo: 1.5rem;
+  --fs-body: 1rem;
+  --fs-small: 0.875rem;
+  --fs-eyebrow: 0.6875rem; /* 11px, 12px from 990px */
+
+  /* 8px vertical rhythm */
+  --space-1: 0.5rem; /* 8 */
+  --space-2: 1rem; /* 16 */
+  --space-3: 1.5rem; /* 24 */
+  --space-4: 2rem; /* 32 */
+  --space-5: 2.5rem; /* 40 */
+  --space-6: 3rem; /* 48 */
+  --space-8: 4rem; /* 64 */
+  --space-10: 5rem; /* 80 */
+  --space-12: 6rem; /* 96 */
+  --space-16: 8rem; /* 128 */
+  --space-20: 10rem; /* 160 */
+  --section-space: clamp(var(--space-10), 3rem + 6vw, var(--space-20));
+
+  /* Layout: 12 columns, generous margins (6vw on desktop, never under 20px). */
+  --page-margin: max(1.25rem, 6vw);
+  --page-max: 120rem; /* 1920px */
+  --gutter: var(--space-2);
+  --header-height: 3.5rem; /* 56px */
+  --header-inset: 0.5rem; /* 8px on mobile, 12px from 990px */
+  --header-offset: calc(var(--header-inset) + var(--header-height) + var(--space-3));
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --duration-fast: 200ms;
+  --duration: 400ms;
+  --duration-slow: 700ms;
+
+  /* Aliases kept for the Skeleton sections that still reference them */
+  --color-background: var(--paper);
+  --color-foreground: var(--espresso);
+  --font-primary--family: var(--font-ui);
+  --style-border-radius-inputs: 0;
+  --page-width: var(--page-max);
+}
+
+@media (min-width: 750px) {
+  :root {
+    --gutter: var(--space-3);
+  }
+}
+
+@media (min-width: 990px) {
+  :root {
+    --gutter: var(--space-4);
+    --fs-logo: 1.625rem;
+    --fs-eyebrow: 0.75rem;
+    --header-inset: 0.75rem;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * Reset (inherited from the Skeleton Theme, extended)
+ * ------------------------------------------------------------------------- */
+*,
+*::before,
+*::after {
   box-sizing: border-box;
+}
+
+* {
   margin: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  color-scheme: light;
 }
 
 body {
   display: flex;
   flex-direction: column;
-  margin: 0;
   min-height: 100svh;
+  font-family: var(--font-ui);
+  font-size: var(--fs-body);
+  font-weight: 400;
+  line-height: 1.5rem;
+  color: var(--espresso);
+  background-color: var(--paper);
+  font-kerning: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Safety net against accidental horizontal scroll; `clip` does not create a
+     scroll container, so position: sticky keeps working. */
+  overflow-x: clip;
 }
 
 html:has(dialog[scroll-lock][open], details[scroll-lock][open]) {
@@ -29,24 +142,37 @@ svg {
 
 input,
 textarea,
-select {
+select,
+button {
   font: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+}
+
+input,
+textarea,
+select {
   border-radius: var(--style-border-radius-inputs);
 }
 
+button {
+  cursor: pointer;
+}
+
 select {
-  background-color: var(--color-background);
+  background-color: var(--paper);
   color: currentcolor;
 }
 
 dialog {
-  background-color: var(--color-background);
-  color: var(--color-foreground);
+  background-color: var(--paper);
+  color: var(--espresso);
 }
 
 p {
   text-wrap: pretty;
 }
+
 p,
 h1,
 h2,
@@ -61,36 +187,136 @@ p:empty {
   display: none;
 }
 
-:is(p, h1, h2, h3, h4, h5, h6):first-child,
-:empty:first-child + :where(p, h1, h2, h3, h4, h5, h6) {
-  margin-block-start: 0;
+ul[role='list'],
+ol[role='list'] {
+  list-style: none;
+  padding: 0;
 }
 
-:is(p, h1, h2, h3, h4, h5, h6):last-child,
-:where(p, h1, h2, h3, h4, h5, h6) + :has(+ :empty:last-child) {
-  margin-block-end: 0;
+a {
+  color: inherit;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.3em;
 }
 
-/** Theme styles below */
-body {
-  font-family: var(--font-primary--family);
-  background-color: var(--color-background);
-  color: var(--color-foreground);
+/* ---------------------------------------------------------------------------
+ * Typography
+ * ------------------------------------------------------------------------- */
+h1,
+h2,
+.display {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-optical-sizing: auto;
+  letter-spacing: -0.015em;
+  line-height: 1.1;
+  text-wrap: balance;
 }
 
-/** Section layout utilities */
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-ui);
+  font-weight: 500;
+  font-size: var(--fs-body);
+  line-height: 1.5rem;
+}
 
-/**
- * Setup a grid that enables both full-width and constrained layouts
- * depending on the class of the child elements.
- *
- * By default, a minimum content margin is set on the left and right
- * sides of the section and the content is centered in the viewport to
- * not exceed the maximum page width.
- *
- * When a child element is given the `full-width` class, it will span
- * the entire viewport.
- */
+.display--hero {
+  font-size: var(--fs-hero);
+  line-height: 1.05;
+}
+
+.display--title {
+  font-size: var(--fs-title);
+}
+
+.display--manifesto {
+  font-size: var(--fs-manifesto);
+  line-height: 1.2;
+}
+
+.display--s {
+  font-size: var(--fs-display-s);
+  line-height: 1.2;
+}
+
+.eyebrow {
+  display: block;
+  font-family: var(--font-ui);
+  font-size: var(--fs-eyebrow);
+  font-weight: 500;
+  line-height: 1rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.text-small {
+  font-size: var(--fs-small);
+  line-height: 1.5rem;
+}
+
+.text-muted {
+  color: var(--ink-muted);
+}
+
+.rte > * + * {
+  margin-block-start: var(--space-2);
+}
+
+/* Discreet underlined link (hero CTA, footer links). The underline carries
+   the tobacco accent; the text stays espresso for contrast. */
+.link-underline {
+  display: inline-block;
+  padding-block: var(--space-1);
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-color: var(--tobacco);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.35em;
+  transition: text-decoration-color var(--duration-fast) var(--ease-out),
+    text-underline-offset var(--duration-fast) var(--ease-out);
+}
+
+.link-underline:hover {
+  text-underline-offset: 0.5em;
+}
+
+/* Solid CTA: paper on tobacco (4.52:1). */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  min-height: 3rem;
+  padding: 0 var(--space-3);
+  border: 1px solid var(--tobacco);
+  border-radius: 999px;
+  background-color: var(--tobacco);
+  color: var(--paper);
+  font-size: var(--fs-small);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  transition: background-color var(--duration-fast) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out);
+}
+
+.button:hover {
+  background-color: var(--tobacco-ink);
+}
+
+.button:active {
+  transform: scale(0.98);
+}
+
+/* ---------------------------------------------------------------------------
+ * Layout
+ * ------------------------------------------------------------------------- */
+
+/* Skeleton section grid: every section gets the page margins by default;
+   children with `.full-width` span the viewport. */
 .shopify-section {
   --content-width: min(
     calc(var(--page-width) - var(--page-margin) * 2),
@@ -99,19 +325,107 @@ body {
   --content-margin: minmax(var(--page-margin), 1fr);
   --content-grid: var(--content-margin) var(--content-width) var(--content-margin);
 
-  /* This is required to make <img> elements work as background images */
   position: relative;
-  grid-template-columns: var(--content-grid);
   display: grid;
+  grid-template-columns: var(--content-grid);
   width: 100%;
 }
 
-/* Child elements, by default, are constrained to the central column of the grid. */
 .shopify-section > * {
   grid-column: 2;
 }
 
-/* Child elements that use the full-width utility class span the entire viewport. */
 .shopify-section > .full-width {
   grid-column: 1 / -1;
+}
+
+main {
+  flex: 1 0 auto;
+  /* Clear the floating header, unless the first section bleeds under it
+     (hero, collection banner) and handles the offset itself. */
+  padding-top: var(--header-offset);
+}
+
+main:has(> .shopify-section:first-child [data-bleed-under-header]) {
+  padding-top: 0;
+}
+
+main:focus {
+  outline: none;
+}
+
+.page-width {
+  width: 100%;
+  max-width: var(--page-max);
+  margin-inline: auto;
+  padding-inline: var(--page-margin);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--gutter);
+}
+
+.section-space {
+  padding-block: var(--section-space);
+}
+
+/* ---------------------------------------------------------------------------
+ * Accessibility
+ * ------------------------------------------------------------------------- */
+
+/* Visible focus everywhere, also on glass: a 2px tobacco outline 3px away,
+   and a paper halo so it still reads on pine and on photos. */
+:focus-visible {
+  outline: 2px solid var(--tobacco);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 7px var(--paper);
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: -1px !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  clip: rect(0 0 0 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+.skip-link {
+  position: fixed;
+  z-index: 1000;
+  top: var(--space-2);
+  left: var(--space-2);
+  padding: var(--space-1) var(--space-2);
+  border-radius: 999px;
+  background-color: var(--espresso);
+  color: var(--paper);
+  font-size: var(--fs-small);
+  font-weight: 500;
+  text-decoration: none;
+  transform: translateY(calc(-100% - var(--space-4)));
+}
+
+.skip-link:focus,
+.skip-link:focus-visible {
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

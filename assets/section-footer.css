@@ -1,0 +1,175 @@
+/**
+ * GatYGos — footer
+ * Paper room with two warm light orbs; the newsletter is the only glass panel.
+ */
+
+.site-footer {
+  padding-block: var(--space-12) var(--space-4);
+  border-top: 1px solid rgba(46, 38, 32, 0.12);
+}
+
+.site-footer__inner {
+  row-gap: var(--space-8);
+}
+
+.site-footer__brand,
+.site-footer__newsletter,
+.site-footer__links {
+  grid-column: 1 / -1;
+}
+
+.site-footer__logo {
+  font-family: var(--font-display);
+  font-size: var(--fs-title);
+  font-weight: 300;
+  font-optical-sizing: auto;
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+}
+
+.site-footer__tagline {
+  max-width: 28ch;
+  margin-top: var(--space-2);
+}
+
+/* Newsletter */
+.site-footer__newsletter {
+  padding: var(--space-4) var(--space-3);
+}
+
+.site-footer__newsletter-text {
+  margin-top: var(--space-1);
+  max-width: 40ch;
+}
+
+.newsletter-form {
+  margin-top: var(--space-4);
+}
+
+.newsletter-form__label {
+  margin-bottom: var(--space-1);
+}
+
+.newsletter-form__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-2);
+}
+
+.newsletter-form__input {
+  flex: 1 1 14rem;
+  min-width: 0;
+  min-height: 3rem;
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid var(--espresso);
+  border-radius: 0;
+  background: transparent;
+  color: var(--espresso);
+}
+
+.newsletter-form__input[aria-invalid='true'] {
+  border-bottom-width: 2px;
+}
+
+.newsletter-form__submit {
+  flex: 0 0 auto;
+}
+
+.newsletter-form__message,
+.newsletter-form__error {
+  margin-top: var(--space-2);
+  font-weight: 500;
+}
+
+.newsletter-form__legal {
+  margin-top: var(--space-3);
+  color: var(--ink-muted);
+}
+
+.newsletter-form__legal a {
+  text-decoration-color: var(--tobacco);
+}
+
+/* Link columns */
+.site-footer__links {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-6) var(--gutter);
+}
+
+.site-footer__menu-title {
+  margin-bottom: var(--space-2);
+  color: var(--tobacco-ink);
+}
+
+.site-footer__link {
+  display: inline-block;
+  padding-block: 0.375rem;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  transition: text-decoration-color var(--duration-fast) var(--ease-out);
+}
+
+.site-footer__link:hover {
+  text-decoration-color: var(--tobacco);
+}
+
+/* Bottom bar: copyright + mandatory legal links */
+.site-footer__bottom {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-top: var(--space-12);
+  padding-top: var(--space-3);
+  border-top: 1px solid rgba(46, 38, 32, 0.12);
+}
+
+.site-footer__legal ul {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: var(--space-3);
+}
+
+.site-footer__copyright,
+.site-footer__missing {
+  padding-block: 0.375rem;
+  color: var(--ink-muted);
+}
+
+@media (min-width: 750px) {
+  .site-footer__links {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .site-footer__newsletter {
+    padding: var(--space-5) var(--space-5);
+  }
+}
+
+@media (min-width: 990px) {
+  .site-footer {
+    padding-top: var(--space-16);
+  }
+
+  .site-footer__brand {
+    grid-column: 1 / span 5;
+  }
+
+  .site-footer__newsletter {
+    grid-column: 7 / -1;
+    grid-row: 1 / span 2;
+    align-self: start;
+  }
+
+  .site-footer__links {
+    grid-column: 1 / span 5;
+  }
+
+  .site-footer__bottom {
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-between;
+  }
+}

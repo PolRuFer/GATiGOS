@@ -1,56 +1,256 @@
-<footer>
-  <div class="footer__copyright">
-    &copy;
-    {{ 'now' | date: '%Y' }}
-    {{ shop.name | link_to: routes.root_url }}, {{ powered_by_link }}
+{{ 'section-footer.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  if section.settings.tagline != blank
+    assign tagline = section.settings.tagline
+  else
+    assign tagline = 'footer.tagline' | t
+  endif
+
+  if section.settings.newsletter_heading != blank
+    assign newsletter_heading = section.settings.newsletter_heading
+  else
+    assign newsletter_heading = 'footer.newsletter.heading' | t
+  endif
+
+  if section.settings.newsletter_text != blank
+    assign newsletter_text = section.settings.newsletter_text
+  else
+    assign newsletter_text = 'footer.newsletter.text' | t
+  endif
+
+  assign legal_notice_url = blank
+  for policy in shop.policies
+    if policy.url contains 'legal-notice'
+      assign legal_notice_url = policy.url
+    endif
+  endfor
+  assign privacy_url = shop.privacy_policy.url
+  assign cookies_url = section.settings.cookies_url | default: privacy_url
+  assign terms_url = shop.terms_of_service.url
+  assign shipping_url = shop.shipping_policy.url
+  assign refund_url = shop.refund_policy.url
+
+  assign social_links = 'instagram,pinterest,tiktok,facebook,youtube' | split: ','
+  assign has_social = false
+  for network in social_links
+    assign setting_key = 'social_' | append: network | append: '_link'
+    if settings[setting_key] != blank
+      assign has_social = true
+    endif
+  endfor
+-%}
+
+<footer class="site-footer has-orbs full-width">
+  <div class="orbs" aria-hidden="true">
+    <span class="orb orb--camel" style="--orb-x: 78%; --orb-y: 28%; --orb-size: 56vw; --orb-opacity: 0.3;"></span>
+    <span class="orb orb--tobacco" style="--orb-x: 12%; --orb-y: 92%; --orb-size: 44vw; --orb-opacity: 0.2;"></span>
   </div>
 
-  <div class="footer__links">
-    {% for link in section.settings.menu.links %}
-      {{ link.title | link_to: link.url }}
-    {% endfor %}
+  <div class="site-footer__inner page-width grid">
+    <div class="site-footer__brand">
+      <p class="site-footer__logo">{{ shop.name | escape }}</p>
+      <p class="site-footer__tagline text-muted">{{ tagline | escape }}</p>
+    </div>
+
+    {%- if section.settings.show_newsletter -%}
+      <div class="site-footer__newsletter glass">
+        <h2 class="site-footer__newsletter-heading display display--s">{{ newsletter_heading | escape }}</h2>
+        <p class="site-footer__newsletter-text">{{ newsletter_text | escape }}</p>
+
+        {%- form 'customer', id: 'FooterNewsletter', class: 'newsletter-form' -%}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+
+          {%- if form.posted_successfully? -%}
+            <p class="newsletter-form__message" role="status">{{ 'footer.newsletter.success' | t }}</p>
+          {%- else -%}
+            <label class="eyebrow newsletter-form__label" for="FooterNewsletterEmail">
+              {{- 'footer.newsletter.email_label' | t -}}
+            </label>
+            <div class="newsletter-form__row">
+              <input
+                id="FooterNewsletterEmail"
+                class="newsletter-form__input"
+                type="email"
+                name="contact[email]"
+                value="{{ form.email }}"
+                autocomplete="email"
+                autocapitalize="off"
+                spellcheck="false"
+                required
+                {% if form.errors %}
+                  aria-invalid="true"
+                  aria-describedby="FooterNewsletterError"
+                {% endif %}
+              >
+              <button class="button newsletter-form__submit" type="submit">
+                {{- 'footer.newsletter.submit' | t -}}
+              </button>
+            </div>
+            {%- if form.errors -%}
+              <p id="FooterNewsletterError" class="newsletter-form__error" role="alert">
+                {{- 'footer.newsletter.error' | t -}}
+              </p>
+            {%- endif -%}
+          {%- endif -%}
+
+          <p class="newsletter-form__legal text-small">
+            {{- 'footer.newsletter.consent_html' | t: privacy_url: privacy_url -}}
+          </p>
+        {%- endform -%}
+      </div>
+    {%- endif -%}
+
+    <div class="site-footer__links">
+      {%- for i in (1..2) -%}
+        {%- liquid
+          if i == 1
+            assign menu = section.settings.menu_primary
+          else
+            assign menu = section.settings.menu_secondary
+          endif
+        -%}
+        {%- if menu.links.size > 0 -%}
+          <nav class="site-footer__menu" aria-labelledby="FooterMenuTitle-{{ i }}">
+            <h2 id="FooterMenuTitle-{{ i }}" class="eyebrow site-footer__menu-title">{{ menu.title | escape }}</h2>
+            <ul role="list">
+              {%- for link in menu.links -%}
+                <li>
+                  <a href="{{ link.url }}" class="site-footer__link">{{ link.title | escape }}</a>
+                </li>
+              {%- endfor -%}
+            </ul>
+          </nav>
+        {%- endif -%}
+      {%- endfor -%}
+
+      {%- if has_social -%}
+        <div class="site-footer__menu">
+          <h2 class="eyebrow site-footer__menu-title">{{ 'footer.social_heading' | t }}</h2>
+          <ul role="list">
+            {%- for network in social_links -%}
+              {%- assign setting_key = 'social_' | append: network | append: '_link' -%}
+              {%- if settings[setting_key] != blank -%}
+                {%- assign network_key = 'social.' | append: network -%}
+                <li>
+                  <a
+                    href="{{ settings[setting_key] }}"
+                    class="site-footer__link"
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    {{- network_key | t -}}
+                    <span class="visually-hidden"> ({{ 'accessibility.new_window' | t }})</span>
+                  </a>
+                </li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endif -%}
+    </div>
   </div>
 
-  <div class="footer__payment">
-    {% if section.settings.show_payment_icons %}
-      {% for type in shop.enabled_payment_types %}
-        {{ type | payment_type_svg_tag }}
-      {% endfor %}
-    {% endif %}
+  <div class="site-footer__bottom page-width">
+    <p class="site-footer__copyright text-small">
+      {%- assign current_year = 'now' | date: '%Y' -%}
+      {{- 'footer.copyright' | t: year: current_year, shop: shop.name -}}
+    </p>
+
+    <nav class="site-footer__legal" aria-label="{{ 'footer.legal_label' | t }}">
+      <ul role="list">
+        {%- assign legal_keys = 'legal_notice,privacy,cookies,terms,shipping,refund' | split: ',' -%}
+        {%- for key in legal_keys -%}
+          {%- liquid
+            case key
+              when 'legal_notice'
+                assign legal_url = legal_notice_url
+              when 'privacy'
+                assign legal_url = privacy_url
+              when 'cookies'
+                assign legal_url = cookies_url
+              when 'terms'
+                assign legal_url = terms_url
+              when 'shipping'
+                assign legal_url = shipping_url
+              when 'refund'
+                assign legal_url = refund_url
+            endcase
+            assign legal_label_key = 'footer.legal.' | append: key
+            assign legal_label = legal_label_key | t
+          -%}
+          {%- if legal_url != blank -%}
+            <li><a class="site-footer__link text-small" href="{{ legal_url }}">{{ legal_label }}</a></li>
+          {%- elsif request.design_mode -%}
+            <li class="site-footer__missing text-small">{{ 'footer.legal_missing' | t: policy: legal_label }}</li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    </nav>
   </div>
 </footer>
 
-{% stylesheet %}
-  footer {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 2rem;
-  }
-  footer a {
-    text-decoration: none;
-    color: var(--color-foreground);
-  }
-  footer .footer__links,
-  footer .footer__payment {
-    display: flex;
-    gap: 1rem;
-  }
-{% endstylesheet %}
-
 {% schema %}
 {
-  "name": "t:general.footer",
+  "name": "t:sections.footer.name",
+  "class": "section-footer",
   "settings": [
     {
+      "type": "text",
+      "id": "tagline",
+      "label": "t:sections.footer.settings.tagline.label",
+      "info": "t:sections.footer.settings.tagline.info"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.footer.settings.header_links"
+    },
+    {
       "type": "link_list",
-      "id": "menu",
-      "label": "t:labels.menu"
+      "id": "menu_primary",
+      "label": "t:sections.footer.settings.menu_primary.label",
+      "default": "footer"
+    },
+    {
+      "type": "link_list",
+      "id": "menu_secondary",
+      "label": "t:sections.footer.settings.menu_secondary.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.footer.settings.header_newsletter"
     },
     {
       "type": "checkbox",
-      "id": "show_payment_icons",
-      "label": "t:labels.show_payment_icons",
+      "id": "show_newsletter",
+      "label": "t:sections.footer.settings.show_newsletter.label",
       "default": true
+    },
+    {
+      "type": "text",
+      "id": "newsletter_heading",
+      "label": "t:sections.footer.settings.newsletter_heading.label",
+      "info": "t:sections.footer.settings.tagline.info"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_text",
+      "label": "t:sections.footer.settings.newsletter_text.label",
+      "info": "t:sections.footer.settings.tagline.info"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.footer.settings.header_legal"
+    },
+    {
+      "type": "paragraph",
+      "content": "t:sections.footer.settings.legal_paragraph"
+    },
+    {
+      "type": "url",
+      "id": "cookies_url",
+      "label": "t:sections.footer.settings.cookies_url.label",
+      "info": "t:sections.footer.settings.cookies_url.info"
     }
   ]
 }

@@ -72,6 +72,64 @@
       "title": "Title",
       "subtitle": "Subtitle",
       "normal": "Normal text"
+    }
+  },
+  "settings_schema": {
+    "social": {
+      "name": "Social media",
+      "info": "Links shown as text in the footer. Leave a field empty to hide that network.",
+      "instagram": "Instagram",
+      "pinterest": "Pinterest",
+      "tiktok": "TikTok",
+      "facebook": "Facebook",
+      "youtube": "YouTube"
+    }
+  },
+  "sections": {
+    "groups": {
+      "header": "Header",
+      "footer": "Footer"
     },
+    "header": {
+      "name": "Header",
+      "settings": {
+        "menu": {
+          "label": "Menu",
+          "info": "Top-level links only: Dog, Cat, New in, About."
+        }
+      }
+    },
+    "footer": {
+      "name": "Footer",
+      "settings": {
+        "tagline": {
+          "label": "Tagline",
+          "info": "Leave empty to use the translated default text."
+        },
+        "header_links": "Links",
+        "menu_primary": {
+          "label": "First menu"
+        },
+        "menu_secondary": {
+          "label": "Second menu"
+        },
+        "header_newsletter": "Newsletter",
+        "show_newsletter": {
+          "label": "Show newsletter"
+        },
+        "newsletter_heading": {
+          "label": "Heading"
+        },
+        "newsletter_text": {
+          "label": "Text"
+        },
+        "header_legal": "Legal links",
+        "legal_paragraph": "Legal notice, privacy, terms of sale, shipping and returns link to the policies in Settings › Policies. Required in Spain.",
+        "cookies_url": {
+          "label": "Cookie policy page",
+          "info": "Shopify has no cookie policy of its own. If empty, the link points to the privacy policy."
+        }
+      }
+    }
   }
 }

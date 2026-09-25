@@ -1,0 +1,44 @@
+{% doc %}
+  ES / EN language switch built on Shopify's native localization form.
+  Each language is a submit button carrying `locale_code`, so it works
+  without JavaScript and is fully keyboard operable.
+
+  @param {string} form_id - Unique id for the form
+  @param {string} [class] - Extra classes for the form
+
+  @example
+  {% render 'localization-form', form_id: 'HeaderLocalization', class: 'site-header__lang' %}
+{% enddoc %}
+
+{%- if localization.available_languages.size > 1 -%}
+  {%- form 'localization', id: form_id, class: class -%}
+    <fieldset class="lang-switch">
+      <legend class="visually-hidden">{{ 'localization.language' | t }}</legend>
+      <ul class="lang-switch__list" role="list">
+        {%- for language in localization.available_languages -%}
+          {%- liquid
+            assign is_current = false
+            if language.iso_code == localization.language.iso_code
+              assign is_current = true
+            endif
+          -%}
+          <li>
+            <button
+              class="lang-switch__option"
+              type="submit"
+              name="locale_code"
+              value="{{ language.iso_code }}"
+              lang="{{ language.iso_code }}"
+              {% if is_current %}
+                aria-current="true"
+              {% endif %}
+            >
+              {{- language.iso_code | upcase -}}
+              <span class="visually-hidden">, {{ language.endonym_name | capitalize }}</span>
+            </button>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </fieldset>
+  {%- endform -%}
+{%- endif -%}

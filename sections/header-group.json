@@ -9,14 +9,16 @@
  */
 {
   "type": "header",
-  "name": "t:general.header",
+  "name": "t:sections.groups.header",
   "sections": {
     "header": {
       "type": "header",
-      "settings": {}
+      "settings": {
+        "menu": "main-menu"
+      }
     }
   },
   "order": [
     "header"
-  ],
+  ]
 }
