@@ -7,6 +7,14 @@
     <script>
       document.documentElement.classList.replace('no-js', 'js');
     </script>
+    {%- unless request.design_mode -%}
+      {% # Motion layout is decided before first paint (no layout shift). %}
+      <script>
+        if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          document.documentElement.classList.add('motion-ok');
+        }
+      </script>
+    {%- endunless -%}
 
     {% # Self-hosted fonts: preload + @font-face with font-display: swap %}
     {% render 'css-variables' %}
@@ -25,11 +33,14 @@
           "three": "{{ 'three.min.js' | asset_url }}",
           "vendor-motion": "{{ 'vendor-motion.min.js' | asset_url }}",
           "@gatygos/ticker": "{{ 'ticker.js' | asset_url }}",
-          "@gatygos/hero-scene": "{{ 'hero-scene.js' | asset_url }}"
+          "@gatygos/hero-scene": "{{ 'hero-scene.js' | asset_url }}",
+          "@gatygos/motion-hero": "{{ 'motion-hero.js' | asset_url }}",
+          "@gatygos/motion-rooms": "{{ 'motion-rooms.js' | asset_url }}"
         }
       }
     </script>
     <script src="{{ 'theme.js' | asset_url }}" defer></script>
+    <script src="{{ 'motion.js' | asset_url }}" type="module"></script>
 
     {{ content_for_header }}
   </head>

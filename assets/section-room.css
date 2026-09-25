@@ -127,3 +127,138 @@
     grid-row: 2;
   }
 }
+
+/* ---------------------------------------------------------------------------
+ * Motion layout (html.motion-ok, set before first paint unless the visitor
+ * prefers reduced motion). The head stays in its column and the products
+ * walk past through a clipped window: right-to-left in the cat room,
+ * left-to-right in the dog room. Without GSAP the window scrolls natively.
+ * ------------------------------------------------------------------------- */
+.room__track,
+.room__strip {
+  display: contents;
+}
+
+.room__sun {
+  display: none;
+}
+
+html.motion-ok .room {
+  --room-h: min(58svh, 40rem);
+
+  display: flex;
+  align-items: center;
+  min-height: 100svh;
+  padding-block: calc(var(--header-offset) + var(--space-2)) var(--space-6);
+}
+
+html.motion-ok .room__inner {
+  width: 100%;
+  row-gap: var(--space-5);
+  align-items: center;
+}
+
+html.motion-ok .room__track {
+  grid-column: 1 / -1;
+  display: block;
+  margin-inline: calc(var(--page-margin) * -1);
+  padding-inline: var(--page-margin);
+  overflow-x: auto;
+  scrollbar-width: none;
+  touch-action: pan-y;
+}
+
+html.motion-ok .room__track::-webkit-scrollbar {
+  display: none;
+}
+
+/* Once the pin drives it, the window clips instead of scrolling. */
+html.motion-ok .room__track.is-driven {
+  overflow: clip;
+}
+
+html.motion-ok .room__strip {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-5);
+  width: max-content;
+  will-change: transform;
+}
+
+html.motion-ok .room__featured {
+  flex: 0 0 auto;
+  width: calc(var(--room-h) * 0.8);
+}
+
+html.motion-ok .room__rail {
+  display: flex;
+  gap: var(--space-5);
+}
+
+html.motion-ok .room__item {
+  flex: 0 0 auto;
+  width: calc(var(--room-h) * 0.56);
+}
+
+html.motion-ok .room__ficha {
+  margin-left: var(--space-2);
+}
+
+@media (min-width: 990px) {
+  html.motion-ok .room__head {
+    grid-column: 1 / span 4;
+    align-self: center;
+  }
+
+  html.motion-ok .room__track {
+    grid-column: 5 / -1;
+    grid-row: 1;
+    margin-inline: 0 calc(var(--page-margin) * -1);
+    padding-inline: 0 var(--page-margin);
+  }
+
+  html.motion-ok .room--dog .room__head {
+    grid-column: 9 / span 4;
+    grid-row: 1;
+  }
+
+  html.motion-ok .room--dog .room__track {
+    grid-column: 1 / span 8;
+    grid-row: 1;
+    margin-inline: calc(var(--page-margin) * -1) 0;
+    padding-inline: var(--page-margin) 0;
+  }
+
+  html.motion-ok .room--dog .room__strip {
+    flex-direction: row-reverse;
+  }
+
+  html.motion-ok .room--dog .room__rail {
+    flex-direction: row-reverse;
+  }
+}
+
+/* Cat room toy: a patch of afternoon sun that follows the pointer. */
+html.motion-ok .room__sun {
+  --sun-size: max(34vw, 22rem);
+
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  display: block;
+  width: var(--sun-size);
+  aspect-ratio: 1.6;
+  margin: calc(var(--sun-size) / -3.2) 0 0 calc(var(--sun-size) / -2);
+  border-radius: 50%;
+  /* Screen-blended camel: brightens and warms the paper like real sun. */
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--camel) 55%, transparent), transparent);
+  mix-blend-mode: screen;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--duration-slow) var(--ease-out);
+}
+
+html.motion-ok .room__sun.is-lit {
+  opacity: 1;
+}

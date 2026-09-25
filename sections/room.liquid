@@ -52,6 +52,10 @@
     {%- endif -%}
   </div>
 
+  {%- if room == 'cat' -%}
+    <span class="room__sun" aria-hidden="true" data-room-sun></span>
+  {%- endif -%}
+
   <div class="room__inner page-width grid">
     <header class="room__head">
       <p class="room__eyebrow eyebrow">{{ eyebrow | escape }}</p>
@@ -62,49 +66,53 @@
       {%- endif -%}
     </header>
 
-    {%- if featured -%}
-      <div class="room__featured">
-        {% render 'product-media',
-          product: featured,
-          scope: uid,
-          sizes: featured_sizes,
-          hide_pill: true,
-          labelledby: featured_label_ids
-        %}
-        {%- assign featured_material = featured.metafields.custom.material.value -%}
-        <div class="room__ficha glass{% if dark %} glass--dark glass--dense{% endif %}">
-          <p class="room__ficha-eyebrow eyebrow">
-            {%- if featured_material != blank -%}
-              {{ featured_material | escape }}
-            {%- else -%}
-              {{ 'rooms.featured' | t }}
-            {%- endif -%}
-          </p>
-          <p class="room__ficha-name" id="{{ uid }}-name">{{ featured.title | escape }}</p>
-          <p class="room__ficha-price" id="{{ uid }}-price">{% render 'price', product: featured %}</p>
-        </div>
-      </div>
-    {%- elsif request.design_mode -%}
-      <p class="room__empty">{{ 'rooms.empty' | t }}</p>
-    {%- endif -%}
+    <div class="room__track" data-room-track>
+      <div class="room__strip" data-room-strip>
+        {%- if featured -%}
+          <div class="room__featured">
+            {% render 'product-media',
+              product: featured,
+              scope: uid,
+              sizes: featured_sizes,
+              hide_pill: true,
+              labelledby: featured_label_ids
+            %}
+            {%- assign featured_material = featured.metafields.custom.material.value -%}
+            <div class="room__ficha glass{% if dark %} glass--dark glass--dense{% endif %}">
+              <p class="room__ficha-eyebrow eyebrow">
+                {%- if featured_material != blank -%}
+                  {{ featured_material | escape }}
+                {%- else -%}
+                  {{ 'rooms.featured' | t }}
+                {%- endif -%}
+              </p>
+              <p class="room__ficha-name" id="{{ uid }}-name">{{ featured.title | escape }}</p>
+              <p class="room__ficha-price" id="{{ uid }}-price">{% render 'price', product: featured %}</p>
+            </div>
+          </div>
+        {%- elsif request.design_mode -%}
+          <p class="room__empty">{{ 'rooms.empty' | t }}</p>
+        {%- endif -%}
 
-    {%- if collection.products.size > 0 -%}
-      <ul class="room__rail" role="list">
-        {%- assign shown = 0 -%}
-        {%- for product in collection.products -%}
-          {%- if product.id == featured.id -%}
-            {%- continue -%}
-          {%- endif -%}
-          {%- if shown >= section.settings.products_to_show -%}
-            {%- break -%}
-          {%- endif -%}
-          <li class="room__item">
-            {% render 'product-card', product: product, scope: uid, sizes: rail_sizes %}
-          </li>
-          {%- assign shown = shown | plus: 1 -%}
-        {%- endfor -%}
-      </ul>
-    {%- endif -%}
+        {%- if collection.products.size > 0 -%}
+          <ul class="room__rail" role="list">
+            {%- assign shown = 0 -%}
+            {%- for product in collection.products -%}
+              {%- if product.id == featured.id -%}
+                {%- continue -%}
+              {%- endif -%}
+              {%- if shown >= section.settings.products_to_show -%}
+                {%- break -%}
+              {%- endif -%}
+              <li class="room__item">
+                {% render 'product-card', product: product, scope: uid, sizes: rail_sizes %}
+              </li>
+              {%- assign shown = shown | plus: 1 -%}
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+      </div>
+    </div>
   </div>
 </section>
 
