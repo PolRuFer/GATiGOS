@@ -33,6 +33,7 @@ async function init() {
   const gestures = [
     ['[data-hero]', '@gatygos/motion-hero'],
     ['[data-room]', '@gatygos/motion-rooms'],
+    ['[data-reveal]', '@gatygos/motion-cards'],
   ];
   await Promise.all(
     gestures

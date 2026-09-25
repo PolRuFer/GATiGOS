@@ -147,6 +147,7 @@ class CollectionFilters extends HTMLElement {
   render(html) {
     const next = html.querySelector('[data-collection-results]');
     if (next) this.querySelector('[data-collection-results]').replaceChildren(...next.childNodes);
+    document.dispatchEvent(new CustomEvent('gatygos:results'));
 
     html.querySelectorAll('[data-sync]').forEach((source) => {
       const target = this.querySelector(`[data-sync="${source.dataset.sync}"]`);

@@ -15,7 +15,7 @@
 
 {%- assign material = product.metafields.custom.material.value -%}
 
-<div class="product-card">
+<div class="product-card" data-reveal>
   {% render 'product-media', product: product, scope: scope, sizes: sizes, eager: eager %}
   {%- if material != blank -%}
     <p class="product-card__material eyebrow">{{ material | escape }}</p>
