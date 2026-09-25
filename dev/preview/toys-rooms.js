@@ -1,4 +1,4 @@
-// Cat sun + featured turn; dog drag with inertia and lean.
+// Cat paw prints + featured turn; dog drag with inertia and lean.
 const { chromium } = require('playwright');
 (async () => {
   const b = await chromium.launch({ executablePath: process.env.CHROMIUM || '/opt/pw-browsers/chromium' });
@@ -10,10 +10,12 @@ const { chromium } = require('playwright');
   const catTop = await p.evaluate(() => document.querySelector('.room--cat').closest('.pin-spacer').getBoundingClientRect().top + scrollY);
   await p.evaluate((y) => window.scrollTo(0, y + 40), catTop); await p.waitForTimeout(1500);
   for (let i = 0; i < 12; i++) { await p.mouse.move(420 + i * 40, 520 + i * 10); await p.waitForTimeout(60); }
-  await p.waitForTimeout(1500);
+  await p.waitForTimeout(500);
+  const prints = await p.evaluate(() => [...document.querySelectorAll('.room__paw')].filter((el) => +getComputedStyle(el).opacity > 0.05).length);
+  await p.screenshot({ path: 'shot/toy-paws.png' });
+  await p.waitForTimeout(1000);
   const turn = await p.evaluate(() => getComputedStyle(document.querySelector('.room--cat .room__featured .product-media__frame')).transform);
-  console.log('cat: sun lit', await p.evaluate(() => document.querySelector('[data-room-sun]').classList.contains('is-lit')), '| featured transform', turn.slice(0, 40));
-  await p.screenshot({ path: 'shot/toy-sun.png' });
+  console.log('cat: paw prints visible', prints, '| featured transform', turn.slice(0, 40));
   const dogTop = await p.evaluate(() => document.querySelector('.room--dog').closest('.pin-spacer').getBoundingClientRect().top + scrollY);
   await p.evaluate((y) => window.scrollTo(0, y + 60), dogTop); await p.waitForTimeout(1500);
   const before = await p.evaluate(() => scrollY);

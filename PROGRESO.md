@@ -97,7 +97,7 @@ Tokens, cristal, fuentes, header, footer, locales ES/EN, muestra de superficies 
 ### Fase 5 · Scroll y juguetes ✅
 - [x] 5.1 Ticker central + Lenis + ScrollTrigger + parallax de orbes; reduced-motion sin carga (`assets/motion.js`, `html.motion-ok` antes del primer pintado, desactivado en el editor).
 - [x] 5.2 Hero pineado: la cámara "crece" de 25 cm a la altura de los ojos, ±4° de parallax (`assets/motion-hero.js`).
-- [x] 5.3 Salas pineadas con recorrido horizontal. Juguetes: sol que sigue al cursor (gato) y carril arrastrable con inercia (perro) (`assets/motion-rooms.js`).
+- [x] 5.3 Salas pineadas con recorrido horizontal. Juguetes: huellas de gato que persiguen al cursor (gato) y carril arrastrable con inercia (perro) (`assets/motion-rooms.js`).
 - [x] 5.4 Reveal escalonado + tilt magnético de tarjetas con brillo del canto (`assets/motion-cards.js`).
 - [x] 5.5 Manifiesto pineado (papel → pino, línea a línea) + palabras que se apartan del cursor (`assets/motion-manifesto.js`).
 
@@ -125,7 +125,7 @@ Render local de `dev/preview` (LiquidJS con datos de prueba, servidor sin compre
 | Scroll horizontal accidental | 0 px en todas las vistas a 360, 768 y 1440 |
 | Contraste en cristal (peor caso) | Ver la tabla de DECISIONES. Todo el texto nuevo medido: píldora 7,56, ficha oscura 6,15, manifiesto 11,24 (papel) y 4,88 (camel) |
 | Juguete del hero (CPU) | 0,04 ms por fotograma (0,16 ms a 4×); raycast contra un proxy de ~600 triángulos |
-| Sol de la sala del gato | 0,23 ms por evento a 4× |
+| Huellas de la sala del gato | 0,23 ms por evento a 4× (frame mediano 17 ms) |
 | Palabras del manifiesto | 1,43 ms por evento a 4× |
 | Tilt de tarjetas | 0,02 ms por evento a 4× |
 | Arrastre en la sala del perro | Va por el scroll de Lenis, sin coste propio |
@@ -164,7 +164,7 @@ Render local de `dev/preview` (LiquidJS con datos de prueba, servidor sin compre
   - Salas: pin más recorrido horizontal del contenedor `.room__featured + .room__rail`, solo con movimiento; la maquetación actual es el estado reduced-motion.
   - Reveal: `data-reveal` más `--reveal-index`, con IntersectionObserver y retardo de 60 ms.
   - Manifiesto: pin, fondo de papel a pino, panel de `.glass` a `.glass--dark` fundiendo dos capas, y líneas del titular reveladas una a una.
-  - Juguetes: sol que sigue al cursor (gato), carril arrastrable con inercia (perro), tilt de tarjetas, palabras que se apartan (manifiesto).
+  - Juguetes: huellas de gato que persiguen al cursor (gato), carril arrastrable con inercia (perro), tilt de tarjetas, palabras que se apartan (manifiesto).
 - **Lighthouse (fase 6):** `npm i --no-save lighthouse` en `dev/preview`, `CHROME_PATH=/opt/pw-browsers/chromium`, ejecutado contra `out/index.html` servido en local. Aclarar en la tabla que es el renderizado local, no Shopify.
 
 ### Utilidades del entorno de verificación (`dev/preview`)

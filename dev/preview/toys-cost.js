@@ -19,7 +19,7 @@ const { chromium } = require('playwright');
   }, { selector, n });
   const frame = () => p.evaluate(() => new Promise((res) => { const t = []; let last = performance.now(); let i = 0; const f = () => { const now = performance.now(); t.push(now - last); last = now; if (++i < 30) requestAnimationFrame(f); else res(t.slice(3).sort((a, b) => a - b)[13]); }; requestAnimationFrame(f); }));
   const rows = [
-    ['Sol (sala gato)', '.room--cat'],
+    ['Huellas (sala gato)', '.room--cat'],
     ['Palabras (manifiesto)', '[data-manifesto-panel]'],
     ['Tilt tarjetas', '.selection .product-card .product-media'],
   ];

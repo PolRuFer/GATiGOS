@@ -139,7 +139,7 @@
   display: contents;
 }
 
-.room__sun {
+.room__paws {
   display: none;
 }
 
@@ -238,27 +238,28 @@ html.motion-ok .room__ficha {
   }
 }
 
-/* Cat room toy: a patch of afternoon sun that follows the pointer. */
-html.motion-ok .room__sun {
-  --sun-size: max(34vw, 22rem);
-
+/* Cat room toy: a cat stalks the pointer, leaving small paw prints that
+   fade behind it. Prints are recycled from a small pool; only their
+   opacity and transform animate. */
+html.motion-ok .room__paws {
   position: absolute;
   z-index: -1;
-  top: 0;
-  left: 0;
+  inset: 0;
   display: block;
-  width: var(--sun-size);
-  aspect-ratio: 1.6;
-  margin: calc(var(--sun-size) / -3.2) 0 0 calc(var(--sun-size) / -2);
-  border-radius: 50%;
-  /* Screen-blended camel: brightens and warms the paper like real sun. */
-  background: radial-gradient(closest-side, color-mix(in srgb, var(--camel) 55%, transparent), transparent);
-  mix-blend-mode: screen;
-  opacity: 0;
+  overflow: clip;
   pointer-events: none;
-  transition: opacity var(--duration-slow) var(--ease-out);
 }
 
-html.motion-ok .room__sun.is-lit {
-  opacity: 1;
+.room__paw {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1.125rem;
+  height: 1.125rem;
+  margin: -0.5625rem 0 0 -0.5625rem;
+  background: var(--tobacco);
+  -webkit-mask: var(--paw) center / contain no-repeat;
+  mask: var(--paw) center / contain no-repeat;
+  opacity: 0;
+  --paw: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cellipse cx='12' cy='16.2' rx='5.4' ry='4.6'/%3E%3Cellipse cx='5' cy='9.6' rx='2.2' ry='2.7' transform='rotate(-18 5 9.6)'/%3E%3Cellipse cx='9.6' cy='5' rx='2.2' ry='2.8' transform='rotate(-6 9.6 5)'/%3E%3Cellipse cx='14.4' cy='5' rx='2.2' ry='2.8' transform='rotate(6 14.4 5)'/%3E%3Cellipse cx='19' cy='9.6' rx='2.2' ry='2.7' transform='rotate(18 19 9.6)'/%3E%3C/svg%3E");
 }
