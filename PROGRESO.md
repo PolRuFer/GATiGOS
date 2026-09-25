@@ -101,20 +101,48 @@ Tokens, cristal, fuentes, header, footer, locales ES/EN, muestra de superficies 
 - [x] 5.4 Reveal escalonado + tilt magnético de tarjetas con brillo del canto (`assets/motion-cards.js`).
 - [x] 5.5 Manifiesto pineado (papel → pino, línea a línea) + palabras que se apartan del cursor (`assets/motion-manifesto.js`).
 
-### Fase 6 · Auditoría final
-- [ ] Lighthouse móvil y desktop, theme check, capturas de todas las vistas a 3 anchos, recorrido de teclado, reduced-motion, fps de cada juguete, tabla final.
+### Fase 6 · Auditoría final ✅
+- [x] Lighthouse móvil y escritorio, theme check, capturas de todas las vistas a 3 anchos, recorrido de teclado, reduced-motion, coste de cada juguete, tabla final (abajo).
 
 ---
 
 ## Siguiente paso exacto
-**Fase 6 (auditoría):**
-- Lighthouse móvil y escritorio: `npm i --no-save lighthouse` en `dev/preview`, `CHROME_PATH=/opt/pw-browsers/chromium`, contra `http://localhost:4173/index.html` y `collection.html`.
-- `./dev/check.sh`.
-- Capturas de todas las vistas a 360, 768 y 1440.
-- Recorrido completo con teclado.
-- Reduced-motion (Playwright `reducedMotion: 'reduce'`).
-- Coste de CPU de cada juguete.
-- Tabla final aquí.
+Fases 1–6 terminadas. Solo queda lo que depende de ti (ver **Pendiente de tu OK** y **Qué necesitas hacer tú**) y verificar en `shopify theme dev` con una tienda real.
+
+## Auditoría final (fase 6)
+
+Render local de `dev/preview` (LiquidJS con datos de prueba, servidor sin compresión). Lighthouse con throttling simulado. En Shopify, el CDN comprime con brotli, así que los tiempos reales deberían ser iguales o mejores.
+
+| Comprobación | Resultado |
+|---|---|
+| `shopify theme check` | 52 ficheros, 0 errores, 0 avisos |
+| Lighthouse home · móvil | Rend. **82** · Accesib. **100** · Buenas prácticas **100** · SEO **100** · TBT 70 ms · CLS **0,044** · LCP 4,2 s |
+| Lighthouse home · escritorio | 99 · 100 · 100 · 100 · TBT 0 ms · CLS 0,018 · LCP 0,9 s |
+| Lighthouse colección · móvil | **83** · 100 · 100 · 100 · TBT 10 ms · CLS **0** · LCP 4,4 s |
+| Lighthouse colección · escritorio | 99 · 100 · 100 · 100 · TBT 0 ms · CLS 0 · LCP 0,9 s |
+| Teclado, de principio a fin | Home: 46 paradas, 0 problemas (1440, 390 y reduced-motion). Colección: 56 paradas, 0. Menú móvil y drawer de filtros: foco atrapado, Esc cierra y el foco vuelve al botón |
+| Reduced-motion | Home y colección a 360, 768 y 1440: sin `motion-ok`, 0 pines, 0 tarjetas ocultas, 0 descargas de Three, GSAP o Lenis |
+| Scroll horizontal accidental | 0 px en todas las vistas a 360, 768 y 1440 |
+| Contraste en cristal (peor caso) | Ver la tabla de DECISIONES. Todo el texto nuevo medido: píldora 7,56, ficha oscura 6,15, manifiesto 11,24 (papel) y 4,88 (camel) |
+| Juguete del hero (CPU) | 0,04 ms por fotograma (0,16 ms a 4×); raycast contra un proxy de ~600 triángulos |
+| Sol de la sala del gato | 0,23 ms por evento a 4× |
+| Palabras del manifiesto | 1,43 ms por evento a 4× |
+| Tilt de tarjetas | 0,02 ms por evento a 4× |
+| Arrastre en la sala del perro | Va por el scroll de Lenis, sin coste propio |
+| fps en reposo a 4× (sin GPU) | 60 fps en todas las secciones |
+| fps con el juguete activo a 4× (sin GPU) | Manifiesto y tarjetas: 60 fps. **Sala del gato: ~13 fps** (ver deuda 1) |
+
+## Qué necesitas hacer tú en Shopify
+1. **Fotos:** subirlas tal como llegan del proveedor. `product-media` las normaliza. En fotos con fondo oscuro, marca el metafield `custom.media_blend = false`.
+2. **Metafields de producto** (Ajustes › Metafields): `custom.material` (texto de una línea) y `custom.media_blend` (booleano). Para filtrar por material, activa `custom.material` como filtro en Search & Discovery junto a Disponibilidad y Precio.
+3. **Menús:** `main-menu` con Perro / Gato / Novedades / Nosotros y `footer` (más un segundo menú opcional). Tradúcelos con Translate & Adapt.
+4. **Colecciones:** `gato`, `perro` y `seleccion`, ya enlazadas en `templates/index.json`. Elige el producto destacado de cada sala en el editor.
+5. **Políticas** (Ajustes › Políticas): aviso legal, privacidad, términos, envíos y reembolsos, más la URL de la política de cookies en el pie de página. Son obligatorias en España.
+6. **Idiomas:** publica EN. Los textos del tema ya están en ES y EN.
+7. **Opcional:**
+   - Imagen fija del hero. Por defecto se usa una renderizada desde la escena 3D.
+   - Redes sociales.
+   - Umbral de envío gratuito y días de devolución, en la barra de confianza.
 
 ### Plan técnico acordado para las fases 4 y 5 (seguir salvo motivo anotado en DECISIONES)
 - **Carga de módulos:** import map en `layout/theme.liquid` con `three`, `gsap`, `gsap/ScrollTrigger` y `lenis`, que apuntan a `asset_url`. Los módulos propios son ES modules en `/assets`, cargados con `<script type="module">`.
@@ -146,7 +174,13 @@ Tokens, cristal, fuentes, header, footer, locales ES/EN, muestra de superficies 
 - LiquidJS acepta sintaxis que Shopify rechaza, como filtros en los argumentos de `render`: ejecutar siempre `./dev/check.sh` antes de commitear.
 
 ## Deuda abierta
-_Ninguna._
+1. **Juguete de la sala del gato sin GPU:** con el juguete activo, el sol y el giro de la pieza obligan a recomponer los orbes con `filter: blur(80px)` en cada fotograma. En composición por software a 4× baja a ~13 fps. Ni dar capa propia a los elementos que se mueven ni a los orbes lo corrige en este entorno. En un móvil con GPU probablemente no ocurre, pero no se puede medir aquí.
+   - Propuesta (necesita tu OK porque cambia una regla de la fase 1): dibujar los orbes con un degradado radial más amplio y visualmente equivalente, sin `filter`.
+   - Alternativa sin tocar la fase 1: retirar el juguete del sol, como indica la regla "simplifica o elimina".
+2. **fps de GPU de la escena 3D:** no se pueden medir en este contenedor (SwiftShader). Verificar en un portátil y un móvil reales.
+3. **Referencia lilguy.net:** la bloquea la política de red del entorno. Para revisarla, añade el dominio a los permitidos en los ajustes del entorno.
+4. **Render local frente a Shopify:** comprobar en `shopify theme dev` la Section Rendering API de los filtros, el formulario de idioma, las políticas y los metafields reales.
 
 ## Pendiente de tu OK
-- Borrar ficheros del Skeleton que quedarán sin uso (`sections/hello-world.liquid`, `sections/custom-section.liquid`, `assets/icon-account.svg`, `assets/icon-cart.svg`, `assets/shoppy-x-ray.svg`). No se borran sin permiso; mientras tanto no se referencian.
+- Borrar ficheros del Skeleton que ya no se usan: `sections/hello-world.liquid`, `sections/custom-section.liquid`, `assets/icon-account.svg`, `assets/icon-cart.svg` y `assets/shoppy-x-ray.svg`. No se referencian desde ningún sitio.
+- Orbes sin `filter: blur(80px)` (deuda 1).
