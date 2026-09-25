@@ -107,7 +107,36 @@ Tokens, cristal, fuentes, header, footer, locales ES/EN, muestra de superficies 
 ---
 
 ## Siguiente paso exacto
-Fase 4.1: Three.js mínimo empaquetado en `/assets` (build reproducible en `dev/build-three.mjs`), import map en `layout/theme.liquid` y carga diferida del hero (viewport + WebGL2 + ≥ 4 núcleos + sin reduced-motion).
+**Fase 4.1.** La sesión anterior se detuvo en el límite de fase por longitud de conversación (protección contra cortes). Todo lo anterior está commiteado y verificado.
+
+### Plan técnico acordado para las fases 4 y 5 (seguir salvo motivo anotado en DECISIONES)
+- **Carga de módulos:** import map en `layout/theme.liquid` con `three`, `gsap`, `gsap/ScrollTrigger` y `lenis`, que apuntan a `asset_url`. Los módulos propios son ES modules en `/assets`, cargados con `<script type="module">`.
+- **Three mínimo:** `dev/build-three.mjs` (esbuild con tree-shaking) exporta solo las clases usadas y genera `assets/three.min.js`, que se versiona. El tema no tiene paso de build: el fichero ya viene generado. Fijar la versión de `three` en el script.
+- **GSAP, ScrollTrigger y Lenis:** copiar los builds ESM minificados de npm a `assets/` (`gsap.min.js`, `ScrollTrigger.min.js`, `lenis.min.js`) y anotar las versiones en DECISIONES.
+- **Ticker central:** `assets/ticker.js` envuelve `gsap.ticker`, que es el único rAF. Lenis se conecta con `gsap.ticker.add(t => lenis.raf(t * 1000))` y `lagSmoothing(0)`. Cada juguete se suscribe o se da de baja según un IntersectionObserver (nada corre fuera de viewport) y según `document.hidden`.
+- **Hero 3D:** `assets/hero-scene.js` se importa con `import()` solo si se cumplen a la vez:
+  - el hero está en viewport (IntersectionObserver),
+  - hay WebGL2,
+  - `navigator.hardwareConcurrency >= 4`,
+  - no hay `prefers-reduced-motion`.
+  El canvas se monta dentro de `.hero__media` (ya existe) encima de la imagen fallback y aparece con un fundido de `opacity` cuando está listo. `pixelRatio` es `min(dpr, 1.75)`.
+- **Escena del hero:** suelo de tablas (textura procedural en canvas), zócalo, ventanal con parteluces, luz direccional cálida de tarde con sombras PCF suaves más luz ambiente tenue, y cama de lana en primer plano. Materiales `MeshStandardMaterial` mate. La cámara empieza a 0,25 m del suelo. Expone `setProgress(p)` para la fase 5, en la que la cámara sube a 1,6 m y se inclina. El puntero añade ±4° de parallax.
+- **Juguete del hero:** motas de polvo (`Points` con shader) dentro del volumen del haz que el cursor o el dedo empujan con amortiguación y que vuelven a posarse, y lana que se hunde donde pasa el cursor (raycast + uniform de desplazamiento con retorno elástico). Con teclado, equivalente estático digno: la escena queda en calma.
+- **Imagen de fallback por defecto:** renderizar la escena a 2400×1500 con Playwright (script en `dev/`) y guardarla como `assets/hero-fallback.jpg` (más un tamaño menor), que `hero.liquid` usa cuando el ajuste de imagen está vacío.
+- **Fase 5:**
+  - `assets/motion.js`: no carga nada con reduced-motion.
+  - Pin del hero ligado a `setProgress`.
+  - Salas: pin más recorrido horizontal del contenedor `.room__featured + .room__rail`, solo con movimiento; la maquetación actual es el estado reduced-motion.
+  - Reveal: `data-reveal` más `--reveal-index`, con IntersectionObserver y retardo de 60 ms.
+  - Manifiesto: pin, fondo de papel a pino, panel de `.glass` a `.glass--dark` fundiendo dos capas, y líneas del titular reveladas una a una.
+  - Juguetes: sol que sigue al cursor (gato), carril arrastrable con inercia (perro), tilt de tarjetas, palabras que se apartan (manifiesto).
+- **Lighthouse (fase 6):** `npm i --no-save lighthouse` en `dev/preview`, `CHROME_PATH=/opt/pw-browsers/chromium`, ejecutado contra `out/index.html` servido en local. Aclarar en la tabla que es el renderizado local, no Shopify.
+
+### Utilidades del entorno de verificación (`dev/preview`)
+- `./restart-server.sh` reinicia el servidor con pidfile. No usar `pkill` con patrones que contengan "serve.js": mata la propia shell.
+- `shots.js` hace capturas de página, `clipel.js` de un elemento (los elementos fijos pueden salir desplazados en elementos más altos que el viewport; es un artefacto), `hover.js` captura los estados reposo, hover y foco, y `flow.js` prueba el flujo de filtros de la colección.
+- `data.js` define las páginas que se renderizan (`index`, `index-en`, `collection`, `collection-en`, `collection-p4`, `collection-filtered`, `cards`, `cards-compact`, `demo`) y la tienda de prueba.
+- LiquidJS acepta sintaxis que Shopify rechaza, como filtros en los argumentos de `render`: ejecutar siempre `./dev/check.sh` antes de commitear.
 
 ## Deuda abierta
 _Ninguna._
