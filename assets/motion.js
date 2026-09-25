@@ -28,6 +28,7 @@ async function init() {
   new MutationObserver(syncDialogs).observe(document.body, { subtree: true, attributeFilter: ['open'] });
 
   parallaxOrbs(gsap);
+  followFocus(lenis);
 
   const context = { gsap, ScrollTrigger, lenis };
   const gestures = [
@@ -49,6 +50,23 @@ async function init() {
 
 const yieldToMain = () =>
   new Promise((resolve) => (window.scheduler?.yield ? scheduler.yield().then(resolve) : setTimeout(resolve, 0)));
+
+// Keyboard focus drives Lenis. The browser's own focus scrolling moves the
+// window behind Lenis's back (its stored position goes stale and it would
+// pull the page back), so measure against the real scroll and hand the
+// final position to Lenis. Rails handle their own items.
+function followFocus(lenis) {
+  document.addEventListener('focusin', (event) => {
+    const target = event.target;
+    if (!(target instanceof Element) || target.closest('[data-room-track], dialog, site-header')) return;
+    const box = target.getBoundingClientRect();
+    const top = parseFloat(getComputedStyle(root).scrollPaddingTop) || 0;
+    const stale = Math.abs(window.scrollY - lenis.scroll) > 1;
+    if (!stale && !lenis.isScrolling && box.top >= top && box.bottom <= window.innerHeight) return;
+    const destination = box.top + window.scrollY - window.innerHeight * 0.3;
+    lenis.scrollTo(Math.max(0, destination), { duration: 0.6, force: true });
+  });
+}
 
 // Orbs are the deepest layer: they drift the least while the room passes.
 function parallaxOrbs(gsap) {
