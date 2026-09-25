@@ -152,5 +152,20 @@
     "free_shipping": "Free shipping from {{ amount }}",
     "returns": "{{ days }}-day returns",
     "secure_payment": "Secure payment"
+  },
+  "rooms": {
+    "view_all": "View the collection",
+    "featured": "Featured",
+    "empty": "Choose a collection and a featured product for this room.",
+    "cat": {
+      "eyebrow": "Cat",
+      "heading": "For the cat",
+      "intro": "To sleep in the sun, sharpen claws and watch the house from above."
+    },
+    "dog": {
+      "eyebrow": "Dog",
+      "heading": "For the dog",
+      "intro": "To eat at their height, go out, and come back to their place."
+    }
   }
 }

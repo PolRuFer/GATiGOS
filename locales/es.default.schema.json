@@ -184,6 +184,38 @@
           "label": "Días para devolver"
         }
       }
+    },
+    "room": {
+      "name": "Sala",
+      "settings": {
+        "room": {
+          "label": "Sala",
+          "info": "Define el tono (papel o pino), la composición, los textos por defecto y el juguete.",
+          "options": {
+            "cat": "Gato",
+            "dog": "Perro"
+          }
+        },
+        "eyebrow": {
+          "label": "Antetítulo"
+        },
+        "heading": {
+          "label": "Título"
+        },
+        "intro": {
+          "label": "Entradilla"
+        },
+        "collection": {
+          "label": "Colección"
+        },
+        "featured_product": {
+          "label": "Producto destacado",
+          "info": "Si lo dejas vacío, se usa el primero de la colección."
+        },
+        "products_to_show": {
+          "label": "Productos en el carril"
+        }
+      }
     }
   }
 }

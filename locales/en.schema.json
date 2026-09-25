@@ -184,6 +184,38 @@
           "label": "Return days"
         }
       }
+    },
+    "room": {
+      "name": "Room",
+      "settings": {
+        "room": {
+          "label": "Room",
+          "info": "Sets the tone (paper or pine), layout, default texts and toy.",
+          "options": {
+            "cat": "Cat",
+            "dog": "Dog"
+          }
+        },
+        "eyebrow": {
+          "label": "Eyebrow"
+        },
+        "heading": {
+          "label": "Heading"
+        },
+        "intro": {
+          "label": "Intro"
+        },
+        "collection": {
+          "label": "Collection"
+        },
+        "featured_product": {
+          "label": "Featured product",
+          "info": "If empty, the first product in the collection is used."
+        },
+        "products_to_show": {
+          "label": "Products in the rail"
+        }
+      }
     }
   }
 }

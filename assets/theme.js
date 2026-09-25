@@ -8,6 +8,8 @@
  * - `.is-compact` once the page has scrolled past the first 64px.
  * - `.is-past-hero` once a hero marked with [data-header-overlay] no longer
  *   sits under the header (the header shows its glass from then on).
+ * - `.is-on-dark` while a section marked [data-header-tone="dark"] is under
+ *   the header (the glass cross-fades to dark).
  * - Opens and closes the full-screen mobile menu (<dialog>).
  * Uses IntersectionObserver instead of scroll listeners.
  */
@@ -19,12 +21,14 @@ class SiteHeader extends HTMLElement {
 
     this.observeScroll();
     this.observeHero();
+    this.observeTone();
     this.bindMenu();
   }
 
   disconnectedCallback() {
     this.scrollObserver?.disconnect();
     this.heroObserver?.disconnect();
+    this.toneObserver?.disconnect();
     this.desktopQuery?.removeEventListener('change', this.onDesktopChange);
     this.sentinel?.remove();
   }
@@ -55,6 +59,21 @@ class SiteHeader extends HTMLElement {
       { rootMargin: '0px 0px -90% 0px' }
     );
     this.heroObserver.observe(hero);
+  }
+
+  // Dark glass while a pine section sits under the header.
+  observeTone() {
+    const dark = document.querySelectorAll('[data-header-tone="dark"]');
+    if (!dark.length) return;
+    const under = new Set();
+    this.toneObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => (entry.isIntersecting ? under.add(entry.target) : under.delete(entry.target)));
+        this.classList.toggle('is-on-dark', under.size > 0);
+      },
+      { rootMargin: '-32px 0px -92% 0px' }
+    );
+    dark.forEach((section) => this.toneObserver.observe(section));
   }
 
   bindMenu() {

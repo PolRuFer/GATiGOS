@@ -33,10 +33,6 @@
   background-color: var(--sand);
 }
 
-.product-media__frame--bare {
-  --pm-floor: 0px;
-}
-
 /* Warm light behind the object, so the glass has something to refract. */
 .product-media__frame::before {
   content: '';
@@ -227,8 +223,9 @@
   opacity: 0;
 }
 
-/* Catalogue card */
+/* Catalogue card. Rooms on pine override --card-eyebrow (tobacco-ink fails
+   on pine; camel gives 5.21:1). */
 .product-card__material {
   margin-top: var(--space-2);
-  color: var(--tobacco-ink);
+  color: var(--card-eyebrow, var(--tobacco-ink));
 }

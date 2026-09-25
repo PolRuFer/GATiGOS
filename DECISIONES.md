@@ -92,3 +92,7 @@ Decisiones que el brief no cubre. En cada caso, la opción más sobria.
 - Los textos editables (titular, CTA) vienen vacíos y usan el locale. Si el CTA no tiene enlace, va a "todos los productos".
 - Barra de confianza: en móvil, "Envío gratuito" ocupa la primera línea y las otras dos van en la segunda, sin iconos. El umbral se escribe en euros enteros y se formatea con la moneda de la tienda.
 - Bug corregido de la fase 1: el reset de listas `ul[role=list]` tenía especificidad 0,1,1 y anulaba el padding de las píldoras que son `<ul>` (confianza y paginación). Ahora usa `:where()` y no tiene especificidad.
+- **Salas.** Una sola sección `room` con un selector Gato/Perro que fija el tono, la composición, los textos por defecto y, en la fase 5, el juguete. Gato: papel con orbes camel, destacado a la izquierda. Perro: pino con orbes tabaco, composición en espejo. Así las dos salas tienen ritmo propio sin duplicar código.
+- En la sala de pino, la ficha del destacado es `.glass--dark.glass--dense`, porque se apoya en parte sobre el marco arena (6,15:1). Los antetítulos de las tarjetas pasan a camel (5,21:1 sobre pino) mediante `--card-eyebrow`.
+- La ficha del destacado solapa la franja de suelo de su marco, igual que la píldora en las tarjetas.
+- **Header sobre pino:** las secciones con `data-header-tone="dark"` hacen que la píldora del header pase a cristal oscuro denso. Hay dos capas de cristal fijas, se funden solo con `opacity` y el blur no se anima. Sin este cambio, el cristal claro denso sobre pino quedaba gris apagado.

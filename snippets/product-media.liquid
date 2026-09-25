@@ -20,7 +20,7 @@
   @param {string} scope - Unique prefix for element ids (e.g. section.id)
   @param {string} sizes - `sizes` attribute for the responsive image
   @param {boolean} [eager] - First fold: eager load with high fetch priority
-  @param {boolean} [hide_pill] - Omit the pill (the caller renders its own label)
+  @param {boolean} [hide_pill] - Omit the pill (the caller renders its own label on the floor band)
   @param {string} [labelledby] - Ids that label the link when the pill is hidden
   @param {string} [class] - Extra classes for the link
 
@@ -64,7 +64,7 @@
   {% endif %}
   data-product-media
 >
-  <span class="product-media__frame{% if hide_pill %} product-media__frame--bare{% endif %}">
+  <span class="product-media__frame">
     <span class="product-media__pedestal" aria-hidden="true"></span>
     <span class="product-media__stage">
       {%- if image -%}

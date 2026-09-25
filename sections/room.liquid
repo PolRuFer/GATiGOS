@@ -1,0 +1,174 @@
+{{ 'product-media.css' | asset_url | stylesheet_tag }}
+{{ 'section-room.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign room = section.settings.room
+  assign collection = section.settings.collection
+  assign featured = section.settings.featured_product | default: collection.products.first
+  assign dark = false
+  if room == 'dog'
+    assign dark = true
+  endif
+
+  assign locale_key = 'rooms.' | append: room
+  if section.settings.eyebrow != blank
+    assign eyebrow = section.settings.eyebrow
+  else
+    assign eyebrow = locale_key | append: '.eyebrow' | t
+  endif
+  if section.settings.heading != blank
+    assign heading = section.settings.heading
+  else
+    assign heading = locale_key | append: '.heading' | t
+  endif
+  if section.settings.intro != blank
+    assign intro = section.settings.intro
+  else
+    assign intro = locale_key | append: '.intro' | t
+  endif
+
+  assign uid = 'Room-' | append: section.id
+  assign featured_sizes = '(min-width: 990px) 44vw, 100vw'
+  assign rail_sizes = '(min-width: 990px) 21vw, (min-width: 750px) 44vw, 45vw'
+-%}
+
+<section
+  class="room room--{{ room }}{% if dark %} room--dark{% endif %} has-orbs full-width"
+  aria-labelledby="{{ uid }}-title"
+  data-room="{{ room }}"
+  {% if dark %}
+    data-header-tone="dark"
+  {% endif %}
+>
+  <div class="orbs" aria-hidden="true">
+    {%- if dark -%}
+      <span class="orb orb--tobacco" style="--orb-x: 78%; --orb-y: 24%; --orb-size: 56vw; --orb-opacity: 0.22;"></span>
+      <span class="orb orb--tobacco" style="--orb-x: 12%; --orb-y: 82%; --orb-size: 44vw; --orb-opacity: 0.16;"></span>
+    {%- else -%}
+      <span class="orb orb--camel" style="--orb-x: 18%; --orb-y: 30%; --orb-size: 58vw; --orb-opacity: 0.3;"></span>
+      <span class="orb orb--tobacco" style="--orb-x: 86%; --orb-y: 78%; --orb-size: 42vw; --orb-opacity: 0.18;"></span>
+      <span class="orb orb--camel" style="--orb-x: 60%; --orb-y: 12%; --orb-size: 40vw; --orb-opacity: 0.2;"></span>
+    {%- endif -%}
+  </div>
+
+  <div class="room__inner page-width grid">
+    <header class="room__head">
+      <p class="room__eyebrow eyebrow">{{ eyebrow | escape }}</p>
+      <h2 class="display display--title" id="{{ uid }}-title">{{ heading | escape }}</h2>
+      <p class="room__intro">{{ intro | escape }}</p>
+      {%- if collection -%}
+        <a class="room__all link-underline" href="{{ collection.url }}">{{ 'rooms.view_all' | t }}</a>
+      {%- endif -%}
+    </header>
+
+    {%- if featured -%}
+      <div class="room__featured">
+        {% render 'product-media',
+          product: featured,
+          scope: uid,
+          sizes: featured_sizes,
+          hide_pill: true,
+          labelledby: uid | append: '-name ' | append: uid | append: '-price'
+        %}
+        {%- assign featured_material = featured.metafields.custom.material.value -%}
+        <div class="room__ficha glass{% if dark %} glass--dark glass--dense{% endif %}">
+          <p class="room__ficha-eyebrow eyebrow">
+            {%- if featured_material != blank -%}
+              {{ featured_material | escape }}
+            {%- else -%}
+              {{ 'rooms.featured' | t }}
+            {%- endif -%}
+          </p>
+          <p class="room__ficha-name" id="{{ uid }}-name">{{ featured.title | escape }}</p>
+          <p class="room__ficha-price" id="{{ uid }}-price">{% render 'price', product: featured %}</p>
+        </div>
+      </div>
+    {%- elsif request.design_mode -%}
+      <p class="room__empty">{{ 'rooms.empty' | t }}</p>
+    {%- endif -%}
+
+    {%- if collection.products.size > 0 -%}
+      <ul class="room__rail" role="list">
+        {%- assign shown = 0 -%}
+        {%- for product in collection.products -%}
+          {%- if product.id == featured.id -%}
+            {%- continue -%}
+          {%- endif -%}
+          {%- if shown >= section.settings.products_to_show -%}
+            {%- break -%}
+          {%- endif -%}
+          <li class="room__item">
+            {% render 'product-card', product: product, scope: uid, sizes: rail_sizes %}
+          </li>
+          {%- assign shown = shown | plus: 1 -%}
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "t:sections.room.name",
+  "class": "section-room",
+  "settings": [
+    {
+      "type": "select",
+      "id": "room",
+      "label": "t:sections.room.settings.room.label",
+      "info": "t:sections.room.settings.room.info",
+      "options": [
+        { "value": "cat", "label": "t:sections.room.settings.room.options.cat" },
+        { "value": "dog", "label": "t:sections.room.settings.room.options.dog" }
+      ],
+      "default": "cat"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "t:sections.room.settings.eyebrow.label",
+      "info": "t:sections.shared.locale_fallback"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:sections.room.settings.heading.label",
+      "info": "t:sections.shared.locale_fallback"
+    },
+    {
+      "type": "text",
+      "id": "intro",
+      "label": "t:sections.room.settings.intro.label",
+      "info": "t:sections.shared.locale_fallback"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "t:sections.room.settings.collection.label"
+    },
+    {
+      "type": "product",
+      "id": "featured_product",
+      "label": "t:sections.room.settings.featured_product.label",
+      "info": "t:sections.room.settings.featured_product.info"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "t:sections.room.settings.products_to_show.label",
+      "min": 4,
+      "max": 6,
+      "step": 1,
+      "default": 4
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.room.name"
+    }
+  ],
+  "enabled_on": {
+    "templates": ["index"]
+  }
+}
+{% endschema %}

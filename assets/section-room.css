@@ -1,0 +1,127 @@
+/**
+ * GatYGos — rooms ("salas") for the cat and the dog.
+ * Static composition: head, a large featured product with a glass ficha and
+ * a rail of 4–6 products. Phase 5 turns the rail into a pinned horizontal
+ * walk when motion is allowed; this layout is also the reduced-motion one.
+ */
+
+.room {
+  --room-name-size: 1.25rem;
+
+  padding-block: var(--section-space);
+  overflow: clip;
+}
+
+.room--dark {
+  --card-eyebrow: var(--camel);
+
+  background-color: var(--pine);
+  color: var(--paper);
+}
+
+.room__inner {
+  row-gap: var(--space-8);
+}
+
+.room__head,
+.room__featured,
+.room__rail,
+.room__empty {
+  grid-column: 1 / -1;
+}
+
+.room__head {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-2);
+}
+
+.room__eyebrow {
+  color: var(--tobacco-ink);
+}
+
+.room--dark .room__eyebrow {
+  color: var(--camel);
+}
+
+.room__intro {
+  max-width: 36ch;
+  color: var(--ink-muted);
+}
+
+.room--dark .room__intro {
+  color: var(--paper);
+}
+
+.room__all {
+  margin-top: var(--space-1);
+}
+
+/* Featured product with its glass ficha overlapping the frame's floor. */
+.room__featured {
+  position: relative;
+}
+
+.room__ficha {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  gap: var(--space-1);
+  width: min(100% - var(--space-6), 22rem);
+  margin: calc(var(--space-10) * -1) 0 0 var(--space-3);
+  padding: var(--space-3) var(--space-4);
+}
+
+.room__ficha-eyebrow {
+  color: var(--tobacco-ink);
+}
+
+.room--dark .room__ficha-eyebrow {
+  color: var(--camel);
+}
+
+.room__ficha-name {
+  font-size: var(--room-name-size);
+  font-weight: 500;
+  line-height: 1.5rem;
+}
+
+.room__rail {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-6) var(--gutter);
+}
+
+@media (min-width: 990px) {
+  .room__inner {
+    row-gap: var(--space-10);
+    align-items: start;
+  }
+
+  .room__head {
+    grid-column: 1 / span 5;
+  }
+
+  .room__featured {
+    grid-column: 1 / span 6;
+  }
+
+  .room__rail {
+    grid-column: 8 / span 5;
+  }
+
+  /* The dog room mirrors the cat room. */
+  .room--dog .room__head {
+    grid-column: 8 / span 5;
+  }
+
+  .room--dog .room__featured {
+    grid-column: 7 / span 6;
+    grid-row: 2;
+  }
+
+  .room--dog .room__rail {
+    grid-column: 1 / span 5;
+    grid-row: 2;
+  }
+}

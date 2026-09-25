@@ -152,5 +152,20 @@
     "free_shipping": "Envío gratuito desde {{ amount }}",
     "returns": "Devolución {{ days }} días",
     "secure_payment": "Pago seguro"
+  },
+  "rooms": {
+    "view_all": "Ver la colección",
+    "featured": "Destacado",
+    "empty": "Elige una colección y un producto destacado para esta sala.",
+    "cat": {
+      "eyebrow": "Gato",
+      "heading": "Para el gato",
+      "intro": "Para dormir al sol, afilar las uñas y mirar la casa desde arriba."
+    },
+    "dog": {
+      "eyebrow": "Perro",
+      "heading": "Para el perro",
+      "intro": "Para comer a su altura, salir a la calle y volver a su sitio."
+    }
   }
 }

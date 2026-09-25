@@ -34,6 +34,29 @@
   transition: opacity var(--duration) var(--ease-out), visibility 0s;
 }
 
+/* Over pine sections ([data-header-tone="dark"]) the pill cross-fades to
+   dark glass: two layers and opacity only, the blur is never animated. */
+.site-header__glass--dark,
+.site-header.is-on-dark .site-header__glass--light {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--duration) var(--ease-out), visibility 0s linear var(--duration);
+}
+
+.site-header.is-on-dark .site-header__glass--dark {
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+.site-header__bar {
+  color: var(--espresso);
+}
+
+.site-header.is-on-dark .site-header__bar {
+  color: var(--paper);
+}
+
 /* Transparent over the hero. The :has() rule sets the initial state before
    JavaScript runs, so there is no flash of glass on load. */
 html.js:has([data-header-overlay]) .site-header:not(.is-past-hero) .site-header__glass {
@@ -55,7 +78,7 @@ html.js:has([data-header-overlay]) .site-header:not(.is-past-hero) .site-header_
   font-optical-sizing: auto;
   line-height: 1;
   letter-spacing: -0.01em;
-  color: var(--espresso);
+  color: inherit;
   text-decoration: none;
   transform-origin: left center;
   transition: transform var(--duration-slow) var(--ease-out);
@@ -112,7 +135,7 @@ html.js:has([data-header-overlay]) .site-header:not(.is-past-hero) .site-header_
 
 .lang-switch__list > li + li::before {
   content: '/' / '';
-  color: var(--ink-muted);
+  opacity: 0.5;
   font-size: var(--fs-eyebrow);
 }
 
@@ -122,9 +145,10 @@ html.js:has([data-header-overlay]) .site-header:not(.is-past-hero) .site-header_
   padding: 0 var(--space-1);
   border: 0;
   background: none;
-  /* Espresso even when inactive: muted ink drops to 3.44:1 on dense glass
-     over a black background, espresso keeps 6.13:1. */
-  color: var(--espresso);
+  /* Full ink even when inactive: muted ink drops to 3.44:1 on dense glass
+     over a black background, espresso keeps 6.13:1 (paper on dark glass
+     keeps 5.30:1 over paper). */
+  color: inherit;
   font-size: var(--fs-eyebrow);
   font-weight: 500;
   letter-spacing: 0.18em;
