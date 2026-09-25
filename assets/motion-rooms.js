@@ -93,11 +93,15 @@ function pawToy(room, gsap) {
     const gap = Math.hypot(dx, dy);
     const angle = (Math.atan2(dy, dx) * 180) / Math.PI;
     if (gap < 18) {
-      // Caught it: both front paws land together on the mouse.
-      stamp(target.x, target.y, angle, cat.left ? -SIDE : SIDE, 1.15);
-      stamp(target.x, target.y, angle, cat.left ? SIDE : -SIDE, 1.15);
+      // Caught it: both front paws land together on the mouse, once per
+      // catch; the next print needs a full stride away from here.
+      if (cat.walked > 0) {
+        stamp(target.x, target.y, angle, cat.left ? -SIDE : SIDE, 1.15);
+        stamp(target.x, target.y, angle, cat.left ? SIDE : -SIDE, 1.15);
+      }
       cat.x = target.x;
       cat.y = target.y;
+      cat.walked = 0;
       gsap.ticker.remove(walk);
       ticking = false;
       return;
@@ -118,6 +122,9 @@ function pawToy(room, gsap) {
     // A new cat trots in from the nearer side of the room.
     if (!cat) cat = { x: x < box.width / 2 ? -20 : box.width + 20, y, walked: STRIDE, left: false };
     target = { x, y };
+    // A sitting cat ignores the mouse twitching under its paws: it only
+    // sets off again once the mouse is a stride away, so prints never pile up.
+    if (!ticking && Math.hypot(x - cat.x, y - cat.y) < STRIDE * 1.5) return;
     if (!ticking) {
       ticking = true;
       gsap.ticker.add(walk);
