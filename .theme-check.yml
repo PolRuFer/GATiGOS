@@ -1,1 +1,3 @@
 extends: theme-check:recommended
+ignore:
+  - dev/**
