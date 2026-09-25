@@ -15,15 +15,21 @@
   data-header-tone="dark"
   data-manifesto
 >
+  <div class="manifesto__night" aria-hidden="true"></div>
   <div class="orbs" aria-hidden="true">
     <span class="orb orb--tobacco" style="--orb-x: 20%; --orb-y: 30%; --orb-size: 56vw; --orb-opacity: 0.2;"></span>
     <span class="orb orb--tobacco" style="--orb-x: 82%; --orb-y: 76%; --orb-size: 46vw; --orb-opacity: 0.14;"></span>
   </div>
 
   <div class="manifesto__inner page-width grid">
-    <div class="manifesto__panel glass glass--dark" data-manifesto-panel>
+    <div class="manifesto__panel" data-manifesto-panel>
+      <div class="manifesto__glass manifesto__glass--light glass" aria-hidden="true"></div>
+      <div class="manifesto__glass manifesto__glass--dark glass glass--dark" aria-hidden="true"></div>
       <p class="manifesto__eyebrow eyebrow" id="{{ uid }}-eyebrow">{{ 'manifesto.eyebrow' | t }}</p>
-      <p class="manifesto__text display display--manifesto" data-manifesto-text>{{ text | escape }}</p>
+      <p class="manifesto__text display display--manifesto">
+        <span class="visually-hidden">{{ text | escape }}</span>
+        <span class="manifesto__words" aria-hidden="true" data-manifesto-words>{{ text | escape }}</span>
+      </p>
     </div>
   </div>
 </section>

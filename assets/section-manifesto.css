@@ -15,10 +15,47 @@
 }
 
 .manifesto__panel {
+  position: relative;
+  isolation: isolate;
   grid-column: 1 / -1;
   display: grid;
   gap: var(--space-3);
   padding: var(--space-5) var(--space-3);
+}
+
+/* Two glass layers so the panel can cross-fade light → dark with opacity
+   only. Static (and reduced motion): the dark one. */
+.manifesto__glass {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+}
+
+.manifesto__glass--light,
+.manifesto__night {
+  opacity: 0;
+}
+
+.manifesto__night {
+  position: absolute;
+  z-index: -2;
+  inset: 0;
+  background-color: var(--pine);
+}
+
+.manifesto__words {
+  display: block;
+}
+
+.manifesto__words .word {
+  display: inline-block;
+  white-space: pre;
+}
+
+/* Staged by motion-manifesto.js: the room starts as paper and turns pine
+   while it is crossed (the pine layer fades in over the paper). */
+.manifesto.is-staged {
+  background-color: var(--paper);
 }
 
 .manifesto__eyebrow {

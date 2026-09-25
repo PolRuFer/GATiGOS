@@ -61,19 +61,23 @@ class SiteHeader extends HTMLElement {
     this.heroObserver.observe(hero);
   }
 
-  // Dark glass while a pine section sits under the header.
+  // Dark glass while a pine section sits under the header. Sections can
+  // change their tone while scrolling (the manifesto) and announce it with
+  // a `gatygos:tone` event.
   observeTone() {
-    const dark = document.querySelectorAll('[data-header-tone="dark"]');
-    if (!dark.length) return;
+    const toned = document.querySelectorAll('[data-header-tone]');
+    if (!toned.length) return;
     const under = new Set();
+    const update = () => this.classList.toggle('is-on-dark', [...under].some((el) => el.dataset.headerTone === 'dark'));
     this.toneObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => (entry.isIntersecting ? under.add(entry.target) : under.delete(entry.target)));
-        this.classList.toggle('is-on-dark', under.size > 0);
+        update();
       },
       { rootMargin: '-32px 0px -92% 0px' }
     );
-    dark.forEach((section) => this.toneObserver.observe(section));
+    toned.forEach((section) => this.toneObserver.observe(section));
+    document.addEventListener('gatygos:tone', update);
   }
 
   bindMenu() {

@@ -34,6 +34,7 @@ async function init() {
     ['[data-hero]', '@gatygos/motion-hero'],
     ['[data-room]', '@gatygos/motion-rooms'],
     ['[data-reveal]', '@gatygos/motion-cards'],
+    ['[data-manifesto]', '@gatygos/motion-manifesto'],
   ];
   await Promise.all(
     gestures

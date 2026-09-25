@@ -94,12 +94,12 @@ Tokens, cristal, fuentes, header, footer, locales ES/EN, muestra de superficies 
 - [x] 4.2 Escena (`assets/hero-scene.js`): suelo, zócalo, ventanal, luz de tarde, cama de lana; pausa fuera de viewport; fallback del mismo encuadre generado desde la escena (`dev/preview/gen/hero-still.js`).
 - [x] 4.3 Juguete: motas de polvo en el haz (arrastre, toque) y lana que se hunde con retorno elástico (normales inclinadas, raycast con proxy).
 
-### Fase 5 · Scroll y juguetes
+### Fase 5 · Scroll y juguetes ✅
 - [x] 5.1 Ticker central + Lenis + ScrollTrigger + parallax de orbes; reduced-motion sin carga (`assets/motion.js`, `html.motion-ok` antes del primer pintado, desactivado en el editor).
 - [x] 5.2 Hero pineado: la cámara "crece" de 25 cm a la altura de los ojos, ±4° de parallax (`assets/motion-hero.js`).
 - [x] 5.3 Salas pineadas con recorrido horizontal. Juguetes: sol que sigue al cursor (gato) y carril arrastrable con inercia (perro) (`assets/motion-rooms.js`).
 - [x] 5.4 Reveal escalonado + tilt magnético de tarjetas con brillo del canto (`assets/motion-cards.js`).
-- [ ] 5.5 Manifiesto pineado (papel → pino, línea a línea) + palabras que se apartan del cursor.
+- [x] 5.5 Manifiesto pineado (papel → pino, línea a línea) + palabras que se apartan del cursor (`assets/motion-manifesto.js`).
 
 ### Fase 6 · Auditoría final
 - [ ] Lighthouse móvil y desktop, theme check, capturas de todas las vistas a 3 anchos, recorrido de teclado, reduced-motion, fps de cada juguete, tabla final.
@@ -107,7 +107,14 @@ Tokens, cristal, fuentes, header, footer, locales ES/EN, muestra de superficies 
 ---
 
 ## Siguiente paso exacto
-**Fase 5.5:** `assets/motion-manifesto.js`, añadido al import map y a `gestures`. Pin del manifiesto: el fondo pasa de papel a pino, el panel funde de `.glass` a `.glass--dark` (dos capas, solo `opacity`), el titular se revela línea a línea y `data-header-tone` pasa a `dark` a mitad del recorrido. El juguete (palabras que se apartan del cursor como hojas sobre agua) usa una copia visual partida en palabras con `aria-hidden` y el texto original como `visually-hidden`: sigue siendo seleccionable y legible. El estado estático sin `motion-ok` es el actual (pino). Después, **fase 6**.
+**Fase 6 (auditoría):**
+- Lighthouse móvil y escritorio: `npm i --no-save lighthouse` en `dev/preview`, `CHROME_PATH=/opt/pw-browsers/chromium`, contra `http://localhost:4173/index.html` y `collection.html`.
+- `./dev/check.sh`.
+- Capturas de todas las vistas a 360, 768 y 1440.
+- Recorrido completo con teclado.
+- Reduced-motion (Playwright `reducedMotion: 'reduce'`).
+- Coste de CPU de cada juguete.
+- Tabla final aquí.
 
 ### Plan técnico acordado para las fases 4 y 5 (seguir salvo motivo anotado en DECISIONES)
 - **Carga de módulos:** import map en `layout/theme.liquid` con `three`, `gsap`, `gsap/ScrollTrigger` y `lenis`, que apuntan a `asset_url`. Los módulos propios son ES modules en `/assets`, cargados con `<script type="module">`.
