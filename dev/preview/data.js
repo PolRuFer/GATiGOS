@@ -186,6 +186,8 @@ module.exports = {
   }),
   pages: () => [
     { locale: 'es', template: 'demo', out: 'demo.html' },
+    { locale: 'es', template: 'cards', out: 'cards.html' },
+    { locale: 'es', template: 'cards-compact', out: 'cards-compact.html' },
     { locale: 'es', template: 'collection', out: 'collection.html', before: () => module.exports.setPage(1, 2) },
     { locale: 'en', template: 'collection', out: 'collection-en.html', before: () => module.exports.setPage(1, 2) },
     { locale: 'es', template: 'collection', out: 'collection-p4.html', before: () => module.exports.setPage(4, 7) },

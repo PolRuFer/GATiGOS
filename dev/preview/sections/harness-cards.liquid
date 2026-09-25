@@ -1,0 +1,11 @@
+{{ 'product-media.css' | asset_url | stylesheet_tag }}
+<div class="section-space">
+  <ul class="grid" role="list" style="row-gap: var(--space-8)">
+    {%- for product in collections.todo.products limit: 12 -%}
+      <li style="grid-column: span {{ section.settings.span | default: 4 }}">
+        {% render 'product-card', product: product, scope: section.id, sizes: '33vw', eager: forloop.first %}
+      </li>
+    {%- endfor -%}
+  </ul>
+</div>
+{% schema %}{ "name": "Harness cards", "settings": [{ "type": "number", "id": "span", "default": 4 }] }{% endschema %}

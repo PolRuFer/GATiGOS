@@ -103,5 +103,12 @@
     "submit": "Buscar",
     "no_results_html": "No hay resultados para {{ terms }}",
     "results_for_html": "{{ count }} resultados para {{ terms }}"
+  },
+  "products": {
+    "price": {
+      "sale": "Precio de oferta",
+      "regular": "Precio habitual",
+      "from": "Desde {{ price }}"
+    }
   }
 }

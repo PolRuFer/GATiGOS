@@ -68,3 +68,12 @@ Decisiones que el brief no cubre. En cada caso, la opción más sobria.
 ### Entorno de verificación
 - `dev/preview/` contiene un renderizador local (LiquidJS con datos de prueba), un servidor estático y scripts de captura con Playwright, para verificar sin tienda. Son herramientas de desarrollo instaladas con `npm i --no-save` y no forman parte del tema: no hay `package.json` y el CLI no sube `dev/`.
 - Las "fotos de proveedor" de prueba (`dev/preview/media`) son renders de Three.js con fondos blancos, grises, en degradado y uno oscuro, proporciones de 1:1 a 16:9 y encuadres descentrados, para someter a `product-media` al peor caso real.
+
+### `product-media`
+- **Franja de suelo para la píldora.** El marco es 4:5 con un 12% de padding, pero bajo el plinto queda una franja de 72px (56px en tarjetas compactas) donde va la píldora, como la cartela delante de una peana. Así no tapa ni el objeto ni el pedestal, y detrás solo hay arena, el resplandor y la sombra. Con eso el peor caso a tinte 0,55 da 7,56:1 y no hace falta `.glass--dense`.
+- El `multiply` va sobre el escenario y no sobre la imagen. El escenario es su propio contexto de apilado (tiene `z-index` y `transform` en hover): aplicado a la imagen, se fundiría contra transparente.
+- `brightness(1,06) contrast(1,04)` antes de la fusión: lleva a blanco los fondos casi blancos (#f2f2f2 o degradados suaves) para que desaparezcan en lugar de dejar un rectángulo gris. Cambia muy poco el color del producto.
+- La imagen se ancla abajo (`object-position: 50% 100%`) para que el objeto quede lo más cerca posible del plinto. **Límite conocido:** si la foto del proveedor tiene mucho margen inferior, el objeto "flota" sobre el plinto. Se lee como un objeto expuesto, pero conviene recortar fotos con más de un 15% de margen.
+- En tarjetas de menos de 240px, una container query reduce la píldora: nombre en una línea con puntos suspensivos y precio debajo. El nombre completo sigue en el nombre accesible del enlace, que usa `aria-labelledby` con título y precio.
+- El hover solo existe con `(hover: hover) and (pointer: fine)`, para que en táctil el primer toque abra el producto. El foco de teclado reproduce el hover.
+- El precio tachado solo aparece si `compare_at_price > price`, con etiquetas ocultas "Precio de oferta" y "Precio habitual" para lectores de pantalla. Sin insignias de oferta.

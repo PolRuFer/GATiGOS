@@ -1,0 +1,23 @@
+{% doc %}
+  Catalogue card: product-media plus the material eyebrow from the product
+  metafield `custom.material` (single line text), when present.
+
+  Requires assets/product-media.css.
+
+  @param {product} product - Product to render
+  @param {string} scope - Unique prefix for element ids (e.g. section.id)
+  @param {string} sizes - `sizes` attribute for the responsive image
+  @param {boolean} [eager] - First fold: eager load with high fetch priority
+
+  @example
+  {% render 'product-card', product: product, scope: section.id, sizes: sizes %}
+{% enddoc %}
+
+{%- assign material = product.metafields.custom.material.value -%}
+
+<div class="product-card">
+  {% render 'product-media', product: product, scope: scope, sizes: sizes, eager: eager %}
+  {%- if material != blank -%}
+    <p class="product-card__material eyebrow">{{ material | escape }}</p>
+  {%- endif -%}
+</div>

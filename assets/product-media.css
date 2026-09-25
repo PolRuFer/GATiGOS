@@ -1,0 +1,234 @@
+/**
+ * GatYGos — product-media
+ * Supplier photos normalised into one brand frame: 4:5 sand, 12% padding,
+ * contained image on a CSS pedestal, a camel glow behind, and a glass pill
+ * on the floor band in front of the plinth (like a museum label).
+ */
+
+.product-media {
+  --pm-pad: 12cqi; /* 12% of the frame width */
+  --pm-floor: calc(var(--space-8) + var(--space-1)); /* floor band that holds the pill */
+  --pm-inset: 0.75rem; /* pill margin: 12px */
+  --pm-lift: -0.375rem; /* hover lift: 6px */
+  --pm-radius: 2px;
+  --pm-plinth-height: var(--space-1);
+  --pm-glow: color-mix(in srgb, var(--camel) 55%, transparent);
+  --pm-plinth: color-mix(in srgb, var(--camel) 30%, transparent);
+  --pm-shadow: color-mix(in srgb, var(--espresso) 32%, transparent);
+
+  display: block;
+  border-radius: var(--pm-radius);
+  color: var(--espresso);
+  text-decoration: none;
+}
+
+.product-media__frame {
+  position: relative;
+  isolation: isolate;
+  display: block;
+  overflow: hidden;
+  container-type: inline-size;
+  aspect-ratio: 4 / 5;
+  border-radius: var(--pm-radius);
+  background-color: var(--sand);
+}
+
+.product-media__frame--bare {
+  --pm-floor: 0px;
+}
+
+/* Warm light behind the object, so the glass has something to refract. */
+.product-media__frame::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 6% 4% 18%;
+  background: radial-gradient(closest-side, var(--pm-glow), transparent);
+}
+
+.product-media__stage {
+  position: absolute;
+  z-index: 1;
+  inset: var(--pm-pad) var(--pm-pad) calc(var(--pm-pad) + var(--pm-floor));
+  transition: transform var(--duration-slow) var(--ease-out);
+}
+
+.product-media__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: 50% 100%;
+  transition: opacity var(--duration-slow) var(--ease-out);
+}
+
+/* White supplier backgrounds melt into the sand. The blend sits on the
+   stage (not the images) because the stage is its own stacking context. */
+.product-media--blend .product-media__stage {
+  mix-blend-mode: multiply;
+}
+
+/* Lift near-white supplier backgrounds (#f2f2f2, soft gradients) to white
+   before the blend, so they vanish instead of leaving a grey rectangle. */
+.product-media--blend .product-media__img {
+  filter: brightness(1.06) contrast(1.04);
+}
+
+.product-media__img--alt {
+  opacity: 0;
+}
+
+/* Pedestal: a camel plinth right under the stage and a diffuse shadow. */
+.product-media__pedestal {
+  position: absolute;
+  z-index: 0;
+  left: 18%;
+  right: 18%;
+  bottom: calc(var(--pm-pad) + var(--pm-floor) - var(--pm-plinth-height));
+  height: var(--pm-plinth-height);
+  border-radius: var(--pm-radius);
+  background-color: var(--pm-plinth);
+}
+
+.product-media__pedestal::before {
+  content: '';
+  position: absolute;
+  left: 4%;
+  right: 4%;
+  bottom: 50%;
+  height: var(--space-3);
+  background: radial-gradient(closest-side, var(--pm-shadow), transparent);
+  transition: transform var(--duration-slow) var(--ease-out), opacity var(--duration-slow) var(--ease-out);
+}
+
+/* Glass pill: name and price */
+.product-media__pill {
+  position: absolute;
+  z-index: 2;
+  right: var(--pm-inset);
+  bottom: var(--pm-inset);
+  left: var(--pm-inset);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  column-gap: var(--space-2);
+  padding: var(--space-1) var(--space-2);
+  font-size: var(--fs-small);
+  line-height: 1.25rem;
+}
+
+/* Real blur, only for the hovered or focused card (see glass.css budget). */
+.product-media__pill::after {
+  content: '';
+  position: absolute;
+  z-index: -2;
+  inset: 0;
+  border-radius: inherit;
+  -webkit-backdrop-filter: blur(var(--glass-blur-raised)) saturate(var(--glass-saturate));
+  backdrop-filter: blur(var(--glass-blur-raised)) saturate(var(--glass-saturate));
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--duration) var(--ease-out), visibility 0s linear var(--duration);
+}
+
+.product-media__title {
+  min-width: 0;
+  font-weight: 500;
+}
+
+.product-media__price {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.price {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: var(--space-1);
+}
+
+.price__current,
+.price__compare {
+  white-space: nowrap;
+}
+
+.price__current {
+  font-weight: 500;
+}
+
+.price__compare {
+  text-decoration-thickness: 1px;
+}
+
+/* Compact cards (2 columns on phones): smaller floor band and type, name
+   on one line, price below it. */
+@container (max-width: 15rem) {
+  .product-media__stage,
+  .product-media__pedestal,
+  .product-media__pill {
+    --pm-floor: calc(var(--space-6) + var(--space-1));
+    --pm-inset: var(--space-1);
+  }
+
+  .product-media__pill {
+    padding: 0.375rem var(--space-2);
+    font-size: 0.75rem;
+    line-height: 1rem;
+  }
+
+  .product-media__title {
+    flex-basis: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+}
+
+/* Hover (fine pointers only, so touch opens the product on first tap) and
+   keyboard focus share the same response. */
+@media (hover: hover) and (pointer: fine) {
+  .product-media:hover .product-media__stage {
+    transform: translateY(var(--pm-lift));
+  }
+
+  .product-media:hover .product-media__pedestal::before {
+    opacity: 0.7;
+    transform: scaleX(0.9);
+  }
+
+  .product-media:hover .product-media__img--alt,
+  .product-media:hover .product-media__pill::after {
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 0s;
+  }
+
+  .product-media:hover .product-media__img:has(+ .product-media__img--alt) {
+    opacity: 0;
+  }
+}
+
+.product-media:focus-visible .product-media__stage {
+  transform: translateY(var(--pm-lift));
+}
+
+.product-media:focus-visible .product-media__img--alt,
+.product-media:focus-visible .product-media__pill::after {
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+.product-media:focus-visible .product-media__img:has(+ .product-media__img--alt) {
+  opacity: 0;
+}
+
+/* Catalogue card */
+.product-card__material {
+  margin-top: var(--space-2);
+  color: var(--tobacco-ink);
+}

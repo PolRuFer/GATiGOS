@@ -1,0 +1,27 @@
+{% doc %}
+  Product price. Shows the struck compare-at price only when it is higher
+  than the current price, and "From …" when variants have different prices.
+  Screen readers get explicit sale / regular labels.
+
+  @param {product} product - The product whose price is rendered
+
+  @example
+  {% render 'price', product: product %}
+{% enddoc %}
+
+{%- liquid
+  assign current_price = product.price | money
+-%}
+
+<span class="price">
+  {%- if product.compare_at_price > product.price -%}
+    <span class="visually-hidden">{{ 'products.price.sale' | t }}</span>
+    <span class="price__current">{{ current_price }}</span>
+    <span class="visually-hidden">{{ 'products.price.regular' | t }}</span>
+    <s class="price__compare">{{ product.compare_at_price | money }}</s>
+  {%- elsif product.price_varies -%}
+    <span class="price__current">{{ 'products.price.from' | t: price: current_price }}</span>
+  {%- else -%}
+    <span class="price__current">{{ current_price }}</span>
+  {%- endif -%}
+</span>

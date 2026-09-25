@@ -1,0 +1,106 @@
+{% doc %}
+  Normalises a supplier photo into the brand frame and links to the product.
+
+  - 4:5 sand frame, 12% inner padding, image contained and anchored to a
+    CSS pedestal (diffuse shadow + camel plinth), with a soft camel glow
+    behind it for the glass to refract.
+  - White supplier backgrounds melt into the sand with mix-blend-mode:
+    multiply. Set the product metafield `custom.media_blend` (boolean) to
+    false for photos on dark backgrounds.
+  - Name and price sit in a glass pill on the frame's floor, 12px from the
+    edge. It is `.glass--static`: the real blur only appears while the card
+    is hovered or focused, so grids stay within the 4-blur budget.
+  - Hover/focus: the object rises 6px and cross-fades to the second image.
+    Hover styles only apply to fine pointers, so the first tap on touch
+    opens the product.
+
+  Requires assets/product-media.css.
+
+  @param {product} product - Product to render
+  @param {string} scope - Unique prefix for element ids (e.g. section.id)
+  @param {string} sizes - `sizes` attribute for the responsive image
+  @param {boolean} [eager] - First fold: eager load with high fetch priority
+  @param {boolean} [hide_pill] - Omit the pill (the caller renders its own label)
+  @param {string} [labelledby] - Ids that label the link when the pill is hidden
+  @param {string} [class] - Extra classes for the link
+
+  @example
+  {% render 'product-media', product: product, scope: section.id, sizes: '(min-width: 990px) 30vw, 50vw' %}
+{% enddoc %}
+
+{%- liquid
+  assign uid = 'PM-' | append: scope | append: '-' | append: product.id
+  assign image = product.featured_image
+  assign alt_image = product.images[1]
+
+  assign blend = true
+  if product.metafields.custom.media_blend.value == false
+    assign blend = false
+  endif
+
+  if eager
+    assign loading = 'eager'
+    assign fetchpriority = 'high'
+  else
+    assign loading = 'lazy'
+    assign fetchpriority = 'auto'
+  endif
+
+  assign widths = '360, 540, 720, 900, 1080, 1296, 1600'
+  assign image_alt = product.title | escape
+-%}
+
+<a
+  class="product-media{% if blend %} product-media--blend{% endif %}{% if class %} {{ class }}{% endif %}"
+  href="{{ product.url }}"
+  {% if hide_pill %}
+    {% if labelledby %}
+      aria-labelledby="{{ labelledby }}"
+    {% else %}
+      aria-label="{{ image_alt }}"
+    {% endif %}
+  {% else %}
+    aria-labelledby="{{ uid }}-title {{ uid }}-price"
+  {% endif %}
+  data-product-media
+>
+  <span class="product-media__frame{% if hide_pill %} product-media__frame--bare{% endif %}">
+    <span class="product-media__pedestal" aria-hidden="true"></span>
+    <span class="product-media__stage">
+      {%- if image -%}
+        {{
+          image
+          | image_url: width: 1600
+          | image_tag:
+            class: 'product-media__img',
+            widths: widths,
+            sizes: sizes,
+            loading: loading,
+            fetchpriority: fetchpriority,
+            alt: image_alt
+        }}
+        {%- if alt_image -%}
+          {{
+            alt_image
+            | image_url: width: 1600
+            | image_tag:
+              class: 'product-media__img product-media__img--alt',
+              widths: widths,
+              sizes: sizes,
+              loading: 'lazy',
+              alt: ''
+          }}
+        {%- endif -%}
+      {%- else -%}
+        {{ 'product-1' | placeholder_svg_tag: 'product-media__img product-media__placeholder' }}
+      {%- endif -%}
+    </span>
+
+    {%- unless hide_pill -%}
+      <span class="product-media__pill glass glass--pill glass--static">
+        <span class="product-media__title" id="{{ uid }}-title">{{ product.title | escape }}</span>
+        <span class="product-media__price" id="{{ uid }}-price">{% render 'price', product: product %}</span>
+      </span>
+    {%- endunless -%}
+  </span>
+</a>

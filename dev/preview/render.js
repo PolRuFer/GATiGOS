@@ -61,6 +61,7 @@ function makeEngine(locale, globals = {}) {
       if (widths.length) attrs.push(`srcset="${widths.map((x) => `${base}?width=${x} ${x}w`).join(', ')}"`);
     }
     for (const [k, v] of Object.entries(o)) {
+      if (k === 'alt') { attrs.push(`alt="${String(v ?? '').replace(/"/g, '&quot;')}"`); continue; }
       if (['widths', 'preload'].includes(k) || v === false || v == null || v === '') continue;
       attrs.push(v === true ? k : `${k}="${String(v).replace(/"/g, '&quot;')}"`);
     }
