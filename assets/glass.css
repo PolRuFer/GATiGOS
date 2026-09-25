@@ -139,8 +139,12 @@
   --orb-opacity: 0.25;
   --orb-color: var(--camel);
 
-  /* 40–60vw on desktop; never under 22rem so the light still reads on phones. */
-  --_size: max(var(--orb-size), 22rem);
+  /* 40–60vw on desktop; never under 22rem so the light still reads on phones.
+     The softness a blur(80px) filter used to add is drawn into the gradient
+     instead (the orb grows by the blur's reach and falls off like a
+     gaussian): same look, no filter to recompute while anything moves on
+     top of it. */
+  --_size: calc(max(var(--orb-size), 22rem) + 10rem);
 
   position: absolute;
   top: var(--orb-y, 50%);
@@ -149,9 +153,16 @@
   aspect-ratio: 1;
   margin: calc(var(--_size) / -2) 0 0 calc(var(--_size) / -2);
   border-radius: 50%;
-  background: radial-gradient(circle closest-side, var(--orb-color), rgba(184, 146, 106, 0));
+  background: radial-gradient(
+    circle closest-side,
+    var(--orb-color) 0%,
+    color-mix(in srgb, var(--orb-color) 88%, transparent) 22%,
+    color-mix(in srgb, var(--orb-color) 62%, transparent) 42%,
+    color-mix(in srgb, var(--orb-color) 32%, transparent) 62%,
+    color-mix(in srgb, var(--orb-color) 11%, transparent) 80%,
+    color-mix(in srgb, var(--orb-color) 0%, transparent) 100%
+  );
   opacity: var(--orb-opacity);
-  filter: blur(80px);
 }
 
 .orb--camel {
@@ -160,8 +171,6 @@
 
 .orb--tobacco {
   --orb-color: var(--tobacco);
-
-  background: radial-gradient(circle closest-side, var(--orb-color), rgba(138, 94, 59, 0));
 }
 
 /* ---------------------------------------------------------------------------

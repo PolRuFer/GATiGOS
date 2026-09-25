@@ -130,7 +130,7 @@ Render local de `dev/preview` (LiquidJS con datos de prueba, servidor sin compre
 | Tilt de tarjetas | 0,02 ms por evento a 4× |
 | Arrastre en la sala del perro | Va por el scroll de Lenis, sin coste propio |
 | fps en reposo a 4× (sin GPU) | 60 fps en todas las secciones |
-| fps con el juguete activo a 4× (sin GPU) | Manifiesto y tarjetas: 60 fps. **Sala del gato: ~13 fps** (ver deuda 1) |
+| fps con el juguete activo a 4× (sin GPU) | Manifiesto y tarjetas: 60 fps. Sala del gato: ~56 fps (17,8 ms; antes ~13 fps, resuelto con orbes sin filtro) |
 
 ## Qué necesitas hacer tú en Shopify
 1. **Fotos:** subirlas tal como llegan del proveedor. `product-media` las normaliza. En fotos con fondo oscuro, marca el metafield `custom.media_blend = false`.
@@ -174,12 +174,9 @@ Render local de `dev/preview` (LiquidJS con datos de prueba, servidor sin compre
 - LiquidJS acepta sintaxis que Shopify rechaza, como filtros en los argumentos de `render`: ejecutar siempre `./dev/check.sh` antes de commitear.
 
 ## Deuda abierta
-1. **Juguete de la sala del gato sin GPU:** con el juguete activo, el sol y el giro de la pieza obligan a recomponer los orbes con `filter: blur(80px)` en cada fotograma. En composición por software a 4× baja a ~13 fps. Ni dar capa propia a los elementos que se mueven ni a los orbes lo corrige en este entorno. En un móvil con GPU probablemente no ocurre, pero no se puede medir aquí.
-   - Propuesta (necesita tu OK porque cambia una regla de la fase 1): dibujar los orbes con un degradado radial más amplio y visualmente equivalente, sin `filter`.
-   - Alternativa sin tocar la fase 1: retirar el juguete del sol, como indica la regla "simplifica o elimina".
+1. ~~Juguete de la sala del gato sin GPU~~: resuelto. Los orbes ya no usan `filter: blur(80px)`; la suavidad va dibujada en el degradado (aprobado por ti). La sala pasa de 77 ms a 17,8 ms por fotograma a 4×.
 2. **fps de GPU de la escena 3D:** no se pueden medir en este contenedor (SwiftShader). Verificar en un portátil y un móvil reales.
 3. **Referencia lilguy.net:** la bloquea la política de red del entorno. Para revisarla, añade el dominio a los permitidos en los ajustes del entorno.
 4. **Render local frente a Shopify:** comprobar en `shopify theme dev` la Section Rendering API de los filtros, el formulario de idioma, las políticas y los metafields reales.
 
 ## Pendiente de tu OK
-- Orbes sin `filter: blur(80px)` (deuda 1).
