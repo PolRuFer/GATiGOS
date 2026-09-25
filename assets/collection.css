@@ -44,3 +44,552 @@
     grid-column: 1 / span 6;
   }
 }
+
+/* ---------------------------------------------------------------------------
+ * Toolbar: sticky glass pill under the header
+ * The form is the sticky element (its parent spans the whole results area).
+ * ------------------------------------------------------------------------- */
+.collection-toolbar {
+  position: sticky;
+  z-index: 30;
+  top: calc(var(--header-inset) + var(--header-height) + var(--space-1));
+}
+
+.collection-toolbar__pill {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--header-height);
+  padding: var(--space-1) var(--space-3);
+}
+
+.collection-toolbar__open,
+.filter-drawer__close {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-height: 2.75rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: var(--fs-small);
+  font-weight: 500;
+}
+
+.collection-toolbar__badge {
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.25rem;
+  height: 1.25rem;
+  padding-inline: 0.3125rem;
+  border-radius: var(--glass-radius-pill);
+  background-color: var(--tobacco);
+  color: var(--paper);
+  font-size: var(--fs-eyebrow);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.collection-toolbar__count {
+  margin-inline-start: auto;
+  font-size: var(--fs-small);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* Phones: align the bar with the floating header above it. */
+@media (max-width: 749px) {
+  .collection-toolbar__bar {
+    padding-inline: var(--header-inset);
+  }
+}
+
+/* Until JavaScript enhances the component, filters sit inline and the
+   form submits normally. */
+collection-filters:not(.is-enhanced) .collection-toolbar__open {
+  display: none;
+}
+
+collection-filters.is-enhanced .filters__apply {
+  display: none;
+}
+
+collection-filters:not(.is-enhanced) .collection-toolbar__pill {
+  flex-wrap: wrap;
+  border-radius: var(--glass-radius);
+}
+
+@media (max-width: 989px) {
+  collection-filters.is-enhanced .collection-toolbar__slot {
+    display: none;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * Facets
+ * ------------------------------------------------------------------------- */
+.filters__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-4);
+}
+
+.facet {
+  position: relative;
+}
+
+.facet__summary {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-height: 2.75rem;
+  font-size: var(--fs-small);
+  font-weight: 500;
+  list-style: none;
+  cursor: pointer;
+}
+
+.facet__summary::-webkit-details-marker {
+  display: none;
+}
+
+/* Chevron drawn with borders so it follows currentColor. */
+.facet__summary::after,
+.filters__select-wrap::after {
+  content: '';
+  width: 0.4375rem;
+  height: 0.4375rem;
+  margin-inline-start: var(--space-1);
+  border-right: 1px solid currentColor;
+  border-bottom: 1px solid currentColor;
+  transform: translateY(-25%) rotate(45deg);
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+
+.facet[open] > .facet__summary::after {
+  transform: translateY(25%) rotate(225deg);
+}
+
+.facet__active {
+  font-variant-numeric: tabular-nums;
+}
+
+.facet__panel {
+  position: absolute;
+  z-index: 1;
+  top: calc(100% + var(--space-2));
+  left: calc(var(--space-2) * -1);
+  min-width: 16rem;
+  padding: var(--space-2) var(--space-3);
+}
+
+.facet__fieldset {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-inline-size: 0;
+}
+
+.facet__option {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 2.75rem;
+  font-size: var(--fs-small);
+  cursor: pointer;
+}
+
+.facet__option:has(:disabled) {
+  cursor: default;
+  text-decoration: line-through;
+}
+
+.facet__checkbox {
+  appearance: none;
+  flex: 0 0 auto;
+  width: 1rem;
+  height: 1rem;
+  margin: 0;
+  border: 1px solid var(--espresso);
+  background-color: transparent;
+  transition: background-color var(--duration-fast) var(--ease-out), box-shadow var(--duration-fast) var(--ease-out);
+}
+
+.facet__checkbox:checked {
+  background-color: var(--espresso);
+  box-shadow: inset 0 0 0 3px var(--paper);
+}
+
+.facet__label {
+  flex: 1 1 auto;
+}
+
+.facet__count {
+  font-variant-numeric: tabular-nums;
+}
+
+.facet__price {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2);
+  padding-block: var(--space-1);
+}
+
+.facet__price-field {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.facet__price-input {
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid var(--espresso);
+  background: transparent;
+  font-variant-numeric: tabular-nums;
+  appearance: textfield;
+}
+
+.facet__price-input::-webkit-inner-spin-button,
+.facet__price-input::-webkit-outer-spin-button {
+  appearance: none;
+  margin: 0;
+}
+
+/* Sort */
+.filters__sort {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--fs-small);
+}
+
+.filters__sort-label {
+  white-space: nowrap;
+}
+
+.filters__select-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.filters__select-wrap::after {
+  position: absolute;
+  right: 0;
+  pointer-events: none;
+}
+
+.filters__select {
+  field-sizing: content;
+  appearance: none;
+  min-height: 2.75rem;
+  padding: 0 var(--space-3) 0 0;
+  border: 0;
+  background: transparent;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+/* Desktop: facets | count | sort, all in the pill. */
+@media (min-width: 990px) {
+  .collection-toolbar__open {
+    display: none;
+  }
+
+  .collection-toolbar__slot,
+  .filters {
+    display: contents;
+  }
+
+  .filters__list {
+    order: 1;
+  }
+
+  .collection-toolbar__count {
+    order: 2;
+  }
+
+  .filters__sort {
+    order: 3;
+    padding-inline-start: var(--space-3);
+    border-inline-start: 1px solid color-mix(in srgb, var(--espresso) 16%, transparent);
+  }
+
+  .filters__apply {
+    order: 4;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * Drawer (phones and tablets): the same .filters node moves in here
+ * ------------------------------------------------------------------------- */
+.filter-drawer {
+  position: fixed;
+  inset: var(--header-inset);
+  width: auto;
+  height: auto;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  flex-direction: column;
+  overscroll-behavior: contain;
+  opacity: 0;
+  transform: translateY(var(--space-2));
+  transition: opacity var(--duration) var(--ease-out), transform var(--duration) var(--ease-out),
+    overlay var(--duration) allow-discrete, display var(--duration) allow-discrete;
+}
+
+.filter-drawer[open] {
+  display: flex;
+  opacity: 1;
+  transform: none;
+}
+
+@starting-style {
+  .filter-drawer[open] {
+    opacity: 0;
+    transform: translateY(var(--space-2));
+  }
+}
+
+.filter-drawer::backdrop {
+  background-color: color-mix(in srgb, var(--espresso) 12%, transparent);
+}
+
+.filter-drawer__head,
+.filter-drawer__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-3);
+}
+
+.filter-drawer__head {
+  min-height: var(--header-height);
+  border-bottom: 1px solid color-mix(in srgb, var(--espresso) 14%, transparent);
+}
+
+.filter-drawer__title {
+  font-family: var(--font-ui);
+  font-size: var(--fs-small);
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.5rem;
+}
+
+.filter-drawer__body {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: var(--space-1) var(--space-3) var(--space-3);
+}
+
+.filter-drawer__foot {
+  padding-block: var(--space-2);
+  border-top: 1px solid color-mix(in srgb, var(--espresso) 14%, transparent);
+}
+
+/* In the drawer, facets become accordions and lose their own glass: the
+   drawer is already the glass surface. */
+.filter-drawer .filters {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.filter-drawer .filters__list {
+  display: block;
+}
+
+.filter-drawer .filters__list > li {
+  border-bottom: 1px solid color-mix(in srgb, var(--espresso) 14%, transparent);
+}
+
+.filter-drawer .facet__summary {
+  justify-content: space-between;
+  min-height: 3.5rem;
+  font-size: var(--fs-body);
+}
+
+.filter-drawer .facet__summary::after {
+  margin-inline-start: auto;
+}
+
+.filter-drawer .facet__panel {
+  position: static;
+  min-width: 0;
+  padding: 0 0 var(--space-2);
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.filter-drawer .facet__panel::before {
+  content: none;
+}
+
+.filter-drawer .filters__sort {
+  justify-content: space-between;
+  min-height: 3.5rem;
+  font-size: var(--fs-body);
+}
+
+@media (min-width: 990px) {
+  .filter-drawer {
+    display: none;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * Active filters
+ * ------------------------------------------------------------------------- */
+.active-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1) var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.active-filters__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-height: 2rem;
+  padding: 0 var(--space-2);
+  border: 1px solid color-mix(in srgb, var(--espresso) 24%, transparent);
+  border-radius: var(--glass-radius-pill);
+  font-size: var(--fs-small);
+  text-decoration: none;
+  transition: border-color var(--duration-fast) var(--ease-out);
+}
+
+.active-filters__chip:hover {
+  border-color: var(--espresso);
+}
+
+.active-filters__clear {
+  font-size: var(--fs-small);
+  text-decoration: underline;
+  text-decoration-color: var(--tobacco);
+}
+
+/* ---------------------------------------------------------------------------
+ * Grid: 3 columns on desktop, 2 on tablet, 2 compact on phones
+ * ------------------------------------------------------------------------- */
+.collection__results {
+  padding-block: var(--space-4) var(--section-space);
+  transition: opacity var(--duration) var(--ease-out);
+}
+
+.collection__results[aria-busy='true'] {
+  opacity: 0.4;
+}
+
+.collection__grid {
+  row-gap: var(--space-6);
+  margin-top: var(--space-4);
+}
+
+.collection__item {
+  grid-column: span 6;
+}
+
+@media (min-width: 990px) {
+  .collection__grid {
+    row-gap: var(--space-10);
+  }
+
+  .collection__item {
+    grid-column: span 4;
+  }
+}
+
+.collection__empty {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-2);
+  padding-block: var(--space-10);
+}
+
+/* ---------------------------------------------------------------------------
+ * Pagination: centred glass pill over a light orb
+ * ------------------------------------------------------------------------- */
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--space-12);
+  padding-block: var(--space-6);
+}
+
+.pagination__pill {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1);
+}
+
+.pagination__page,
+.pagination__step,
+.pagination__gap {
+  display: inline-grid;
+  place-items: center;
+  min-width: 2.75rem;
+  height: 2.75rem;
+  border-radius: var(--glass-radius-pill);
+  font-size: var(--fs-small);
+  font-variant-numeric: tabular-nums;
+  text-decoration: none;
+  transition: background-color var(--duration-fast) var(--ease-out);
+}
+
+.pagination__page:hover,
+.pagination__step:hover {
+  background-color: color-mix(in srgb, var(--paper) 70%, transparent);
+}
+
+/* Current page: tobacco fill, paper text (4.52:1). */
+.pagination__page.is-current {
+  background-color: var(--tobacco);
+  color: var(--paper);
+  font-weight: 500;
+}
+
+.pagination__status {
+  display: none;
+  padding-inline: var(--space-2);
+  font-size: var(--fs-small);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+@media (max-width: 749px) {
+  .pagination__status {
+    display: block;
+  }
+
+  .pagination__number {
+    display: none;
+  }
+}
+
+.pagination__step.is-disabled {
+  opacity: 0.35;
+}
+
+.pagination__chevron {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-top: 1px solid currentColor;
+  border-right: 1px solid currentColor;
+  transform: translateX(-20%) rotate(45deg);
+}
+
+.pagination__chevron--prev {
+  transform: translateX(20%) rotate(-135deg);
+}

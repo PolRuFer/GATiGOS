@@ -75,12 +75,12 @@ node shots.js http://localhost:4173/index.html shot/home 1440,768,360 [scrollY] 
 ### Fase 1 · Base ✅
 Tokens, cristal, fuentes, header, footer, locales ES/EN, muestra de superficies (commit `61f5a1f`).
 
-### Fase 2 · `product-media`, colección y paginación
+### Fase 2 · `product-media`, colección y paginación ✅
 - [x] 2.1 Entorno: preview en `dev/preview`, fotos de proveedor simuladas (fondos y proporciones dispares, `gen/run.js`), datos de colección.
 - [x] 2.2 `snippets/product-media.liquid` + `snippets/product-card.liquid` + `snippets/price.liquid` + `assets/product-media.css`.
 - [x] 2.3 Cabecera editorial de colección (`sections/collection-header.liquid`), `.orbs--fade-end`.
-- [ ] 2.4 Rejilla, filtros nativos (barra sticky y drawer móvil) y orden (`sections/collection.liquid`, `assets/collection.css`, `assets/collection-filters.js`).
-- [ ] 2.5 Paginación de 24 en píldora de cristal (`snippets/pagination.liquid`).
+- [x] 2.4 Rejilla, filtros nativos (barra sticky y drawer móvil) y orden (`sections/collection.liquid`, `assets/collection.css`, `assets/collection-filters.js`).
+- [x] 2.5 Paginación de 24 en píldora de cristal (`snippets/pagination.liquid`).
 
 ### Fase 3 · Home sin animación
 - [ ] 3.1 Hero: estructura, panel de copy con bloques y fallback estático.
@@ -107,7 +107,7 @@ Tokens, cristal, fuentes, header, footer, locales ES/EN, muestra de superficies 
 ---
 
 ## Siguiente paso exacto
-Fase 2.4: rejilla + filtros nativos + orden en `sections/collection.liquid` (reescribe la del Skeleton), `assets/collection-filters.js`.
+Fase 3.1: hero (estructura, panel de copy con bloques y fallback estático) en `sections/hero.liquid` + `templates/index.json`.
 
 ## Deuda abierta
 _Ninguna._

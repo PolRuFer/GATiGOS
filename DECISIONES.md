@@ -77,3 +77,11 @@ Decisiones que el brief no cubre. En cada caso, la opción más sobria.
 - En tarjetas de menos de 240px, una container query reduce la píldora: nombre en una línea con puntos suspensivos y precio debajo. El nombre completo sigue en el nombre accesible del enlace, que usa `aria-labelledby` con título y precio.
 - El hover solo existe con `(hover: hover) and (pointer: fine)`, para que en táctil el primer toque abra el producto. El foco de teclado reproduce el hover.
 - El precio tachado solo aparece si `compare_at_price > price`, con etiquetas ocultas "Precio de oferta" y "Precio habitual" para lectores de pantalla. Sin insignias de oferta.
+
+### Colección
+- **Un solo juego de filtros.** En escritorio los filtros viven en la barra sticky como desplegables `<details>`, solo uno abierto a la vez, cerrables con Esc o con clic fuera. Por debajo de 990px, el mismo nodo pasa a un `<dialog>` modal, que da foco atrapado y fondo inerte sin código propio. Duplicar el marcado habría enviado cada input dos veces.
+- Sin JavaScript, el formulario GET nativo funciona con un botón "Aplicar". Con JavaScript, cada cambio pide la sección a la Section Rendering API, sustituye los resultados con una View Transition (si se permite el movimiento) y sincroniza contadores y estados de los inputs sin reemplazarlos, para que el foco no se pierda. Atrás y adelante del navegador funcionan con `pushState`.
+- El elemento sticky es el `<form>`, porque su padre abarca todos los resultados; si fuera la barra, dentro de un padre de su misma altura, nunca se quedaría pegada.
+- Presupuesto de blur: header, barra, panel desplegado y píldora en hover suman 4. En el drawer, los paneles pierden su propio cristal para no poner cristal sobre cristal.
+- Casillas cuadradas de 1rem con relleno espresso y aro papel, sin iconos. Los chevrons se dibujan con bordes en `currentColor`: el subset de Hanken no incluye flechas y evitamos mezclar tipografías del sistema.
+- Paginación: por debajo de 750px se reduce a `‹ 4 / 7 ›`, con el texto accesible "Página 4 de 7", porque nueve botones de 44px no caben en 320px. Va sobre un orbe para no poner cristal sobre papel plano.

@@ -1,0 +1,68 @@
+{% doc %}
+  Pagination in a centred glass pill over a light orb: previous, page numbers (with gaps) and
+  next. The current page is filled with tobacco and marked aria-current.
+  Below 750px the numbers collapse into "4 / 7" between the arrows.
+
+  Requires assets/collection.css.
+
+  @param {object} paginate - The paginate object from {% paginate %}
+
+  @example
+  {% render 'pagination', paginate: paginate %}
+{% enddoc %}
+
+<nav class="pagination has-orbs" aria-label="{{ 'pagination.label' | t }}">
+  <div class="orbs" aria-hidden="true">
+    <span class="orb orb--camel" style="--orb-size: 40vw; --orb-opacity: 0.28;"></span>
+  </div>
+  <ul class="pagination__pill glass glass--pill" role="list">
+    <li>
+      {%- if paginate.previous.is_link -%}
+        <a class="pagination__step" href="{{ paginate.previous.url }}" aria-label="{{ 'pagination.previous' | t }}">
+          <span class="pagination__chevron pagination__chevron--prev" aria-hidden="true"></span>
+        </a>
+      {%- else -%}
+        <span class="pagination__step is-disabled" aria-hidden="true">
+          <span class="pagination__chevron pagination__chevron--prev"></span>
+        </span>
+      {%- endif -%}
+    </li>
+
+    <li class="pagination__status">
+      <span aria-hidden="true">{{ paginate.current_page }} / {{ paginate.pages }}</span>
+      <span class="visually-hidden">{{ 'pagination.status' | t: current: paginate.current_page, total: paginate.pages }}</span>
+    </li>
+
+    {%- for part in paginate.parts -%}
+      <li class="pagination__number">
+        {%- if part.is_link -%}
+          <a class="pagination__page" href="{{ part.url }}" aria-label="{{ 'pagination.page' | t: page: part.title }}">
+            {{- part.title -}}
+          </a>
+        {%- elsif part.title == paginate.current_page -%}
+          <span
+            class="pagination__page is-current"
+            aria-current="page"
+            aria-label="{{ 'pagination.page' | t: page: part.title }}"
+          >
+            {{- part.title -}}
+          </span>
+        {%- else -%}
+          <span class="pagination__gap" aria-hidden="true">{{ part.title }}</span>
+        {%- endif -%}
+      </li>
+    {%- endfor -%}
+
+    <li>
+      {%- if paginate.next.is_link -%}
+        <a class="pagination__step" href="{{ paginate.next.url }}" aria-label="{{ 'pagination.next' | t }}">
+          <span class="pagination__chevron" aria-hidden="true"></span>
+        </a>
+      {%- else -%}
+        <span class="pagination__step is-disabled" aria-hidden="true">
+          <span class="pagination__chevron"></span>
+        </span>
+      {%- endif -%}
+    </li>
+  </ul>
+</nav>

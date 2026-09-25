@@ -84,7 +84,31 @@
   },
   "collections": {
     "title": "Colecciones",
-    "eyebrow": "Colección"
+    "eyebrow": "Colección",
+    "product_count": {
+      "one": "{{ count }} pieza",
+      "other": "{{ count }} piezas"
+    },
+    "empty": "No hay piezas con estos filtros.",
+    "filters": {
+      "open": "Filtrar y ordenar",
+      "heading": "Filtros",
+      "active": "Filtros activos",
+      "apply": "Aplicar",
+      "clear": "Borrar filtros",
+      "close": "Cerrar",
+      "show": {
+        "one": "Ver {{ count }} pieza",
+        "other": "Ver {{ count }} piezas"
+      },
+      "remove": "quitar filtro",
+      "price_from": "Desde (€)",
+      "price_to": "Hasta (€)",
+      "price_chip": "{{ min }} – {{ max }}"
+    },
+    "sort": {
+      "label": "Ordenar por"
+    }
   },
   "gift_card": {
     "add_to_apple_wallet": "Añadir a Apple Wallet",
@@ -111,5 +135,12 @@
       "regular": "Precio habitual",
       "from": "Desde {{ price }}"
     }
+  },
+  "pagination": {
+    "label": "Paginación",
+    "previous": "Página anterior",
+    "next": "Página siguiente",
+    "page": "Página {{ page }}",
+    "status": "Página {{ current }} de {{ total }}"
   }
 }

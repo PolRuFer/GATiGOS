@@ -17,7 +17,10 @@ const port = +process.env.PORT || 4173;
 http.createServer((req, res) => {
   const u = decodeURIComponent(req.url.split('?')[0]);
   const route = routes.find(([prefix]) => u.startsWith(prefix));
-  const f = route ? path.join(route[1], u.slice(route[0].length)) : path.join(OUT, u === '/' ? 'index.html' : u);
+  let f = route ? path.join(route[1], u.slice(route[0].length)) : path.join(OUT, u === '/' ? 'index.html' : u);
+  // Section Rendering API mock: any /collections/* request returns the
+  // filtered or unfiltered collection render.
+  if (u.startsWith('/collections/')) f = path.join(OUT, req.url.includes('filter.') ? 'collection-filtered.html' : 'collection.html');
   fs.readFile(f, (err, buf) => {
     if (err) { res.writeHead(404); return res.end('404 ' + u); }
     res.writeHead(200, { 'Content-Type': types[path.extname(f)] || 'application/octet-stream', 'Cache-Control': 'max-age=3600' });

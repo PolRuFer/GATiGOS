@@ -140,6 +140,9 @@
           "label": "Eyebrow"
         }
       }
+    },
+    "collection": {
+      "name": "Collection products"
     }
   }
 }

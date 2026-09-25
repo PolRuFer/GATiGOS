@@ -149,6 +149,14 @@ function paginateState(current, pages, by) {
 }
 let pageState = { current: 1, pages: 2 };
 
+// A filtered state (Material: Lana merino + Fieltro de lana) for the Section Rendering API mock.
+function filteredScope() {
+  const values = filters[1].values.map((v) => ({ ...v, active: ['Lana merino', 'Fieltro de lana'].includes(v.label) }));
+  const material = { ...filters[1], values, active_values: values.filter((v) => v.active) };
+  const f = [filters[0], material, filters[2]];
+  return { collection: { ...collections.todo, filters: f, products: pick('cama-lana-merino', 'cueva-fieltro', 'pelotas-fieltro'), products_count: 3 } };
+}
+
 let formState = {};
 module.exports = {
   money,
@@ -191,6 +199,7 @@ module.exports = {
     { locale: 'es', template: 'collection', out: 'collection.html', before: () => module.exports.setPage(1, 2) },
     { locale: 'en', template: 'collection', out: 'collection-en.html', before: () => module.exports.setPage(1, 2) },
     { locale: 'es', template: 'collection', out: 'collection-p4.html', before: () => module.exports.setPage(4, 7) },
+    { locale: 'es', template: 'collection', out: 'collection-filtered.html', before: () => module.exports.setPage(1, 1), scope: filteredScope },
     { locale: 'es', template: 'index', out: 'index.html' },
     { locale: 'en', template: 'index', out: 'index-en.html' },
   ],

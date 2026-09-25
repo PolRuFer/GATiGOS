@@ -84,7 +84,31 @@
   },
   "collections": {
     "title": "Collections",
-    "eyebrow": "Collection"
+    "eyebrow": "Collection",
+    "product_count": {
+      "one": "{{ count }} piece",
+      "other": "{{ count }} pieces"
+    },
+    "empty": "No pieces match these filters.",
+    "filters": {
+      "open": "Filter and sort",
+      "heading": "Filters",
+      "active": "Active filters",
+      "apply": "Apply",
+      "clear": "Clear filters",
+      "close": "Close",
+      "show": {
+        "one": "Show {{ count }} piece",
+        "other": "Show {{ count }} pieces"
+      },
+      "remove": "remove filter",
+      "price_from": "From (€)",
+      "price_to": "To (€)",
+      "price_chip": "{{ min }} – {{ max }}"
+    },
+    "sort": {
+      "label": "Sort by"
+    }
   },
   "gift_card": {
     "add_to_apple_wallet": "Add to Apple Wallet",
@@ -111,5 +135,12 @@
       "regular": "Regular price",
       "from": "From {{ price }}"
     }
+  },
+  "pagination": {
+    "label": "Pagination",
+    "previous": "Previous page",
+    "next": "Next page",
+    "page": "Page {{ page }}",
+    "status": "Page {{ current }} of {{ total }}"
   }
 }

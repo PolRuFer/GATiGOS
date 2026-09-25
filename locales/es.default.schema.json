@@ -140,6 +140,9 @@
           "label": "Antetítulo"
         }
       }
+    },
+    "collection": {
+      "name": "Productos de la colección"
     }
   }
 }
