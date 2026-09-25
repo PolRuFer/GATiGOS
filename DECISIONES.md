@@ -135,3 +135,9 @@ Decisiones que el brief no cubre. En cada caso, la opción más sobria.
   - Juguete: las palabras se apartan del puntero en un radio de 140px (hasta 28px, con un leve giro de 4°) y vuelven en 1,6 s. Referencia: la tipografía física de Active Theory. Lo que cambia: es solo un empujón, sin dispersión.
   - Accesibilidad: el texto visible, partido en palabras, lleva `aria-hidden` y sigue siendo seleccionable; los lectores de pantalla leen una copia oculta visualmente.
   - Robustez: el estado escenificado (fondo papel) solo lo activa el JavaScript al crear la línea de tiempo. Sin él, queda la versión estática en pino.
+
+## Fase 6 · Auditoría
+
+- **El 3D espera una intención del usuario** (puntero, toque, scroll o tecla) y rechaza el WebGL por software (SwiftShader, llvmpipe), además de `failIfMajorPerformanceCaveat`. Lighthouse y PageSpeed se ejecutan sin GPU: en la primera medición, compilar los shaders por software dio un TBT de 2,7 s y un rendimiento de 49. Como el fallback tiene el encuadre exacto de la escena, el cambio al 3D no se nota, y quien nunca interactúa ve la misma habitación fija.
+- El arranque del movimiento importa e inicializa cada gesto en su propia tarea (`scheduler.yield`), para no crear una sola tarea larga.
+- **Favicon:** una "G" de Fraunces convertida a trazado (sin depender de la fuente) en espresso sobre un círculo papel, en SVG (4 KB). Elimina el 404 de `/favicon.ico` en consola.

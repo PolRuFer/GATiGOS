@@ -36,13 +36,19 @@ async function init() {
     ['[data-reveal]', '@gatygos/motion-cards'],
     ['[data-manifesto]', '@gatygos/motion-manifesto'],
   ];
-  await Promise.all(
-    gestures
-      .filter(([selector]) => document.querySelector(selector))
-      .map(([, specifier]) => import(specifier).then((module) => module.default(context)))
-  );
+  // One gesture per task, so start-up never becomes a single long task.
+  for (const [selector, specifier] of gestures) {
+    if (!document.querySelector(selector)) continue;
+    const module = await import(specifier);
+    await yieldToMain();
+    module.default(context);
+  }
+  await yieldToMain();
   ScrollTrigger.refresh();
 }
+
+const yieldToMain = () =>
+  new Promise((resolve) => (window.scheduler?.yield ? scheduler.yield().then(resolve) : setTimeout(resolve, 0)));
 
 // Orbs are the deepest layer: they drift the least while the room passes.
 function parallaxOrbs(gsap) {

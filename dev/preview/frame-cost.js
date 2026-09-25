@@ -7,7 +7,9 @@ const { chromium } = require('playwright');
   for (const [label, w, h, rate] of [['desktop', 1440, 900, 1], ['mobile 4x', 390, 844, 4]]) {
     const p = await b.newPage({ viewport: { width: w, height: h } });
     const cdp = await p.context().newCDPSession(p);
-    await p.goto('http://localhost:4173/index.html', { waitUntil: 'load' });
+    await p.addInitScript(require('./gpu-shim.js'));
+  await p.goto('http://localhost:4173/index.html', { waitUntil: 'load' });
+  await p.mouse.move(5, 5);
     await p.waitForSelector('.hero__canvas.is-ready', { timeout: 30000 });
     if (rate > 1) await cdp.send('Emulation.setCPUThrottlingRate', { rate });
     const stats = await p.evaluate(() => new Promise((resolve) => {

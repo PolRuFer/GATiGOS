@@ -3,7 +3,9 @@ const { chromium } = require('playwright');
 (async () => {
   const b = await chromium.launch({ executablePath: process.env.CHROMIUM || '/opt/pw-browsers/chromium', args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
   const p = await b.newPage({ viewport: { width: 1440, height: 900 } });
+  await p.addInitScript(require('./gpu-shim.js'));
   await p.goto('http://localhost:4173/index.html', { waitUntil: 'load' });
+  await p.mouse.move(5, 5);
   await p.waitForSelector('.hero__canvas.is-ready', { timeout: 30000 });
   await p.waitForTimeout(800);
   const clip = { x: 660, y: 330, width: 700, height: 330 };

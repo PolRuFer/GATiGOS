@@ -188,7 +188,7 @@ module.exports = {
     routes: { root_url: locale === 'es' ? '/' : '/en', cart_url: '/cart', collections_url: '/collections', all_products_collection_url: '/collections/all' },
     request: { locale: { iso_code: locale }, design_mode: false, page_type: template, origin: 'http://localhost', path: '/' },
     settings: { social_instagram_link: 'https://instagram.com/gatygos', social_pinterest_link: 'https://pinterest.com/gatygos' },
-    page_title: 'GatYGos', canonical_url: 'http://localhost/', current_page: 1, template: { name: template },
+    page_title: 'GatYGos', page_description: 'Objetos de diseño para perros y gatos: lana, travertino, roble y cuero.', canonical_url: 'http://localhost/', current_page: 1, template: { name: template },
     linklists, collections,
     collection: template === 'collection' ? collections.todo : undefined,
   }),
