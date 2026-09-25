@@ -99,3 +99,22 @@ Decisiones que el brief no cubre. En cada caso, la opción más sobria.
 - Selección: 8 productos en 4 columnas (escritorio) o 2 (tablet y móvil), con la misma `product-card` que el catálogo.
 - Manifiesto: pino con dos orbes tabaco al 14–20% y un panel `.glass--dark` a 0,55. En el punto más claro del orbe, el texto papel da 11,24:1 y el antetítulo camel 4,88:1. El texto por defecto está en los locales y se puede sustituir desde la sección.
 - Contraste medido en la sala oscura: el antetítulo de la ficha pasa de camel a papel. Camel sobre cristal oscuro denso apoyado en arena daba 2,67:1; papel da 6,15:1.
+
+## Fase 4 · Hero 3D
+
+- **Librerías:** `three@0.186.1`, `gsap@3.15.0` (con ScrollTrigger) y `lenis@1.3.26`, empaquetadas con esbuild desde `dev/preview/build-vendor.mjs`. `three.min.js` contiene solo las 30 clases que importa la escena (529 KB, 136 KB con gzip). Son muchas porque `WebGLRenderer` arrastra sus shaders. `vendor-motion.min.js` junta GSAP, ScrollTrigger y Lenis (51 KB con gzip). Las licencias se conservan en los ficheros. Se resuelven con un import map y no hay paso de build en el tema.
+- **Carga:** el custom element `<hero-media>` solo importa la escena si se cumplen a la vez: el hero está en pantalla, la página ya cargó y está en reposo (`requestIdleCallback`), hay WebGL2, hay al menos 4 núcleos y no hay reduced-motion. El render se suscribe al ticker central solo mientras el hero es visible y la pestaña está activa. Si se pierde el contexto WebGL, vuelve a verse la imagen fija.
+- **Escena:**
+  - Luz: sol bajo que entra por un ventanal de cuatro hojas y cae sobre la cama, rebote cálido tenue y un volumen de haz aditivo muy suave.
+  - Materiales mate: roble procedural, yeso, lana con relieve de punto.
+  - Colores derivados de los tokens CSS en tiempo de ejecución.
+  - Las sombras se calculan una sola vez (`shadowMap.autoUpdate = false`), porque la luz y la geometría no se mueven.
+  - El muro es alto para que el sol no entre por encima: no hay techo.
+  - En pantallas verticales, la cámara se desplaza para centrar ventana y cama.
+- **Fallback por defecto:** `hero-fallback-{2400,1600,portrait}.webp` se renderizan desde la misma escena, en el mismo encuadre (15–31 KB), así que el fundido al 3D no salta. Si el comerciante sube una imagen, tiene prioridad.
+- **Juguete (polvo y lana):**
+  - Principio de Lusion y Active Theory: física que invita a tocar. De Igloo Inc: la luz y la materia cuentan la historia.
+  - Lo que cambia para GatYGos: no hay partículas espectaculares ni colores. Es polvo en un haz de tarde, lento, que vuelve a posarse (muelle suave) y que solo se ve dentro de la luz. La lana cede bajo el cursor y recupera su forma con un muelle amortiguado que se pasa un poco, como un cojín de verdad.
+  - Para que la hendidura se lea desde una cámara tan baja, también se inclinan las normales.
+  - En táctil, un toque levanta el polvo alrededor del dedo sin bloquear el scroll. Con teclado, la escena queda en calma: es el equivalente estático.
+- **Rendimiento del juguete:** el raycast va contra un gemelo de baja resolución de la cama (~600 triángulos en vez de ~20 000). En CPU cuesta unos 0,035 ms por fotograma, alrededor de 0,14 ms con 4× de throttling (medido con `dev/preview/bench-toy.mjs`). En este contenedor sin GPU no se pueden medir los fps de GPU (SwiftShader), así que queda como verificación pendiente en dispositivo real.

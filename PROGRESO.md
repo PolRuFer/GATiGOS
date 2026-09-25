@@ -89,10 +89,10 @@ Tokens, cristal, fuentes, header, footer, locales ES/EN, muestra de superficies 
 - [x] 3.4 Selección de 8 productos (`sections/featured-collection.liquid`).
 - [x] 3.5 Manifiesto (`sections/manifesto.liquid`).
 
-### Fase 4 · Hero Three.js
-- [ ] 4.1 Three mínimo empaquetado en `/assets` + import map + carga diferida (viewport, WebGL2, ≥ 4 núcleos).
-- [ ] 4.2 Escena: suelo, zócalo, ventanal, luz de tarde, cama de lana; pausa fuera de viewport; imagen de fallback del mismo encuadre.
-- [ ] 4.3 Juguete: motas de polvo en el haz y lana que se hunde bajo el cursor.
+### Fase 4 · Hero Three.js ✅
+- [x] 4.1 Three mínimo empaquetado en `/assets` (`dev/preview/build-vendor.mjs`) + import map + carga diferida (`assets/hero.js`).
+- [x] 4.2 Escena (`assets/hero-scene.js`): suelo, zócalo, ventanal, luz de tarde, cama de lana; pausa fuera de viewport; fallback del mismo encuadre generado desde la escena (`dev/preview/gen/hero-still.js`).
+- [x] 4.3 Juguete: motas de polvo en el haz (arrastre, toque) y lana que se hunde con retorno elástico (normales inclinadas, raycast con proxy).
 
 ### Fase 5 · Scroll y juguetes
 - [ ] 5.1 Ticker central + Lenis + ScrollTrigger + parallax de orbes; reduced-motion sin carga.
@@ -107,7 +107,7 @@ Tokens, cristal, fuentes, header, footer, locales ES/EN, muestra de superficies 
 ---
 
 ## Siguiente paso exacto
-**Fase 4.1.** La sesión anterior se detuvo en el límite de fase por longitud de conversación (protección contra cortes). Todo lo anterior está commiteado y verificado.
+**Fase 5.1:** `assets/motion.js` (módulo): sale sin cargar nada si hay `prefers-reduced-motion`; si no, importa `vendor-motion`, registra ScrollTrigger, crea Lenis sobre `gsap.ticker` (`lagSmoothing(0)`), sincroniza `lenis.on('scroll', ScrollTrigger.update)` y aplica el parallax de orbes por capas (`.orb` más lento). Se carga desde `layout/theme.liquid` con `type="module"`. Pausar Lenis con el menú móvil y el drawer de filtros abiertos (eventos `gatygos:menu` y los `<dialog>`).
 
 ### Plan técnico acordado para las fases 4 y 5 (seguir salvo motivo anotado en DECISIONES)
 - **Carga de módulos:** import map en `layout/theme.liquid` con `three`, `gsap`, `gsap/ScrollTrigger` y `lenis`, que apuntan a `asset_url`. Los módulos propios son ES modules en `/assets`, cargados con `<script type="module">`.

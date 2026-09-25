@@ -18,6 +18,17 @@
     {% # Social, title, etc. %}
     {% render 'meta-tags' %}
 
+    {% # ES modules resolve through this map; heavy ones are imported on demand %}
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "{{ 'three.min.js' | asset_url }}",
+          "vendor-motion": "{{ 'vendor-motion.min.js' | asset_url }}",
+          "@gatygos/ticker": "{{ 'ticker.js' | asset_url }}",
+          "@gatygos/hero-scene": "{{ 'hero-scene.js' | asset_url }}"
+        }
+      }
+    </script>
     <script src="{{ 'theme.js' | asset_url }}" defer></script>
 
     {{ content_for_header }}

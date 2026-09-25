@@ -1,11 +1,12 @@
 {{ 'section-hero.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'hero.js' | asset_url }}" type="module"></script>
 
 {%- liquid
   assign fallback = section.settings.fallback_image
 -%}
 
 <div class="hero full-width" data-header-overlay data-bleed-under-header data-hero>
-  <div class="hero__media">
+  <hero-media class="hero__media">
     {%- if fallback -%}
       {{
         fallback
@@ -18,8 +19,28 @@
           fetchpriority: 'high',
           alt: ''
       }}
+    {%- else -%}
+      {% # Default: a still of the 3D scene, landscape and portrait framings %}
+      <picture>
+        <source
+          media="(max-aspect-ratio: 4/5)"
+          srcset="{{ 'hero-fallback-portrait.webp' | asset_url }}"
+          width="1080"
+          height="1800"
+        >
+        <img
+          class="hero__fallback"
+          src="{{ 'hero-fallback-1600.webp' | asset_url }}"
+          srcset="{{ 'hero-fallback-1600.webp' | asset_url }} 1600w, {{ 'hero-fallback-2400.webp' | asset_url }} 2400w"
+          sizes="100vw"
+          width="2400"
+          height="1500"
+          alt=""
+          fetchpriority="high"
+        >
+      </picture>
     {%- endif -%}
-  </div>
+  </hero-media>
 
   <div class="hero__scrim" aria-hidden="true"></div>
 

@@ -1,0 +1,21 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="/assets/critical.css">
+<script type="importmap">{"imports":{"three":"/assets/three.min.js","vendor-motion":"/assets/vendor-motion.min.js","@gatygos/ticker":"/assets/ticker.js"}}</script>
+<style>html,body{margin:0}#stage{position:relative}</style></head>
+<body><div id="stage"></div>
+<script type="module">
+import { createHeroScene } from '/assets/hero-scene.js';
+window.renderStill = async (w, h) => {
+  const stage = document.getElementById('stage');
+  stage.innerHTML = '';
+  stage.style.width = w + 'px';
+  stage.style.height = h + 'px';
+  const scene = createHeroScene(stage, { still: true });
+  await new Promise((r) => requestAnimationFrame(r));
+  const canvas = scene.renderStill();
+  const data = canvas.toDataURL('image/webp', 0.8);
+  scene.dispose();
+  return data;
+};
+window.ready = true;
+</script></body></html>
