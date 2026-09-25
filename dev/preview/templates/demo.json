@@ -1,0 +1,1 @@
+{ "sections": { "hero": { "type": "harness-hero" }, "filler": { "type": "harness-filler" } }, "order": ["hero", "filler"] }

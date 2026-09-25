@@ -62,3 +62,9 @@ Decisiones que el brief no cubre. En cada caso, la opción más sobria.
 
 ### Muestra de superficies
 - `dev/muestra-superficies.html` está fuera de las carpetas del tema, porque una plantilla de página no está entre los ficheros editables, y Shopify CLI no lo sube. Se abre en el navegador sin tienda.
+
+## Fase 2 · Producto y colección
+
+### Entorno de verificación
+- `dev/preview/` contiene un renderizador local (LiquidJS con datos de prueba), un servidor estático y scripts de captura con Playwright, para verificar sin tienda. Son herramientas de desarrollo instaladas con `npm i --no-save` y no forman parte del tema: no hay `package.json` y el CLI no sube `dev/`.
+- Las "fotos de proveedor" de prueba (`dev/preview/media`) son renders de Three.js con fondos blancos, grises, en degradado y uno oscuro, proporciones de 1:1 a 16:9 y encuadres descentrados, para someter a `product-media` al peor caso real.

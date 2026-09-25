@@ -1,0 +1,82 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#fff}</style>
+<script type="importmap">{"imports":{"three":"/node_modules/three/build/three.module.js"}}</script></head>
+<body><script type="module">
+import * as T from 'three';
+import { shots } from './products.js';
+
+const mat = (c, rough = 0.9, extra = {}) => new T.MeshStandardMaterial({ color: c, roughness: rough, metalness: 0, ...extra });
+function lathe(points, m) { return new T.Mesh(new T.LatheGeometry(points.map(([x, y]) => new T.Vector2(x, y)), 96), m); }
+function build(s) {
+  const g = new T.Group();
+  const c = new T.Color(s.color);
+  const m = mat(c, s.rough ?? 0.95);
+  switch (s.obj) {
+    case 'bed': {
+      const ring = new T.Mesh(new T.TorusGeometry(1.05, 0.42, 48, 128), m); ring.rotation.x = Math.PI / 2; ring.position.y = 0.42; g.add(ring);
+      const base = new T.Mesh(new T.CylinderGeometry(1.1, 1.15, 0.28, 96), m); base.position.y = 0.14; g.add(base);
+      const cushion = new T.Mesh(new T.SphereGeometry(0.85, 64, 32), m); cushion.scale.set(1, 0.28, 1); cushion.position.y = 0.34; g.add(cushion);
+      break;
+    }
+    case 'bowl': g.add(lathe([[0, 0], [0.9, 0], [1.0, 0.05], [1.12, 0.55], [1.18, 0.62], [1.02, 0.62], [0.92, 0.2], [0, 0.2]], m)); break;
+    case 'basket': {
+      g.add(lathe([[0, 0], [0.8, 0], [0.95, 0.9], [1.0, 1.15], [0.93, 1.15], [0.88, 0.95], [0.75, 0.1], [0, 0.1]], m));
+      for (let i = 0; i < 28; i++) { const r = new T.Mesh(new T.TorusGeometry(0.9 + i * 0.0035, 0.018, 8, 96), mat(c.clone().multiplyScalar(0.8))); r.rotation.x = Math.PI / 2; r.position.y = 0.05 + i * 0.04; g.add(r); }
+      break;
+    }
+    case 'collar': {
+      const t = new T.Mesh(new T.TorusGeometry(1, 0.09, 24, 128), mat(c, 0.6)); t.scale.set(1, 1, 3); t.rotation.x = Math.PI / 2; t.position.y = 0.2; g.add(t);
+      const ring = new T.Mesh(new T.TorusGeometry(0.16, 0.03, 16, 48), mat('#b08d57', 0.35, { metalness: 0.8 })); ring.position.set(0, 0.25, 1.05); g.add(ring);
+      break;
+    }
+    case 'scratcher': {
+      const base = new T.Mesh(new T.BoxGeometry(1.6, 0.18, 1.6), mat('#b98d5c', 0.7)); base.position.y = 0.09; g.add(base);
+      const post = new T.Mesh(new T.CylinderGeometry(0.28, 0.28, 2.6, 48, 60), m); post.position.y = 1.48; g.add(post);
+      const top = new T.Mesh(new T.BoxGeometry(0.9, 0.12, 0.9), mat('#b98d5c', 0.7)); top.position.y = 2.84; g.add(top);
+      break;
+    }
+    case 'blanket': for (let i = 0; i < 5; i++) { const b = new T.Mesh(new T.CapsuleGeometry(0.11, 1.8, 8, 24), m); b.rotation.z = Math.PI / 2; b.scale.set(1, 1, 5.5); b.position.set(0, 0.11 + i * 0.2, 0); g.add(b); } break;
+    case 'feeder': {
+      const stand = new T.Mesh(new T.BoxGeometry(2.6, 0.7, 1.2), mat(c, 0.6)); stand.position.y = 0.35; g.add(stand);
+      for (const x of [-0.65, 0.65]) { const b = lathe([[0, 0], [0.4, 0], [0.5, 0.28], [0.46, 0.28], [0.38, 0.06], [0, 0.06]], mat('#e9e6e0', 0.3)); b.position.set(x, 0.62, 0); g.add(b); }
+      break;
+    }
+    case 'leash': for (let i = 0; i < 4; i++) { const t = new T.Mesh(new T.TorusGeometry(0.9 - i * 0.04, 0.05, 16, 96), mat(c, 0.6)); t.rotation.x = Math.PI / 2 + (i - 1.5) * 0.08; t.position.y = 0.06 + i * 0.1; g.add(t); } break;
+    case 'cave': {
+      const dome = new T.Mesh(new T.SphereGeometry(1.1, 64, 32, 0, Math.PI * 2, 0, Math.PI / 2), m); g.add(dome);
+      const hole = new T.Mesh(new T.CircleGeometry(0.45, 48), mat('#141414', 1)); hole.position.set(0, 0.45, 0.99); g.add(hole);
+      break;
+    }
+    case 'balls': [[-0.7, '#c9a27e'], [0, '#8c9a86'], [0.7, '#e5dccb']].forEach(([x, col]) => { const b = new T.Mesh(new T.SphereGeometry(0.33, 48, 24), mat(col)); b.position.set(x, 0.33, x * 0.3); g.add(b); }); break;
+    case 'cushion': { const k = new T.Mesh(new T.SphereGeometry(1, 64, 32), m); k.scale.set(1.2, 0.38, 1.2); k.position.y = 0.38; g.add(k); break; }
+  }
+  g.traverse((o) => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } });
+  return g;
+}
+
+window.renderShot = async (s) => {
+  const r = new T.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+  r.setSize(s.w, s.h); r.setPixelRatio(1); r.shadowMap.enabled = true; r.shadowMap.type = T.PCFSoftShadowMap;
+  r.outputColorSpace = T.SRGBColorSpace; r.toneMapping = T.ACESFilmicToneMapping; r.toneMappingExposure = s.bg === '#1d1d1d' ? 1.0 : 1.35;
+  document.body.innerHTML = ''; document.body.appendChild(r.domElement);
+  const scene = new T.Scene();
+  if (s.bg === 'grad') {
+    const cv = document.createElement('canvas'); cv.width = 4; cv.height = 256; const x = cv.getContext('2d');
+    const gr = x.createLinearGradient(0, 0, 0, 256); gr.addColorStop(0, '#fbfbfb'); gr.addColorStop(1, '#d9d9d9'); x.fillStyle = gr; x.fillRect(0, 0, 4, 256);
+    const tex = new T.CanvasTexture(cv); tex.colorSpace = T.SRGBColorSpace; scene.background = tex;
+  } else scene.background = new T.Color(s.bg);
+  scene.add(new T.HemisphereLight('#ffffff', '#bbbbbb', 1.4));
+  const key = new T.DirectionalLight('#ffffff', 2.2); key.position.set(3, 6, 4); key.castShadow = true; key.shadow.mapSize.set(2048, 2048); key.shadow.radius = 6;
+  Object.assign(key.shadow.camera, { left: -4, right: 4, top: 4, bottom: -4 }); scene.add(key);
+  const floor = new T.Mesh(new T.PlaneGeometry(40, 40), new T.ShadowMaterial({ opacity: s.bg === '#1d1d1d' ? 0.5 : 0.18 })); floor.rotation.x = -Math.PI / 2; floor.receiveShadow = true; scene.add(floor);
+  const obj = build(s); obj.scale.setScalar(s.scale); obj.position.x = s.x; scene.add(obj);
+  const box = new T.Box3().setFromObject(obj); const size = box.getSize(new T.Vector3()); const center = box.getCenter(new T.Vector3());
+  const cam = new T.PerspectiveCamera(30, s.w / s.h, 0.1, 100);
+  const elev = { high: 0.75, mid: 0.4, low: 0.15 }[s.cam];
+  const dist = Math.max(size.x, size.y * 1.3, size.z) * 2.6 / Math.min(1, s.w / s.h);
+  cam.position.set(0.2, center.y + dist * elev, dist); cam.lookAt(0, center.y * 0.8, 0);
+  r.render(scene, cam);
+  return r.domElement.toDataURL('image/jpeg', 0.86);
+};
+window.shots = shots;
+window.ready = true;
+</script></body></html>
