@@ -96,3 +96,6 @@ Decisiones que el brief no cubre. En cada caso, la opción más sobria.
 - En la sala de pino, la ficha del destacado es `.glass--dark.glass--dense`, porque se apoya en parte sobre el marco arena (6,15:1). Los antetítulos de las tarjetas pasan a camel (5,21:1 sobre pino) mediante `--card-eyebrow`.
 - La ficha del destacado solapa la franja de suelo de su marco, igual que la píldora en las tarjetas.
 - **Header sobre pino:** las secciones con `data-header-tone="dark"` hacen que la píldora del header pase a cristal oscuro denso. Hay dos capas de cristal fijas, se funden solo con `opacity` y el blur no se anima. Sin este cambio, el cristal claro denso sobre pino quedaba gris apagado.
+- Selección: 8 productos en 4 columnas (escritorio) o 2 (tablet y móvil), con la misma `product-card` que el catálogo.
+- Manifiesto: pino con dos orbes tabaco al 14–20% y un panel `.glass--dark` a 0,55. En el punto más claro del orbe, el texto papel da 11,24:1 y el antetítulo camel 4,88:1. El texto por defecto está en los locales y se puede sustituir desde la sección.
+- Contraste medido en la sala oscura: el antetítulo de la ficha pasa de camel a papel. Camel sobre cristal oscuro denso apoyado en arena daba 2,67:1; papel da 6,15:1.

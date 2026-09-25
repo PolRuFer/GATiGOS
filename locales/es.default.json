@@ -167,5 +167,15 @@
       "heading": "Para el perro",
       "intro": "Para comer a su altura, salir a la calle y volver a su sitio."
     }
+  },
+  "selection": {
+    "eyebrow": "Selección",
+    "heading": "Piezas para quedarse.",
+    "view_all": "Ver todo",
+    "empty": "Elige una colección para esta sección."
+  },
+  "manifesto": {
+    "eyebrow": "Manifiesto",
+    "text": "Ellos no viven en tu casa: viven contigo. Por eso hacemos objetos que no hace falta esconder, en lana, travertino, roble y cuero, pensados para quedarse a la vista."
   }
 }

@@ -1,0 +1,49 @@
+{{ 'section-manifesto.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  if section.settings.text != blank
+    assign text = section.settings.text
+  else
+    assign text = 'manifesto.text' | t
+  endif
+  assign uid = 'Manifesto-' | append: section.id
+-%}
+
+<section
+  class="manifesto has-orbs full-width"
+  aria-labelledby="{{ uid }}-eyebrow"
+  data-header-tone="dark"
+  data-manifesto
+>
+  <div class="orbs" aria-hidden="true">
+    <span class="orb orb--tobacco" style="--orb-x: 20%; --orb-y: 30%; --orb-size: 56vw; --orb-opacity: 0.2;"></span>
+    <span class="orb orb--tobacco" style="--orb-x: 82%; --orb-y: 76%; --orb-size: 46vw; --orb-opacity: 0.14;"></span>
+  </div>
+
+  <div class="manifesto__inner page-width grid">
+    <div class="manifesto__panel glass glass--dark" data-manifesto-panel>
+      <p class="manifesto__eyebrow eyebrow" id="{{ uid }}-eyebrow">{{ 'manifesto.eyebrow' | t }}</p>
+      <p class="manifesto__text display display--manifesto" data-manifesto-text>{{ text | escape }}</p>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "t:sections.manifesto.name",
+  "class": "section-manifesto",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "t:sections.manifesto.settings.text.label",
+      "info": "t:sections.shared.locale_fallback"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.manifesto.name"
+    }
+  ]
+}
+{% endschema %}

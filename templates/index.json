@@ -51,12 +51,24 @@
         "featured_product": "comedero-travertino",
         "products_to_show": 4
       }
+    },
+    "selection": {
+      "type": "featured-collection",
+      "settings": {
+        "collection": "seleccion"
+      }
+    },
+    "manifesto": {
+      "type": "manifesto",
+      "settings": {}
     }
   },
   "order": [
     "hero",
     "trust",
     "cat_room",
-    "dog_room"
+    "dog_room",
+    "selection",
+    "manifesto"
   ]
 }

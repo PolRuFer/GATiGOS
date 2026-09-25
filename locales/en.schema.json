@@ -216,6 +216,17 @@
           "label": "Products in the rail"
         }
       }
+    },
+    "selection": {
+      "name": "Selection"
+    },
+    "manifesto": {
+      "name": "Manifesto",
+      "settings": {
+        "text": {
+          "label": "Text"
+        }
+      }
     }
   }
 }

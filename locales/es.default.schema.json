@@ -216,6 +216,17 @@
           "label": "Productos en el carril"
         }
       }
+    },
+    "selection": {
+      "name": "Selección"
+    },
+    "manifesto": {
+      "name": "Manifiesto",
+      "settings": {
+        "text": {
+          "label": "Texto"
+        }
+      }
     }
   }
 }

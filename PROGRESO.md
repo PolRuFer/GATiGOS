@@ -82,12 +82,12 @@ Tokens, cristal, fuentes, header, footer, locales ES/EN, muestra de superficies 
 - [x] 2.4 Rejilla, filtros nativos (barra sticky y drawer móvil) y orden (`sections/collection.liquid`, `assets/collection.css`, `assets/collection-filters.js`).
 - [x] 2.5 Paginación de 24 en píldora de cristal (`snippets/pagination.liquid`).
 
-### Fase 3 · Home sin animación
+### Fase 3 · Home sin animación ✅
 - [x] 3.1 Hero: estructura, panel de copy con bloques y fallback estático (`sections/hero.liquid`).
 - [x] 3.2 Barra de confianza (`sections/trust-bar.liquid`, `assets/section-hero.css`).
 - [x] 3.3 Salas Gato y Perro (una sección `room` reutilizable) + header que pasa a cristal oscuro sobre pino.
-- [ ] 3.4 Selección de 8 productos.
-- [ ] 3.5 Manifiesto.
+- [x] 3.4 Selección de 8 productos (`sections/featured-collection.liquid`).
+- [x] 3.5 Manifiesto (`sections/manifesto.liquid`).
 
 ### Fase 4 · Hero Three.js
 - [ ] 4.1 Three mínimo empaquetado en `/assets` + import map + carga diferida (viewport, WebGL2, ≥ 4 núcleos).
@@ -107,7 +107,7 @@ Tokens, cristal, fuentes, header, footer, locales ES/EN, muestra de superficies 
 ---
 
 ## Siguiente paso exacto
-Fase 3.4: Selección de 8 productos (`sections/featured-collection.liquid`).
+Fase 4.1: Three.js mínimo empaquetado en `/assets` (build reproducible en `dev/build-three.mjs`), import map en `layout/theme.liquid` y carga diferida del hero (viewport + WebGL2 + ≥ 4 núcleos + sin reduced-motion).
 
 ## Deuda abierta
 _Ninguna._

@@ -1,0 +1,43 @@
+/**
+ * GatYGos — manifesto: a pine room with faint tobacco light and the brand
+ * text in a dark glass panel. Phase 5 turns paper into pine as it is crossed.
+ */
+
+.manifesto {
+  padding-block: var(--section-space);
+  background-color: var(--pine);
+  color: var(--paper);
+}
+
+.manifesto__inner {
+  align-items: center;
+  min-height: 70svh;
+}
+
+.manifesto__panel {
+  grid-column: 1 / -1;
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-5) var(--space-3);
+}
+
+.manifesto__eyebrow {
+  color: var(--camel);
+}
+
+.manifesto__text {
+  text-wrap: pretty;
+}
+
+@media (min-width: 750px) {
+  .manifesto__panel {
+    padding: var(--space-8) var(--space-6);
+  }
+}
+
+@media (min-width: 990px) {
+  .manifesto__panel {
+    grid-column: 2 / span 10;
+    padding: var(--space-12) var(--space-10);
+  }
+}

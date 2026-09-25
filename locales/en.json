@@ -167,5 +167,15 @@
       "heading": "For the dog",
       "intro": "To eat at their height, go out, and come back to their place."
     }
+  },
+  "selection": {
+    "eyebrow": "Selection",
+    "heading": "Pieces that stay.",
+    "view_all": "View all",
+    "empty": "Choose a collection for this section."
+  },
+  "manifesto": {
+    "eyebrow": "Manifesto",
+    "text": "They do not live in your house: they live with you. So we make objects you never need to hide, in wool, travertine, oak and leather, made to stay in plain sight."
   }
 }
