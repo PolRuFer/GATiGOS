@@ -78,7 +78,7 @@ Tokens, cristal, fuentes, header, footer, locales ES/EN, muestra de superficies 
 ### Fase 2 · `product-media`, colección y paginación
 - [x] 2.1 Entorno: preview en `dev/preview`, fotos de proveedor simuladas (fondos y proporciones dispares, `gen/run.js`), datos de colección.
 - [x] 2.2 `snippets/product-media.liquid` + `snippets/product-card.liquid` + `snippets/price.liquid` + `assets/product-media.css`.
-- [ ] 2.3 Cabecera editorial de colección (`sections/collection-header.liquid`).
+- [x] 2.3 Cabecera editorial de colección (`sections/collection-header.liquid`), `.orbs--fade-end`.
 - [ ] 2.4 Rejilla, filtros nativos (barra sticky y drawer móvil) y orden (`sections/collection.liquid`, `assets/collection.css`, `assets/collection-filters.js`).
 - [ ] 2.5 Paginación de 24 en píldora de cristal (`snippets/pagination.liquid`).
 
@@ -107,7 +107,7 @@ Tokens, cristal, fuentes, header, footer, locales ES/EN, muestra de superficies 
 ---
 
 ## Siguiente paso exacto
-Fase 2.3: cabecera editorial de colección (`sections/collection-header.liquid`).
+Fase 2.4: rejilla + filtros nativos + orden en `sections/collection.liquid` (reescribe la del Skeleton), `assets/collection-filters.js`.
 
 ## Deuda abierta
 _Ninguna._

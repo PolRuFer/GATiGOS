@@ -9,12 +9,17 @@
  */
 {
   "sections": {
+    "header": {
+      "type": "collection-header",
+      "settings": {}
+    },
     "main": {
       "type": "collection",
       "settings": {}
     }
   },
   "order": [
+    "header",
     "main"
   ]
 }

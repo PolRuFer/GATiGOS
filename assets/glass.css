@@ -127,6 +127,13 @@
   contain: strict;
 }
 
+/* Fade the light out towards the end of the room instead of cutting it
+   at the section edge. */
+.orbs--fade-end {
+  -webkit-mask-image: linear-gradient(to bottom, black 55%, transparent);
+  mask-image: linear-gradient(to bottom, black 55%, transparent);
+}
+
 .orb {
   --orb-size: 50vw;
   --orb-opacity: 0.25;

@@ -83,7 +83,8 @@
     }
   },
   "collections": {
-    "title": "Colecciones"
+    "title": "Colecciones",
+    "eyebrow": "Colección"
   },
   "gift_card": {
     "add_to_apple_wallet": "Añadir a Apple Wallet",

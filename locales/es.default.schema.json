@@ -103,8 +103,7 @@
       "name": "Pie de página",
       "settings": {
         "tagline": {
-          "label": "Frase de marca",
-          "info": "Déjalo vacío para usar el texto por defecto traducido."
+          "label": "Frase de marca"
         },
         "header_links": "Enlaces",
         "menu_primary": {
@@ -128,6 +127,17 @@
         "cookies_url": {
           "label": "Página de política de cookies",
           "info": "Shopify no tiene una política de cookies propia. Si está vacío, el enlace apunta a la política de privacidad."
+        }
+      }
+    },
+    "shared": {
+      "locale_fallback": "Déjalo vacío para usar el texto por defecto traducido."
+    },
+    "collection_header": {
+      "name": "Cabecera de colección",
+      "settings": {
+        "eyebrow": {
+          "label": "Antetítulo"
         }
       }
     }

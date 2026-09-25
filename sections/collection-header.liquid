@@ -1,0 +1,43 @@
+{{ 'collection.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  if section.settings.eyebrow != blank
+    assign eyebrow = section.settings.eyebrow
+  else
+    assign eyebrow = 'collections.eyebrow' | t
+  endif
+-%}
+
+<div class="collection-hero has-orbs full-width" data-bleed-under-header>
+  <div class="orbs orbs--fade-end" aria-hidden="true">
+    <span class="orb orb--camel" style="--orb-x: 82%; --orb-y: 18%; --orb-size: 58vw; --orb-opacity: 0.3;"></span>
+    <span class="orb orb--tobacco" style="--orb-x: 8%; --orb-y: 96%; --orb-size: 46vw; --orb-opacity: 0.22;"></span>
+    <span class="orb orb--camel" style="--orb-x: 44%; --orb-y: 64%; --orb-size: 40vw; --orb-opacity: 0.2;"></span>
+  </div>
+
+  <div class="collection-hero__inner page-width grid">
+    <p class="collection-hero__eyebrow eyebrow">{{ eyebrow | escape }}</p>
+    <h1 class="collection-hero__title display display--hero">{{ collection.title | escape }}</h1>
+    {%- if collection.description != blank -%}
+      <div class="collection-hero__description rte">{{ collection.description }}</div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.collection_header.name",
+  "class": "section-collection-header",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "t:sections.collection_header.settings.eyebrow.label",
+      "info": "t:sections.shared.locale_fallback"
+    }
+  ],
+  "enabled_on": {
+    "templates": ["collection"]
+  }
+}
+{% endschema %}

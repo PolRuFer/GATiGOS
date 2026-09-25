@@ -103,8 +103,7 @@
       "name": "Footer",
       "settings": {
         "tagline": {
-          "label": "Tagline",
-          "info": "Leave empty to use the translated default text."
+          "label": "Tagline"
         },
         "header_links": "Links",
         "menu_primary": {
@@ -128,6 +127,17 @@
         "cookies_url": {
           "label": "Cookie policy page",
           "info": "Shopify has no cookie policy of its own. If empty, the link points to the privacy policy."
+        }
+      }
+    },
+    "shared": {
+      "locale_fallback": "Leave empty to use the translated default text."
+    },
+    "collection_header": {
+      "name": "Collection header",
+      "settings": {
+        "eyebrow": {
+          "label": "Eyebrow"
         }
       }
     }
