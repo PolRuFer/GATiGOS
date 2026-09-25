@@ -28,6 +28,7 @@
   endif
 
   assign uid = 'Room-' | append: section.id
+  assign featured_label_ids = uid | append: '-name ' | append: uid | append: '-price'
   assign featured_sizes = '(min-width: 990px) 44vw, 100vw'
   assign rail_sizes = '(min-width: 990px) 21vw, (min-width: 750px) 44vw, 45vw'
 -%}
@@ -68,7 +69,7 @@
           scope: uid,
           sizes: featured_sizes,
           hide_pill: true,
-          labelledby: uid | append: '-name ' | append: uid | append: '-price'
+          labelledby: featured_label_ids
         %}
         {%- assign featured_material = featured.metafields.custom.material.value -%}
         <div class="room__ficha glass{% if dark %} glass--dark glass--dense{% endif %}">

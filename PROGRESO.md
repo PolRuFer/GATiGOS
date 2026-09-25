@@ -40,7 +40,7 @@ node shots.js http://localhost:4173/index.html shot/home 1440,768,360 [scrollY] 
 1. **Plan:** subpasos pequeños, cada uno cerrable en un commit que funcione, anotados aquí.
 2. **Construir** un subpaso.
 3. **Verificar con herramientas:**
-   - `shopify theme check` sin errores.
+   - `./dev/check.sh` (theme check con 0 errores y 0 avisos). El commit se encadena detrás: `./dev/check.sh && git commit …`. LiquidJS acepta sintaxis que Shopify rechaza, así que el check es obligatorio.
    - Capturas Playwright a 360, 768 y 1440 de las vistas afectadas, revisadas.
    - Contraste medido si hay texto nuevo sobre cristal.
    - Consola del navegador sin errores.
