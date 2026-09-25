@@ -187,8 +187,8 @@ p:empty {
   display: none;
 }
 
-ul[role='list'],
-ol[role='list'] {
+/* Zero specificity so component padding always wins. */
+:where(ul, ol)[role='list'] {
   list-style: none;
   padding: 0;
 }

@@ -32,7 +32,7 @@ Decisiones que el brief no cubre. En cada caso, la opción más sobria.
   - Claro 0,55 sobre negro: espresso 3,72 ✗. Sobre pino: 4,66. Sobre orbes en papel: ≥ 10,1.
   - Claro 0,72 (`.glass--dense`) sobre negro: 6,13 ✓.
   - Oscuro 0,55 sobre pino: papel 11,99. Sobre papel: 3,29 ✗, así que `.glass--dark` solo se usa sobre pino.
-- **Tinte 0,72** donde el fondo es imprevisible: header, píldoras de precio (el objeto puede ser negro), barra y drawer de filtros y menú móvil. **Tinte 0,55** donde el fondo está controlado: panel del hero (se medirá contra la escena en la fase 6), barra de confianza y newsletter.
+- **Tinte 0,72** donde el fondo es imprevisible: header, barra, desplegables y drawer de filtros, menú móvil, y panel del hero y barra de confianza (van sobre la imagen que suba el comerciante). **Tinte 0,55** donde el fondo está controlado: newsletter, paginación (sobre un orbe) y píldoras de precio (sobre la franja de suelo de arena, 7,56:1).
 - Sobre cristal con fondo imprevisible, el texto siempre va en espresso: el gris apagado cae a 3,44.
 - **Presupuesto de 4 superficies con blur**: una rejilla tiene más de 4 píldoras visibles a la vez. Por eso los elementos repetidos usan `.glass--static`, que conserva tinte, canto, reflejo y grano pero no lleva `backdrop-filter`. El blur real (28px) solo aparece en la tarjeta con hover o foco, que es siempre una.
 - El canto superior en `.glass--dark` usa papel al 12 % en lugar del blanco al 45 %, que se ve como una línea dura sobre pino.
@@ -85,3 +85,10 @@ Decisiones que el brief no cubre. En cada caso, la opción más sobria.
 - Presupuesto de blur: header, barra, panel desplegado y píldora en hover suman 4. En el drawer, los paneles pierden su propio cristal para no poner cristal sobre cristal.
 - Casillas cuadradas de 1rem con relleno espresso y aro papel, sin iconos. Los chevrons se dibujan con bordes en `currentColor`: el subset de Hanken no incluye flechas y evitamos mezclar tipografías del sistema.
 - Paginación: por debajo de 750px se reduce a `‹ 4 / 7 ›`, con el texto accesible "Página 4 de 7", porque nueve botones de 44px no caben en 320px. Va sobre un orbe para no poner cristal sobre papel plano.
+
+## Fase 3 · Home
+
+- Hero: si el campo de imagen está vacío, el fondo es arena con una luz radial de papel. En la fase 4 se generará una imagen por defecto desde la propia escena 3D. Un velo de papel al 62% en la franja superior garantiza la legibilidad del header transparente sobre cualquier imagen.
+- Los textos editables (titular, CTA) vienen vacíos y usan el locale. Si el CTA no tiene enlace, va a "todos los productos".
+- Barra de confianza: en móvil, "Envío gratuito" ocupa la primera línea y las otras dos van en la segunda, sin iconos. El umbral se escribe en euros enteros y se formatea con la moneda de la tienda.
+- Bug corregido de la fase 1: el reset de listas `ul[role=list]` tenía especificidad 0,1,1 y anulaba el padding de las píldoras que son `<ul>` (confianza y paginación). Ahora usa `:where()` y no tiene especificidad.

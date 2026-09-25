@@ -142,5 +142,15 @@
     "next": "Página siguiente",
     "page": "Página {{ page }}",
     "status": "Página {{ current }} de {{ total }}"
+  },
+  "hero": {
+    "heading": "A la altura de ellos.",
+    "cta": "Descubrir"
+  },
+  "trust": {
+    "label": "Nuestras garantías",
+    "free_shipping": "Envío gratuito desde {{ amount }}",
+    "returns": "Devolución {{ days }} días",
+    "secure_payment": "Pago seguro"
   }
 }

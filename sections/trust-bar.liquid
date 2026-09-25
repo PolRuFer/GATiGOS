@@ -1,0 +1,42 @@
+{{ 'section-hero.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign threshold = section.settings.free_shipping_amount | times: 100 | money_without_trailing_zeros
+-%}
+
+<div class="trust full-width">
+  <ul class="trust__pill glass glass--dense glass--pill" role="list" aria-label="{{ 'trust.label' | t }}">
+    <li class="eyebrow">{{ 'trust.free_shipping' | t: amount: threshold }}</li>
+    <li class="eyebrow">{{ 'trust.returns' | t: days: section.settings.returns_days }}</li>
+    <li class="eyebrow">{{ 'trust.secure_payment' | t }}</li>
+  </ul>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.trust_bar.name",
+  "class": "section-trust-bar",
+  "settings": [
+    {
+      "type": "number",
+      "id": "free_shipping_amount",
+      "label": "t:sections.trust_bar.settings.free_shipping_amount.label",
+      "default": 60
+    },
+    {
+      "type": "number",
+      "id": "returns_days",
+      "label": "t:sections.trust_bar.settings.returns_days.label",
+      "default": 30
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.trust_bar.name"
+    }
+  ],
+  "enabled_on": {
+    "templates": ["index"]
+  }
+}
+{% endschema %}

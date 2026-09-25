@@ -143,6 +143,47 @@
     },
     "collection": {
       "name": "Collection products"
+    },
+    "hero": {
+      "name": "Hero",
+      "settings": {
+        "fallback_image": {
+          "label": "Static image",
+          "info": "Same framing as the 3D scene. Shown while it loads, without WebGL2 and with reduced motion. 2400 × 1500 px recommended."
+        }
+      },
+      "blocks": {
+        "heading": {
+          "name": "Heading",
+          "settings": {
+            "text": {
+              "label": "Text"
+            }
+          }
+        },
+        "cta": {
+          "name": "Link",
+          "settings": {
+            "label": {
+              "label": "Text"
+            },
+            "link": {
+              "label": "Link"
+            }
+          }
+        }
+      }
+    },
+    "trust_bar": {
+      "name": "Trust bar",
+      "settings": {
+        "free_shipping_amount": {
+          "label": "Free shipping from (€)"
+        },
+        "returns_days": {
+          "label": "Return days"
+        }
+      }
     }
   }
 }

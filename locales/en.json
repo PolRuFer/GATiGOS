@@ -142,5 +142,15 @@
     "next": "Next page",
     "page": "Page {{ page }}",
     "status": "Page {{ current }} of {{ total }}"
+  },
+  "hero": {
+    "heading": "At their level.",
+    "cta": "Discover"
+  },
+  "trust": {
+    "label": "Our promises",
+    "free_shipping": "Free shipping from {{ amount }}",
+    "returns": "{{ days }}-day returns",
+    "secure_payment": "Secure payment"
   }
 }

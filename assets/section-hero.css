@@ -1,0 +1,124 @@
+/**
+ * GatYGos — hero "A la altura de ellos" and the trust bar that overlaps it.
+ * The 3D scene (phase 4) mounts into .hero__media above the static image.
+ */
+
+.hero {
+  --trust-overlap: var(--space-4);
+
+  position: relative;
+  isolation: isolate;
+  height: 100svh;
+  min-height: 36rem;
+  overflow: hidden;
+  background-color: var(--sand);
+  background-image: radial-gradient(60% 55% at 72% 30%, color-mix(in srgb, var(--paper) 80%, transparent), transparent);
+}
+
+.hero__media {
+  position: absolute;
+  z-index: -2;
+  inset: 0;
+}
+
+.hero__fallback {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Keeps the transparent header legible over any scene or photo. */
+.hero__scrim {
+  position: absolute;
+  z-index: -1;
+  inset: 0 0 auto;
+  height: calc(var(--header-offset) + var(--space-8));
+  background: linear-gradient(to bottom, color-mix(in srgb, var(--paper) 62%, transparent), transparent);
+  pointer-events: none;
+}
+
+.hero__content {
+  position: absolute;
+  right: 0;
+  bottom: calc(var(--trust-overlap) + var(--space-4));
+  left: 0;
+}
+
+.hero__panel {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-2);
+  max-width: 40rem;
+  padding: var(--space-3);
+}
+
+.hero__title {
+  text-wrap: balance;
+}
+
+@media (min-width: 750px) {
+  .hero__panel {
+    padding: var(--space-4) var(--space-5);
+  }
+}
+
+@media (min-width: 990px) {
+  .hero {
+    --trust-overlap: var(--space-3);
+  }
+
+  .hero__content {
+    bottom: calc(var(--trust-overlap) + var(--space-6));
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * Trust bar: one sober line of eyebrows in a glass pill that overlaps the
+ * bottom edge of the hero.
+ * ------------------------------------------------------------------------- */
+.trust {
+  --trust-height: 4.5rem;
+
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  margin-top: calc(var(--trust-height) / -2);
+  padding-inline: var(--header-inset);
+}
+
+.trust__pill {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1) var(--space-3);
+  min-height: var(--trust-height);
+  padding: var(--space-2) var(--space-4);
+  text-align: center;
+}
+
+.trust__pill > li + li::before {
+  content: '·' / '';
+  margin-inline-end: var(--space-3);
+}
+
+@media (max-width: 749px) {
+  .trust__pill > li:nth-child(2)::before {
+    content: none;
+  }
+
+  .trust__pill > li:first-child {
+    flex-basis: 100%;
+  }
+}
+
+@media (min-width: 750px) {
+  .trust {
+    --trust-height: 3rem;
+  }
+
+  .trust__pill {
+    padding-inline: var(--space-5);
+  }
+}

@@ -143,6 +143,47 @@
     },
     "collection": {
       "name": "Productos de la colección"
+    },
+    "hero": {
+      "name": "Hero",
+      "settings": {
+        "fallback_image": {
+          "label": "Imagen estática",
+          "info": "Mismo encuadre que la escena 3D. Se ve mientras carga, sin WebGL2 y con movimiento reducido. Recomendado 2400 × 1500 px."
+        }
+      },
+      "blocks": {
+        "heading": {
+          "name": "Titular",
+          "settings": {
+            "text": {
+              "label": "Texto"
+            }
+          }
+        },
+        "cta": {
+          "name": "Enlace",
+          "settings": {
+            "label": {
+              "label": "Texto"
+            },
+            "link": {
+              "label": "Enlace"
+            }
+          }
+        }
+      }
+    },
+    "trust_bar": {
+      "name": "Barra de confianza",
+      "settings": {
+        "free_shipping_amount": {
+          "label": "Envío gratuito desde (€)"
+        },
+        "returns_days": {
+          "label": "Días para devolver"
+        }
+      }
     }
   }
 }

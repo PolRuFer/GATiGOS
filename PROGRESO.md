@@ -83,8 +83,8 @@ Tokens, cristal, fuentes, header, footer, locales ES/EN, muestra de superficies 
 - [x] 2.5 Paginación de 24 en píldora de cristal (`snippets/pagination.liquid`).
 
 ### Fase 3 · Home sin animación
-- [ ] 3.1 Hero: estructura, panel de copy con bloques y fallback estático.
-- [ ] 3.2 Barra de confianza.
+- [x] 3.1 Hero: estructura, panel de copy con bloques y fallback estático (`sections/hero.liquid`).
+- [x] 3.2 Barra de confianza (`sections/trust-bar.liquid`, `assets/section-hero.css`).
 - [ ] 3.3 Salas Gato y Perro (una sección `room` reutilizable).
 - [ ] 3.4 Selección de 8 productos.
 - [ ] 3.5 Manifiesto.
@@ -107,7 +107,7 @@ Tokens, cristal, fuentes, header, footer, locales ES/EN, muestra de superficies 
 ---
 
 ## Siguiente paso exacto
-Fase 3.1: hero (estructura, panel de copy con bloques y fallback estático) en `sections/hero.liquid` + `templates/index.json`.
+Fase 3.3: salas Gato y Perro con una sección reutilizable `sections/room.liquid`.
 
 ## Deuda abierta
 _Ninguna._

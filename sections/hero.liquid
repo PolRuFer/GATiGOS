@@ -1,0 +1,113 @@
+{{ 'section-hero.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign fallback = section.settings.fallback_image
+-%}
+
+<div class="hero full-width" data-header-overlay data-bleed-under-header data-hero>
+  <div class="hero__media">
+    {%- if fallback -%}
+      {{
+        fallback
+        | image_url: width: 2400
+        | image_tag:
+          class: 'hero__fallback',
+          widths: '750, 1100, 1500, 1920, 2400',
+          sizes: '100vw',
+          loading: 'eager',
+          fetchpriority: 'high',
+          alt: ''
+      }}
+    {%- endif -%}
+  </div>
+
+  <div class="hero__scrim" aria-hidden="true"></div>
+
+  <div class="hero__content page-width">
+    <div class="hero__panel glass glass--dense">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'heading' -%}
+            {%- liquid
+              if block.settings.text != blank
+                assign heading = block.settings.text
+              else
+                assign heading = 'hero.heading' | t
+              endif
+            -%}
+            <h1 class="hero__title display display--hero" {{ block.shopify_attributes }}>{{ heading | escape }}</h1>
+          {%- when 'cta' -%}
+            {%- liquid
+              if block.settings.label != blank
+                assign cta_label = block.settings.label
+              else
+                assign cta_label = 'hero.cta' | t
+              endif
+              assign cta_url = block.settings.link | default: routes.all_products_collection_url
+            -%}
+            <a class="hero__cta link-underline" href="{{ cta_url }}" {{ block.shopify_attributes }}>{{ cta_label | escape }}</a>
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.hero.name",
+  "class": "section-hero",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "fallback_image",
+      "label": "t:sections.hero.settings.fallback_image.label",
+      "info": "t:sections.hero.settings.fallback_image.info"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "heading",
+      "name": "t:sections.hero.blocks.heading.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "t:sections.hero.blocks.heading.settings.text.label",
+          "info": "t:sections.shared.locale_fallback"
+        }
+      ]
+    },
+    {
+      "type": "cta",
+      "name": "t:sections.hero.blocks.cta.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "t:sections.hero.blocks.cta.settings.label.label",
+          "info": "t:sections.shared.locale_fallback"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "t:sections.hero.blocks.cta.settings.link.label"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.hero.name",
+      "blocks": [
+        { "type": "heading" },
+        { "type": "cta" }
+      ]
+    }
+  ],
+  "enabled_on": {
+    "templates": ["index"]
+  }
+}
+{% endschema %}

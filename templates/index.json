@@ -9,12 +9,34 @@
  */
 {
   "sections": {
-    "main": {
-      "type": "hello-world",
+    "hero": {
+      "type": "hero",
+      "blocks": {
+        "heading": {
+          "type": "heading",
+          "settings": {}
+        },
+        "cta": {
+          "type": "cta",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "heading",
+        "cta"
+      ],
       "settings": {}
+    },
+    "trust": {
+      "type": "trust-bar",
+      "settings": {
+        "free_shipping_amount": 60,
+        "returns_days": 30
+      }
     }
   },
   "order": [
-    "main"
+    "hero",
+    "trust"
   ]
 }
