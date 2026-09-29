@@ -27,12 +27,27 @@ async function fresh(name) {
 
 http.createServer(async (req, res) => {
   const u = decodeURIComponent(req.url.split('?')[0]);
+  // Cart API mock: /cart/update.js updates the mock cart and answers with the
+  // cart plus the re-rendered page as the requested section.
+  if (u === '/cart/update.js' && req.method === 'POST') {
+    let body = '';
+    for await (const chunk of req) body += chunk;
+    const { updates = [], sections = [] } = JSON.parse(body || '{}');
+    mock.setCart(updates);
+    await fresh('cart.html');
+    const html = fs.readFileSync(path.join(OUT, 'cart.html'), 'utf8');
+    const cart = mock.globals('es', 'cart').cart;
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    return res.end(JSON.stringify({ item_count: cart.item_count, sections: Object.fromEntries(sections.map((id) => [id, html])) }));
+  }
+  if (u === '/cart/reset') { mock.resetCart(); res.writeHead(302, { Location: '/cart' }); return res.end(); }
+  if (u === '/cart') { await fresh('cart.html'); req.url = '/cart.html'; }
   const name = u === '/' ? 'index.html' : u.slice(1);
   if (name.endsWith('.html') && !u.startsWith('/dev/') && !u.startsWith('/gen/')) {
     try { await fresh(name); } catch (e) { res.writeHead(500, { 'Content-Type': 'text/plain; charset=utf-8' }); return res.end('Error de Liquid:\n' + e.message); }
   }
   const route = routes.find(([prefix]) => u.startsWith(prefix));
-  let f = route ? path.join(route[1], u.slice(route[0].length)) : path.join(OUT, u === '/' ? 'index.html' : u);
+  let f = route ? path.join(route[1], u.slice(route[0].length)) : path.join(OUT, u === '/' ? 'index.html' : u === '/cart' ? 'cart.html' : u);
   // Section Rendering API mock: any /collections/* request returns the
   // filtered or unfiltered collection render.
   const own = { '/collections/perro': 'perro.html', '/collections/gato': 'gato.html' }[u];

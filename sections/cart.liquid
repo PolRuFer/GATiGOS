@@ -1,37 +1,197 @@
-{% comment %}
-  This section is used in the cart template to render /cart page with an
-  overview of the items in customer's cart.
+{{ 'section-cart.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'cart.js' | asset_url }}" defer></script>
 
-  https://shopify.dev/docs/storefronts/themes/architecture/templates/cart
-{% endcomment %}
+{%- liquid
+  assign threshold = section.settings.free_shipping_amount | times: 100
+  assign remaining = threshold | minus: cart.total_price
+  assign remaining_money = remaining | money
+  assign progress = cart.total_price | times: 100 | divided_by: threshold
+  if progress > 100
+    assign progress = 100
+  endif
+-%}
 
-<h1>{{ 'cart.title' | t }}</h1>
+<cart-page
+  class="cart has-orbs full-width"
+  data-section-id="{{ section.id }}"
+  data-update-url="{{ routes.cart_update_url }}"
+  data-updated="{{ 'cart.updated' | t | escape }}"
+  data-error="{{ 'cart.error' | t | escape }}"
+>
+  <div class="orbs orbs--fade-end" aria-hidden="true">
+    <span class="orb orb--camel" style="--orb-x: 84%; --orb-y: 22%; --orb-size: 52vw; --orb-opacity: 0.3;"></span>
+    <span class="orb orb--tobacco" style="--orb-x: 10%; --orb-y: 88%; --orb-size: 44vw; --orb-opacity: 0.16;"></span>
+  </div>
 
-<form action="{{ routes.cart_url }}" method="post">
-  <table>
-    {% for item in cart.items %}
-      <tr>
-        <td>
-          {% render 'image', image: item.image, url: item.url %}
-        </td>
-        <td>
-          <p>{{ item.product.title }}</p>
-          {{ 'cart.remove' | t | link_to: item.url_to_remove }}
-        </td>
-        <td>
-          <input type="text" name="updates[]" value="{{ item.quantity }}">
-          <input type="submit" value="{{ 'cart.update' | t }}">
-        </td>
-      </tr>
-    {% endfor %}
-  </table>
+  <div class="cart__inner page-width grid" data-cart-content>
+    <header class="cart__head">
+      <p class="eyebrow cart__eyebrow">{{ 'cart.eyebrow' | t }}</p>
+      <h1 class="display display--hero">{{ 'cart.title' | t }}</h1>
+    </header>
 
-  <input type="submit" name="checkout" value="{{ 'cart.checkout' | t }}">
-</form>
+    {%- if cart.item_count > 0 -%}
+      <form class="cart__form" action="{{ routes.cart_url }}" method="post" id="CartForm" data-cart-form novalidate>
+        <ul class="cart__lines" role="list">
+          {%- for item in cart.items -%}
+            {%- assign material = item.product.metafields.custom.material.value -%}
+            <li class="cart-line" data-line="{{ forloop.index }}">
+              <a class="cart-line__media" href="{{ item.url }}" tabindex="-1" aria-hidden="true">
+                {%- if item.image -%}
+                  {{
+                    item.image
+                    | image_url: width: 480
+                    | image_tag:
+                      widths: '160, 240, 320, 480',
+                      sizes: '(min-width: 990px) 9rem, 6.5rem',
+                      loading: 'lazy',
+                      alt: ''
+                  }}
+                {%- endif -%}
+              </a>
+
+              <div class="cart-line__info">
+                {%- if material != blank -%}
+                  <p class="cart-line__material eyebrow">{{ material | escape }}</p>
+                {%- endif -%}
+                <h2 class="cart-line__title">
+                  <a href="{{ item.url }}">{{ item.product.title | escape }}</a>
+                </h2>
+                {%- unless item.product.has_only_default_variant -%}
+                  <p class="cart-line__variant text-small text-muted">{{ item.variant.title | escape }}</p>
+                {%- endunless -%}
+                <a
+                  class="cart-line__remove text-small"
+                  href="{{ item.url_to_remove }}"
+                  data-cart-remove="{{ forloop.index }}"
+                >
+                  {{- 'cart.remove' | t -}}
+                  <span class="visually-hidden">: {{ item.product.title | escape }}</span>
+                </a>
+              </div>
+
+              <div class="quantity cart-line__quantity">
+                <label class="visually-hidden" for="CartQty-{{ forloop.index }}">
+                  {{- 'cart.quantity_for' | t: title: item.product.title -}}
+                </label>
+                <button
+                  class="quantity__step"
+                  id="CartQtyDown-{{ forloop.index }}"
+                  type="button"
+                  data-step="-1"
+                  aria-controls="CartQty-{{ forloop.index }}"
+                  aria-label="{{ 'cart.decrease' | t: title: item.product.title | escape }}"
+                >
+                  <span aria-hidden="true">−</span>
+                </button>
+                <input
+                  class="quantity__input"
+                  id="CartQty-{{ forloop.index }}"
+                  type="number"
+                  name="updates[]"
+                  value="{{ item.quantity }}"
+                  min="0"
+                  inputmode="numeric"
+                  data-cart-quantity="{{ forloop.index }}"
+                >
+                <button
+                  class="quantity__step"
+                  id="CartQtyUp-{{ forloop.index }}"
+                  type="button"
+                  data-step="1"
+                  aria-controls="CartQty-{{ forloop.index }}"
+                  aria-label="{{ 'cart.increase' | t: title: item.product.title | escape }}"
+                >
+                  <span aria-hidden="true">+</span>
+                </button>
+              </div>
+
+              <p class="cart-line__price">
+                {%- if item.original_line_price > item.final_line_price -%}
+                  <span class="visually-hidden">{{ 'products.price.sale' | t }}</span>
+                  {{ item.final_line_price | money }}
+                  <span class="visually-hidden">{{ 'products.price.regular' | t }}</span>
+                  <s class="cart-line__compare">{{ item.original_line_price | money }}</s>
+                {%- else -%}
+                  {{ item.final_line_price | money }}
+                {%- endif -%}
+              </p>
+            </li>
+          {%- endfor -%}
+        </ul>
+
+        <button class="cart__update link-underline" type="submit" name="update" data-cart-update>
+          {{- 'cart.update' | t -}}
+        </button>
+
+        <div class="cart__note">
+          <label class="eyebrow" for="CartNote">{{ 'cart.note' | t }}</label>
+          <textarea id="CartNote" name="note" rows="3">{{ cart.note }}</textarea>
+        </div>
+      </form>
+
+      <aside class="cart__summary glass glass--dense" aria-labelledby="CartSummaryTitle">
+        <h2 class="display display--s" id="CartSummaryTitle">{{ 'cart.summary' | t }}</h2>
+
+        <div class="cart__shipping">
+          <p class="text-small">
+            {%- if remaining > 0 -%}
+              {{ 'cart.free_shipping_remaining' | t: amount: remaining_money }}
+            {%- else -%}
+              {{ 'cart.free_shipping_reached' | t }}
+            {%- endif -%}
+          </p>
+          <div class="cart__meter" aria-hidden="true">
+            <span class="cart__meter-fill" style="--progress: {{ progress | divided_by: 100.0 }};"></span>
+          </div>
+        </div>
+
+        <dl class="cart__totals">
+          <dt>{{ 'cart.subtotal' | t }}</dt>
+          <dd>{{ cart.total_price | money }}</dd>
+        </dl>
+        <p class="text-small">{{ 'cart.taxes_note' | t }}</p>
+
+        <button class="button cart__checkout" type="submit" form="CartForm" name="checkout">
+          {{- 'cart.checkout' | t -}}
+        </button>
+
+        <ul class="cart__trust text-small" role="list">
+          <li>{{ 'trust.returns' | t: days: section.settings.returns_days }}</li>
+          <li>{{ 'trust.secure_payment' | t }}</li>
+        </ul>
+      </aside>
+    {%- else -%}
+      <div class="cart__empty">
+        <p class="cart__empty-text">{{ 'cart.empty' | t }}</p>
+        <a class="button" href="{{ routes.all_products_collection_url }}">{{ 'cart.continue' | t }}</a>
+      </div>
+    {%- endif -%}
+
+    <p class="visually-hidden" role="status" data-cart-status></p>
+  </div>
+</cart-page>
 
 {% schema %}
 {
-  "name": "t:general.cart",
-  "settings": []
+  "name": "t:sections.cart.name",
+  "class": "section-cart",
+  "settings": [
+    {
+      "type": "number",
+      "id": "free_shipping_amount",
+      "label": "t:sections.cart.settings.free_shipping_amount.label",
+      "info": "t:sections.cart.settings.free_shipping_amount.info",
+      "default": 60
+    },
+    {
+      "type": "number",
+      "id": "returns_days",
+      "label": "t:sections.cart.settings.returns_days.label",
+      "default": 30
+    }
+  ],
+  "enabled_on": {
+    "templates": ["cart"]
+  }
 }
 {% endschema %}

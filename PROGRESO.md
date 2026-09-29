@@ -113,7 +113,8 @@ Fases 1–6 terminadas. Solo queda lo que depende de ti (ver **Pendiente de tu O
 - [x] 7.1 Desplegable **Tienda** en la cabecera (Perro, Gato, Novedades): se abre con hover, clic o teclado; Esc y el clic fuera lo cierran. Lleva figuras de cerámica 3D de un gato y un perro sentados, renderizadas con Three.js a una tira de 24 fotogramas (`assets/menu-figure-{cat,dog}.webp`, generador en `dev/preview/gen/figures.html`). Giran al pasar el ratón o enfocar (solo transform). En el menú móvil salen agrupadas.
 - [x] 7.2 Subpantallas: `templates/collection.perro.json` y `collection.gato.json` (cabecera, sala con la pieza destacada y rejilla con filtros). En la vista previa: `/collections/perro` y `/collections/gato`.
 - [x] 7.3 Higgsfield: SDK en `dev/higgsfield` (`npm run example`, Seedance 2.5). Credenciales en `dev/higgsfield/.env.local`, que Git ignora. La API responde, pero la cuenta no tiene créditos ("Not enough credits").
-- [ ] 7.4 Gato compañero generado con Higgsfield: tumbado en la cama del hero, baja con el scroll, se relame al parar, mira el cursor si te aburres y lo ataca si sigues quieto. **Bloqueado hasta que la cuenta de Higgsfield tenga créditos.**
+- [~] 7.4 Gato compañero con Higgsfield: **aparcado por coste** (decisión del usuario).
+- [x] 7.5 Cesta (`sections/cart.liquid`, `assets/section-cart.css`, `assets/cart.js`): líneas con material, cantidad con +/− (44 px), eliminar, nota del pedido, resumen en cristal denso con barra de envío gratuito, subtotal y botón de pago; estado vacío. Con JS actualiza con `/cart/update.js` + Section Rendering API sin recargar, anuncia el cambio a lectores de pantalla y mantiene el foco; sin JS funciona el formulario normal. Vista previa: `/cart` (y `/cart/reset`).
 
 ## Auditoría final (fase 6)
 

@@ -227,6 +227,18 @@
           "label": "Texto"
         }
       }
+    },
+    "cart": {
+      "name": "Cesta",
+      "settings": {
+        "free_shipping_amount": {
+          "label": "Envío gratuito a partir de (€)",
+          "info": "Usa el mismo importe que en la barra de confianza."
+        },
+        "returns_days": {
+          "label": "Días de devolución"
+        }
+      }
     }
   }
 }

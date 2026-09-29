@@ -72,7 +72,21 @@
     "checkout": "Finalizar compra",
     "title": "Cesta",
     "update": "Actualizar",
-    "remove": "Eliminar"
+    "remove": "Eliminar",
+    "eyebrow": "Tu selección",
+    "empty": "Tu cesta está vacía. Las piezas que elijas aparecerán aquí.",
+    "continue": "Ver la tienda",
+    "summary": "Resumen",
+    "subtotal": "Subtotal",
+    "taxes_note": "Impuestos incluidos. Los gastos de envío se calculan al finalizar la compra.",
+    "free_shipping_remaining": "Te faltan {{ amount }} para el envío gratuito",
+    "free_shipping_reached": "Tu pedido tiene envío gratuito",
+    "quantity_for": "Cantidad de {{ title }}",
+    "decrease": "Quitar una unidad de {{ title }}",
+    "increase": "Añadir una unidad de {{ title }}",
+    "note": "Nota para el pedido",
+    "updated": "Cesta actualizada",
+    "error": "No se ha podido actualizar la cesta. Inténtalo de nuevo."
   },
   "customers": {
     "login": {

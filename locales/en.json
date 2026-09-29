@@ -72,7 +72,21 @@
     "checkout": "Checkout",
     "title": "Bag",
     "update": "Update",
-    "remove": "Remove"
+    "remove": "Remove",
+    "eyebrow": "Your selection",
+    "empty": "Your cart is empty. The pieces you choose will appear here.",
+    "continue": "Browse the shop",
+    "summary": "Summary",
+    "subtotal": "Subtotal",
+    "taxes_note": "Taxes included. Shipping is calculated at checkout.",
+    "free_shipping_remaining": "{{ amount }} away from free shipping",
+    "free_shipping_reached": "Your order ships free",
+    "quantity_for": "Quantity of {{ title }}",
+    "decrease": "Remove one {{ title }}",
+    "increase": "Add one {{ title }}",
+    "note": "Order note",
+    "updated": "Cart updated",
+    "error": "The cart could not be updated. Please try again."
   },
   "customers": {
     "login": {

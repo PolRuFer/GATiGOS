@@ -227,6 +227,18 @@
           "label": "Text"
         }
       }
+    },
+    "cart": {
+      "name": "Cart",
+      "settings": {
+        "free_shipping_amount": {
+          "label": "Free shipping from (€)",
+          "info": "Use the same amount as in the trust bar."
+        },
+        "returns_days": {
+          "label": "Return days"
+        }
+      }
     }
   }
 }

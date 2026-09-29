@@ -125,6 +125,22 @@ const collections = {
 };
 collections.all = collections.todo;
 
+// --- Cart ------------------------------------------------------------------
+let cartLines = [['cama-lana-merino', 1], ['cesta-ratan', 1], ['pelotas-fieltro', 2]];
+function cartState() {
+  const items = cartLines.map(([handle, quantity], i) => {
+    const p = byHandle[handle];
+    const original = (p.compare_at_price || p.price) * quantity;
+    return {
+      key: handle, quantity, product: { ...p, has_only_default_variant: true }, variant: { title: 'Default Title' },
+      url: p.url, image: p.featured_image, final_price: p.price, final_line_price: p.price * quantity,
+      original_line_price: original, url_to_remove: `/cart/change?line=${i + 1}&quantity=0`,
+    };
+  });
+  const total = items.reduce((t, x) => t + x.final_line_price, 0);
+  return { items, item_count: items.reduce((n, x) => n + x.quantity, 0), total_price: total, items_subtotal_price: total, note: '' };
+}
+
 // --- Menus, policies ---------------------------------------------------------
 const linklists = {
   'main-menu': { title: 'Menú principal', links: [
@@ -188,6 +204,8 @@ module.exports = {
   form: () => ({ 'posted_successfully?': !!formState.success, errors: formState.errors || null, email: '' }),
   setForm: (s) => { formState = s; },
   setPage: (current, pages) => { pageState = { current, pages }; },
+  setCart: (updates) => { cartLines = cartLines.map(([h], i) => [h, updates[i] ?? 0]).filter(([, q]) => q > 0); },
+  resetCart: () => { cartLines = [['cama-lana-merino', 1], ['cesta-ratan', 1], ['pelotas-fieltro', 2]]; },
   paginate: (by) => paginateState(pageState.current, pageState.pages, by),
   globals: (locale, template) => ({
     shop: {
@@ -198,8 +216,8 @@ module.exports = {
       available_languages: [{ iso_code: 'es', endonym_name: 'español' }, { iso_code: 'en', endonym_name: 'English' }],
       language: { iso_code: locale },
     },
-    cart: { item_count: 2 },
-    routes: { root_url: locale === 'es' ? '/' : '/en', cart_url: '/cart', collections_url: '/collections', all_products_collection_url: '/collections/all' },
+    cart: cartState(),
+    routes: { root_url: locale === 'es' ? '/' : '/en', cart_url: '/cart', cart_update_url: '/cart/update', collections_url: '/collections', all_products_collection_url: '/collections/all' },
     request: { locale: { iso_code: locale }, design_mode: false, page_type: template, origin: 'http://localhost', path: '/' },
     settings: { social_instagram_link: 'https://instagram.com/gatygos', social_pinterest_link: 'https://pinterest.com/gatygos' },
     page_title: 'GatYGos', page_description: 'Objetos de diseño para perros y gatos: lana, travertino, roble y cuero.', canonical_url: 'http://localhost/', current_page: 1, template: { name: template.split('.')[0], suffix: template.split('.')[1] || null },
@@ -215,6 +233,7 @@ module.exports = {
     { locale: 'es', template: 'collection', out: 'collection-p4.html', before: () => module.exports.setPage(4, 7) },
     { locale: 'es', template: 'collection', out: 'collection-filtered.html', before: () => module.exports.setPage(1, 1), scope: filteredScope },
     { locale: 'es', template: 'index', out: 'index.html' },
+    { locale: 'es', template: 'cart', out: 'cart.html' },
     { locale: 'es', template: 'collection.perro', out: 'perro.html', before: () => module.exports.setPage(1, 1) },
     { locale: 'es', template: 'collection.gato', out: 'gato.html', before: () => module.exports.setPage(1, 1) },
     { locale: 'en', template: 'collection.gato', out: 'gato-en.html', before: () => module.exports.setPage(1, 1) },
