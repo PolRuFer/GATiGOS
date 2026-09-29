@@ -11,6 +11,13 @@
   endif
 
   assign locale_key = 'rooms.' | append: room
+  # On the room's own collection page the collection header already carries
+  # its title: the room introduces the featured piece instead.
+  assign on_collection = false
+  if template.name == 'collection'
+    assign on_collection = true
+    assign locale_key = locale_key | append: '.page'
+  endif
   if section.settings.eyebrow != blank
     assign eyebrow = section.settings.eyebrow
   else
@@ -61,7 +68,7 @@
       <p class="room__eyebrow eyebrow">{{ eyebrow | escape }}</p>
       <h2 class="display display--title" id="{{ uid }}-title">{{ heading | escape }}</h2>
       <p class="room__intro">{{ intro | escape }}</p>
-      {%- if collection -%}
+      {%- if collection and on_collection == false -%}
         <a class="room__all link-underline" href="{{ collection.url }}">{{ 'rooms.view_all' | t }}</a>
       {%- endif -%}
     </header>
@@ -177,7 +184,7 @@
     }
   ],
   "enabled_on": {
-    "templates": ["index"]
+    "templates": ["index", "collection"]
   }
 }
 {% endschema %}

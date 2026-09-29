@@ -1,0 +1,31 @@
+/*
+ * Plantilla de colección para "perro": cabecera, la sala del perro con su pieza
+ * destacada y la rejilla completa con filtros. Asígnala a la colección
+ * "perro" en Shopify (Colecciones → Plantilla del tema: collection.perro).
+ */
+{
+  "sections": {
+    "header": {
+      "type": "collection-header",
+      "settings": {}
+    },
+    "room": {
+      "type": "room",
+      "settings": {
+        "room": "dog",
+        "collection": "perro",
+        "featured_product": "comedero-travertino",
+        "products_to_show": 4
+      }
+    },
+    "main": {
+      "type": "collection",
+      "settings": {}
+    }
+  },
+  "order": [
+    "header",
+    "room",
+    "main"
+  ]
+}

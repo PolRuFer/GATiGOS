@@ -109,8 +109,18 @@ const collections = {
     products: repeatTo(products, 24), all_products_count: 38, products_count: 38,
     filters, sort_options: sortOptions, sort_by: 'manual', default_sort_by: 'manual',
   },
-  gato: { handle: 'gato', title: 'Para el gato', url: '/collections/gato', products: pick('cueva-fieltro', 'rascador-roble', 'pelotas-fieltro', 'cuenco-ceramica-negra', 'cojin-terciopelo', 'manta-lino') },
-  perro: { handle: 'perro', title: 'Para el perro', url: '/collections/perro', products: pick('comedero-nogal', 'collar-cuero', 'correa-cuero', 'comedero-travertino', 'cesta-ratan', 'manta-lino') },
+  gato: {
+    handle: 'gato', title: 'Para el gato', url: '/collections/gato',
+    description: '<p>Para dormir al sol, afilar las uñas y mirar la casa desde arriba. Lana merino, fieltro, roble macizo y cerámica.</p>',
+    products: pick('cama-lana-merino', 'cueva-fieltro', 'rascador-roble', 'pelotas-fieltro', 'cuenco-ceramica-negra', 'cojin-terciopelo', 'manta-lino'),
+    filters, sort_options: sortOptions, sort_by: 'manual', default_sort_by: 'manual', products_count: 7, all_products_count: 7,
+  },
+  perro: {
+    handle: 'perro', title: 'Para el perro', url: '/collections/perro',
+    description: '<p>Para comer a su altura, salir a la calle y volver a su sitio. Travertino, nogal, ratán y cuero curtido al vegetal.</p>',
+    products: pick('comedero-travertino', 'comedero-nogal', 'collar-cuero', 'correa-cuero', 'cesta-ratan', 'manta-lino'),
+    filters, sort_options: sortOptions, sort_by: 'manual', default_sort_by: 'manual', products_count: 6, all_products_count: 6,
+  },
   seleccion: { handle: 'seleccion', title: 'Selección', url: '/collections/seleccion', products: pick('cama-lana-merino', 'comedero-travertino', 'cesta-ratan', 'cueva-fieltro', 'rascador-roble', 'collar-cuero', 'cojin-terciopelo', 'cuenco-ceramica-negra') },
 };
 collections.all = collections.todo;
@@ -118,8 +128,12 @@ collections.all = collections.todo;
 // --- Menus, policies ---------------------------------------------------------
 const linklists = {
   'main-menu': { title: 'Menú principal', links: [
-    { title: 'Perro', url: '/collections/perro' }, { title: 'Gato', url: '/collections/gato' },
-    { title: 'Novedades', url: '/collections/novedades' }, { title: 'Nosotros', url: '/pages/nosotros' },
+    { title: 'Tienda', url: '/collections/all', links: [
+      { title: 'Perro', url: '/collections/perro', object: { handle: 'perro' } },
+      { title: 'Gato', url: '/collections/gato', object: { handle: 'gato' } },
+      { title: 'Novedades', url: '/collections/novedades', object: { handle: 'novedades' } },
+    ] },
+    { title: 'Nosotros', url: '/pages/nosotros' },
   ] },
   footer: { title: 'Tienda', links: [
     { title: 'Perro', url: '/collections/perro' }, { title: 'Gato', url: '/collections/gato' },
@@ -188,9 +202,9 @@ module.exports = {
     routes: { root_url: locale === 'es' ? '/' : '/en', cart_url: '/cart', collections_url: '/collections', all_products_collection_url: '/collections/all' },
     request: { locale: { iso_code: locale }, design_mode: false, page_type: template, origin: 'http://localhost', path: '/' },
     settings: { social_instagram_link: 'https://instagram.com/gatygos', social_pinterest_link: 'https://pinterest.com/gatygos' },
-    page_title: 'GatYGos', page_description: 'Objetos de diseño para perros y gatos: lana, travertino, roble y cuero.', canonical_url: 'http://localhost/', current_page: 1, template: { name: template },
+    page_title: 'GatYGos', page_description: 'Objetos de diseño para perros y gatos: lana, travertino, roble y cuero.', canonical_url: 'http://localhost/', current_page: 1, template: { name: template.split('.')[0], suffix: template.split('.')[1] || null },
     linklists, collections,
-    collection: template === 'collection' ? collections.todo : undefined,
+    collection: template === 'collection' ? collections.todo : template.startsWith('collection.') ? collections[template.split('.')[1]] : undefined,
   }),
   pages: () => [
     { locale: 'es', template: 'demo', out: 'demo.html' },
@@ -201,6 +215,9 @@ module.exports = {
     { locale: 'es', template: 'collection', out: 'collection-p4.html', before: () => module.exports.setPage(4, 7) },
     { locale: 'es', template: 'collection', out: 'collection-filtered.html', before: () => module.exports.setPage(1, 1), scope: filteredScope },
     { locale: 'es', template: 'index', out: 'index.html' },
+    { locale: 'es', template: 'collection.perro', out: 'perro.html', before: () => module.exports.setPage(1, 1) },
+    { locale: 'es', template: 'collection.gato', out: 'gato.html', before: () => module.exports.setPage(1, 1) },
+    { locale: 'en', template: 'collection.gato', out: 'gato-en.html', before: () => module.exports.setPage(1, 1) },
     { locale: 'en', template: 'index', out: 'index-en.html' },
   ],
 };

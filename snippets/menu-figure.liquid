@@ -1,0 +1,33 @@
+{%- doc -%}
+  Small ceramic figurine next to a menu link: a sitting cat for the cat
+  collection, a sitting dog for the dog one. The image is a 24-frame
+  turntable strip; hovering or focusing the link spins it (transform only).
+  Other links get an empty slot so the labels stay aligned.
+
+  @param {object} link - Menu link (matched on its collection handle or URL)
+{%- enddoc -%}
+
+{%- liquid
+  assign handle = link.object.handle | default: link.url
+  assign kind = ''
+  if handle contains 'gato' or handle contains 'cat'
+    assign kind = 'cat'
+  elsif handle contains 'perro' or handle contains 'dog'
+    assign kind = 'dog'
+  endif
+-%}
+
+<span class="menu-figure" aria-hidden="true">
+  {%- if kind != '' -%}
+    {%- assign file = 'menu-figure-' | append: kind | append: '.webp' -%}
+    <img
+      class="menu-figure__strip"
+      src="{{ file | asset_url }}"
+      width="3840"
+      height="160"
+      alt=""
+      loading="lazy"
+      decoding="async"
+    >
+  {%- endif -%}
+</span>

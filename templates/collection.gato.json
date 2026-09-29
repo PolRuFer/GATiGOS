@@ -1,0 +1,31 @@
+/*
+ * Plantilla de colección para "gato": cabecera, la sala del gato con su pieza
+ * destacada y la rejilla completa con filtros. Asígnala a la colección
+ * "gato" en Shopify (Colecciones → Plantilla del tema: collection.gato).
+ */
+{
+  "sections": {
+    "header": {
+      "type": "collection-header",
+      "settings": {}
+    },
+    "room": {
+      "type": "room",
+      "settings": {
+        "room": "cat",
+        "collection": "gato",
+        "featured_product": "cama-lana-merino",
+        "products_to_show": 4
+      }
+    },
+    "main": {
+      "type": "collection",
+      "settings": {}
+    }
+  },
+  "order": [
+    "header",
+    "room",
+    "main"
+  ]
+}

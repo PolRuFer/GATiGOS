@@ -113,6 +113,120 @@ html.js:has([data-header-overlay]) .site-header:not(.is-past-hero) .site-header_
   text-decoration-color: var(--tobacco);
 }
 
+/* Dropdown ("Tienda"): a dense glass card under its trigger. Opens on
+   hover, click or keyboard (theme.js keeps aria-expanded in sync); only
+   opacity and transform animate. */
+.site-header__item {
+  position: relative;
+}
+
+.site-header__trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.site-header__trigger[data-active] {
+  text-decoration-color: var(--tobacco);
+}
+
+.site-header__caret {
+  width: 0.4375rem;
+  height: 0.4375rem;
+  margin-top: -0.25rem;
+  border-right: 1px solid currentcolor;
+  border-bottom: 1px solid currentcolor;
+  transform: rotate(45deg);
+  transition: transform var(--duration) var(--ease-out);
+}
+
+.site-header__trigger[aria-expanded='true'] .site-header__caret {
+  transform: translateY(0.25rem) rotate(-135deg);
+}
+
+.site-header__dropdown {
+  position: absolute;
+  top: calc(100% + var(--space-2));
+  left: 50%;
+  min-width: 15rem;
+  padding: var(--space-1);
+  color: var(--espresso);
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, calc(var(--space-1) * -1));
+  transition: opacity var(--duration) var(--ease-out), transform var(--duration) var(--ease-out),
+    visibility 0s linear var(--duration);
+}
+
+/* Hover bridge across the gap between trigger and card. */
+.site-header__dropdown::after {
+  content: '';
+  position: absolute;
+  inset: calc(var(--space-2) * -1) 0 100%;
+}
+
+.site-header__trigger[aria-expanded='true'] + .site-header__dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+  transition-delay: 0s;
+}
+
+.site-header__sublist {
+  display: grid;
+  gap: 0.125rem;
+}
+
+.site-header__sublink {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-2) var(--space-1) var(--space-1);
+  border-radius: calc(var(--glass-radius) - 4px);
+  font-size: 0.9375rem;
+  text-decoration: none;
+  transition: background-color var(--duration-fast) var(--ease-out);
+}
+
+.site-header__sublink:hover,
+.site-header__sublink:focus-visible {
+  background-color: rgba(237, 230, 218, 0.7);
+}
+
+.site-header__sublink[aria-current='page'] span {
+  text-decoration: underline;
+  text-decoration-color: var(--tobacco);
+  text-underline-offset: 0.3em;
+}
+
+/* Figurine: one 160px frame of a 24-frame turntable strip, shown at 56px.
+   Hover or focus spins it by stepping the strip sideways. */
+.menu-figure {
+  flex: none;
+  width: 3.5rem;
+  height: 3.5rem;
+  overflow: hidden;
+}
+
+.menu-figure__strip {
+  width: auto;
+  max-width: none;
+  height: 100%;
+}
+
+@keyframes menu-figure-spin {
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+html.motion-ok :is(.site-header__sublink, .mobile-menu__sublink):is(:hover, :focus-visible) .menu-figure__strip {
+  animation: menu-figure-spin 2.4s steps(24) infinite;
+}
+
 .site-header__tools {
   display: flex;
   align-items: center;
@@ -310,4 +424,21 @@ html.js:has([data-header-overlay]) .site-header:not(.is-past-hero) .site-header_
   .mobile-menu {
     display: none;
   }
+}
+
+/* Grouped links in the mobile menu ("Tienda") */
+.mobile-menu__group {
+  margin-block: var(--space-3) var(--space-1);
+  color: var(--tobacco-ink);
+}
+
+.mobile-menu__sublist {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.mobile-menu__sublink {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
 }

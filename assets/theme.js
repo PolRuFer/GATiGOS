@@ -11,6 +11,8 @@
  * - `.is-on-dark` while a section marked [data-header-tone="dark"] is under
  *   the header (the glass cross-fades to dark).
  * - Opens and closes the full-screen mobile menu (<dialog>).
+ * - Desktop dropdowns ([data-dropdown]): open on hover, click or keyboard;
+ *   Escape, a click elsewhere or focus leaving close them.
  * Uses IntersectionObserver instead of scroll listeners.
  */
 class SiteHeader extends HTMLElement {
@@ -23,6 +25,7 @@ class SiteHeader extends HTMLElement {
     this.observeHero();
     this.observeTone();
     this.bindMenu();
+    this.bindDropdowns();
   }
 
   disconnectedCallback() {
@@ -108,6 +111,44 @@ class SiteHeader extends HTMLElement {
       if (event.matches && this.dialog.open) this.closeMenu();
     };
     this.desktopQuery.addEventListener('change', this.onDesktopChange);
+  }
+
+  bindDropdowns() {
+    this.querySelectorAll('[data-dropdown]').forEach((item) => {
+      const trigger = item.querySelector('[aria-expanded]');
+      let timer;
+      let hovered = false; // opened by hover: the click that follows must not close it
+      const set = (open) => {
+        clearTimeout(timer);
+        if (!open) hovered = false;
+        trigger.setAttribute('aria-expanded', String(open));
+      };
+      trigger.addEventListener('click', () => {
+        if (hovered) return void (hovered = false);
+        set(trigger.getAttribute('aria-expanded') !== 'true');
+      });
+      // Hover intent: open at once, close after a short grace period so the
+      // pointer can travel from the trigger to the card.
+      item.addEventListener('pointerenter', (event) => {
+        if (event.pointerType !== 'mouse') return;
+        if (trigger.getAttribute('aria-expanded') !== 'true') hovered = true;
+        set(true);
+      });
+      item.addEventListener('pointerleave', (event) => {
+        if (event.pointerType === 'mouse') timer = setTimeout(() => set(false), 220);
+      });
+      item.addEventListener('focusout', (event) => {
+        if (!item.contains(event.relatedTarget)) set(false);
+      });
+      item.addEventListener('keydown', (event) => {
+        if (event.key !== 'Escape' || trigger.getAttribute('aria-expanded') !== 'true') return;
+        set(false);
+        trigger.focus();
+      });
+      document.addEventListener('click', (event) => {
+        if (!item.contains(event.target)) set(false);
+      });
+    });
   }
 
   openMenu() {

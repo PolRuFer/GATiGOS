@@ -18,17 +18,52 @@
       <nav class="site-header__nav" aria-label="{{ 'header.nav_label' | t }}">
         <ul class="site-header__menu" role="list">
           {%- for link in menu.links -%}
-            <li>
-              <a
-                class="site-header__link"
-                href="{{ link.url }}"
-                {% if link.current %}
-                  aria-current="page"
-                {% endif %}
-              >
-                {{- link.title | escape -}}
-              </a>
-            </li>
+            {%- if link.links.size > 0 -%}
+              <li class="site-header__item" data-dropdown>
+                <button
+                  class="site-header__link site-header__trigger"
+                  type="button"
+                  aria-expanded="false"
+                  aria-controls="HeaderDropdown-{{ forloop.index }}"
+                  {% if link.child_active or link.active %}
+                    data-active
+                  {% endif %}
+                >
+                  {{- link.title | escape -}}
+                  <span class="site-header__caret" aria-hidden="true"></span>
+                </button>
+                <div id="HeaderDropdown-{{ forloop.index }}" class="site-header__dropdown glass glass--dense">
+                  <ul class="site-header__sublist" role="list">
+                    {%- for child in link.links -%}
+                      <li>
+                        <a
+                          class="site-header__sublink"
+                          href="{{ child.url }}"
+                          {% if child.current %}
+                            aria-current="page"
+                          {% endif %}
+                        >
+                          {% render 'menu-figure', link: child %}
+                          <span>{{ child.title | escape }}</span>
+                        </a>
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                </div>
+              </li>
+            {%- else -%}
+              <li class="site-header__item">
+                <a
+                  class="site-header__link"
+                  href="{{ link.url }}"
+                  {% if link.current %}
+                    aria-current="page"
+                  {% endif %}
+                >
+                  {{- link.title | escape -}}
+                </a>
+              </li>
+            {%- endif -%}
           {%- endfor -%}
         </ul>
       </nav>
@@ -76,15 +111,35 @@
         <ul class="mobile-menu__list" role="list">
           {%- for link in menu.links -%}
             <li>
-              <a
-                class="mobile-menu__link"
-                href="{{ link.url }}"
-                {% if link.current %}
-                  aria-current="page"
-                {% endif %}
-              >
-                {{- link.title | escape -}}
-              </a>
+              {%- if link.links.size > 0 -%}
+                <p class="mobile-menu__group eyebrow" id="MobileMenuGroup-{{ forloop.index }}">{{ link.title | escape }}</p>
+                <ul class="mobile-menu__sublist" role="list" aria-labelledby="MobileMenuGroup-{{ forloop.index }}">
+                  {%- for child in link.links -%}
+                    <li>
+                      <a
+                        class="mobile-menu__link mobile-menu__sublink"
+                        href="{{ child.url }}"
+                        {% if child.current %}
+                          aria-current="page"
+                        {% endif %}
+                      >
+                        {% render 'menu-figure', link: child %}
+                        <span>{{ child.title | escape }}</span>
+                      </a>
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              {%- else -%}
+                <a
+                  class="mobile-menu__link"
+                  href="{{ link.url }}"
+                  {% if link.current %}
+                    aria-current="page"
+                  {% endif %}
+                >
+                  {{- link.title | escape -}}
+                </a>
+              {%- endif -%}
             </li>
           {%- endfor -%}
         </ul>

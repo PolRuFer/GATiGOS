@@ -35,7 +35,11 @@ http.createServer(async (req, res) => {
   let f = route ? path.join(route[1], u.slice(route[0].length)) : path.join(OUT, u === '/' ? 'index.html' : u);
   // Section Rendering API mock: any /collections/* request returns the
   // filtered or unfiltered collection render.
-  if (u.startsWith('/collections/')) f = path.join(OUT, req.url.includes('filter.') ? 'collection-filtered.html' : 'collection.html');
+  const own = { '/collections/perro': 'perro.html', '/collections/gato': 'gato.html' }[u];
+  if (own && !req.url.includes('filter.')) {
+    try { await fresh(own); } catch (e) { res.writeHead(500); return res.end(e.message); }
+    f = path.join(OUT, own);
+  } else if (u.startsWith('/collections/')) f = path.join(OUT, req.url.includes('filter.') ? 'collection-filtered.html' : 'collection.html');
   fs.readFile(f, (err, buf) => {
     if (err) { res.writeHead(404); return res.end('404 ' + u); }
     res.writeHead(200, { 'Content-Type': types[path.extname(f)] || 'application/octet-stream', 'Cache-Control': 'no-store' });

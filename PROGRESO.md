@@ -109,6 +109,12 @@ Tokens, cristal, fuentes, header, footer, locales ES/EN, muestra de superficies 
 ## Siguiente paso exacto
 Fases 1–6 terminadas. Solo queda lo que depende de ti (ver **Pendiente de tu OK** y **Qué necesitas hacer tú**) y verificar en `shopify theme dev` con una tienda real.
 
+## Fase 7 (en curso): menú, subpantallas y gato compañero
+- [x] 7.1 Desplegable **Tienda** en la cabecera (Perro, Gato, Novedades): se abre con hover, clic o teclado; Esc y el clic fuera lo cierran. Lleva figuras de cerámica 3D de un gato y un perro sentados, renderizadas con Three.js a una tira de 24 fotogramas (`assets/menu-figure-{cat,dog}.webp`, generador en `dev/preview/gen/figures.html`). Giran al pasar el ratón o enfocar (solo transform). En el menú móvil salen agrupadas.
+- [x] 7.2 Subpantallas: `templates/collection.perro.json` y `collection.gato.json` (cabecera, sala con la pieza destacada y rejilla con filtros). En la vista previa: `/collections/perro` y `/collections/gato`.
+- [x] 7.3 Higgsfield: SDK en `dev/higgsfield` (`npm run example`, Seedance 2.5). Credenciales en `dev/higgsfield/.env.local`, que Git ignora. La API responde, pero la cuenta no tiene créditos ("Not enough credits").
+- [ ] 7.4 Gato compañero generado con Higgsfield: tumbado en la cama del hero, baja con el scroll, se relame al parar, mira el cursor si te aburres y lo ataca si sigues quieto. **Bloqueado hasta que la cuenta de Higgsfield tenga créditos.**
+
 ## Auditoría final (fase 6)
 
 Render local de `dev/preview` (LiquidJS con datos de prueba, servidor sin compresión). Lighthouse con throttling simulado. En Shopify, el CDN comprime con brotli, así que los tiempos reales deberían ser iguales o mejores.
@@ -135,8 +141,8 @@ Render local de `dev/preview` (LiquidJS con datos de prueba, servidor sin compre
 ## Qué necesitas hacer tú en Shopify
 1. **Fotos:** subirlas tal como llegan del proveedor. `product-media` las normaliza. En fotos con fondo oscuro, marca el metafield `custom.media_blend = false`.
 2. **Metafields de producto** (Ajustes › Metafields): `custom.material` (texto de una línea) y `custom.media_blend` (booleano). Para filtrar por material, activa `custom.material` como filtro en Search & Discovery junto a Disponibilidad y Precio.
-3. **Menús:** `main-menu` con Perro / Gato / Novedades / Nosotros y `footer` (más un segundo menú opcional). Tradúcelos con Translate & Adapt.
-4. **Colecciones:** `gato`, `perro` y `seleccion`, ya enlazadas en `templates/index.json`. Elige el producto destacado de cada sala en el editor.
+3. **Menús:** `main-menu` con un elemento **Tienda** que contenga Perro, Gato y Novedades (arrástralos debajo de Tienda para anidarlos; así sale el desplegable con las figuras), más Nosotros. `footer` con los enlaces del pie (más un segundo menú opcional). Tradúcelos con Translate & Adapt.
+4. **Colecciones:** `gato`, `perro` y `seleccion`, ya enlazadas en `templates/index.json`. Elige el producto destacado de cada sala en el editor. En la colección `perro` elige la plantilla `collection.perro`, y en `gato`, `collection.gato` (Productos › Colecciones › Plantilla del tema).
 5. **Políticas** (Ajustes › Políticas): aviso legal, privacidad, términos, envíos y reembolsos, más la URL de la política de cookies en el pie de página. Son obligatorias en España.
 6. **Idiomas:** publica EN. Los textos del tema ya están en ES y EN.
 7. **Opcional:**

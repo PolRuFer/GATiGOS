@@ -160,12 +160,22 @@
     "cat": {
       "eyebrow": "Cat",
       "heading": "For the cat",
-      "intro": "To sleep in the sun, sharpen claws and watch the house from above."
+      "intro": "To sleep in the sun, sharpen claws and watch the house from above.",
+      "page": {
+        "eyebrow": "The cat's piece",
+        "heading": "Where it sleeps in the sun",
+        "intro": "Merino wool that holds the afternoon warmth, at the height from which it watches the house."
+      }
     },
     "dog": {
       "eyebrow": "Dog",
       "heading": "For the dog",
-      "intro": "To eat at their height, go out, and come back to their place."
+      "intro": "To eat at their height, go out, and come back to their place.",
+      "page": {
+        "eyebrow": "The dog's piece",
+        "heading": "What it uses every day",
+        "intro": "Travertine, oak and vegetable-tanned leather: objects made to last as long as it does."
+      }
     }
   },
   "selection": {
