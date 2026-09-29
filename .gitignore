@@ -15,3 +15,7 @@ node_modules/
 ## Release files
 release
 *.zip
+
+# Credenciales locales (Higgsfield, etc.)
+.env.local
+.env*.local

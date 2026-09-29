@@ -1,0 +1,12 @@
+{
+  "name": "gatygos-higgsfield",
+  "private": true,
+  "type": "module",
+  "description": "Generación de medios con Higgsfield (herramienta de desarrollo, no forma parte del tema).",
+  "scripts": {
+    "example": "node --env-file=.env.local --experimental-strip-types index.ts"
+  },
+  "dependencies": {
+    "@higgsfield/client": "^0.2.6"
+  }
+}
